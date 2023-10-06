@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import SideDrawer from './SideDrawer'
+import { primaryLogoEyes } from '../../../../config/Images'
 function SmallScSidebar (): React.JSX.Element {
   const [openSidebar, setOpenSidebar] = useState(false)
   const openSideDrawer = (): void => {
@@ -26,7 +27,7 @@ function SmallScSidebar (): React.JSX.Element {
             <div className="logo-sm-screen">
               <span className="">
                 <Link to='/'>
-                  <img src="https://images.bewakoof.com/web/ic-web-head-bwk-primary-logo-eyes.svg" />
+                  <img src={primaryLogoEyes} />
                 </Link>
               </span>
             </div>

@@ -3,8 +3,10 @@ import MainHeader from './HeaderComponents/MainHeader'
 import TabHeaderBar from './HeaderComponents/TabHeaderBar'
 import SmallScSidebar from './SmallScSidebar/SmallScSidebar'
 import TopHeaderBar from './HeaderComponents/TopHeaderBar'
+import { userPathLocation } from '../../../helper/GetUserLocation'
 
 function Headers (): React.JSX.Element {
+  const location = userPathLocation()
   return (
     <>
       <header className="header-wrapper">
@@ -12,7 +14,7 @@ function Headers (): React.JSX.Element {
         <MainHeader />
       </header>
       <SmallScSidebar />
-      <TabHeaderBar />
+      {location !== '/login' && <TabHeaderBar />}
     </>
   )
 }

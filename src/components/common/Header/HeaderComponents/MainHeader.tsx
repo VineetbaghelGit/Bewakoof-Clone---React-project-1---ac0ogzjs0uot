@@ -9,8 +9,11 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
+import { userPathLocation } from '../../../../helper/GetUserLocation'
+import { mainLogo } from '../../../../config/Images'
 function MainHeader (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
+  const location = userPathLocation()
 
   return (
     <React.Fragment>
@@ -21,7 +24,7 @@ function MainHeader (): React.JSX.Element {
               <Col xs={2} className="brand-img col-differ">
                 <Link to="/">
                   <Image
-                    src="https://images.bewakoof.com/web/ic-desktop-bwkf-trademark-logo.svg"
+                    src={mainLogo}
                     fluid
                   />
                 </Link>
@@ -43,15 +46,17 @@ function MainHeader (): React.JSX.Element {
                 </div>
                 <div className="actions-menu col-differ">
                   <span className="action-innermenu">
-                    {isRouteProtected
-                      ? (
-                      <Link to="" className="user-profile-icon">
-                        <PermIdentityIcon />
-                      </Link>
-                        )
-                      : (
-                      <Link to="/">Login</Link>
-                        )}
+                    {location !== '/login' &&
+                      (isRouteProtected
+                        ? (
+                        <Link to="" className="user-profile-icon">
+                          <PermIdentityIcon />
+                        </Link>
+                          )
+                        : (
+                        <Link to="/login">Login</Link>
+                          ))}
+
                     <div className="user-account-menuholder">
                       <ul className="user-account-menu">
                         <li>

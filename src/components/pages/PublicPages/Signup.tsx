@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
 import Form from 'react-bootstrap/Form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginCover } from '../../../config/Images'
 import ApiUtils from '../../../apis/ApiUtils'
+import { ToasterMessage } from '../../../helper/ToasterHelper'
 
-function Login (): React.JSX.Element {
+function Signup (): React.JSX.Element {
+  const navigate = useNavigate()
   const [validated, setValidated] = useState(false)
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: ''
   })
@@ -26,17 +29,26 @@ function Login (): React.JSX.Element {
       event.stopPropagation()
     } else {
       const body = {
+        name: formData.name,
         email: formData.email,
         password: formData.password,
         appType: 'ecommerce'
       }
-      ApiUtils.authLogin(body)
+      ApiUtils.authSignup(body)
         .then((res: any) => {
-          console.log('🚀 ~ file: Login.tsx:35 ~ .then ~ res:', res)
+          if (res.status === 201) {
+            ToasterMessage('success', 'Register Successfully')
+            setFormData({
+              name: '',
+              email: '',
+              password: ''
+            })
+            navigate('/login')
+          }
         })
         .catch((err: any) => {
-          console.log('🚀 ~ file: Login.tsx:53 ~ handleSubmit ~ err:', err)
-        // ToasterMessage('error', 'Something went wrong')
+          console.log('🚀 ~ file: Signup.tsx:50 ~ handleSubmit ~ err:', err)
+          ToasterMessage('error', 'Something went wrong')
         })
     }
     setValidated(true)
@@ -57,12 +69,23 @@ function Login (): React.JSX.Element {
           </Col>
           <Col md={5}>
             <div className="login-section">
-              <h3 className="login-text">Log in</h3>
+              <h3 className="login-text">Sign up</h3>
               <p className="login-para">
                 for Latest trends, exciting offers and everything Bewakoof®!
               </p>
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Form.Group controlId="validEmail" className="mb-3">
+                <Form.Group controlId="validationCustom01" className="mb-3">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    required
+                    type="text"
+                    onChange={handleChange}
+                    placeholder="Name"
+                    name="name"
+                  />
+                  <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="validationCustom02" className="mb-3">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     required
@@ -73,7 +96,7 @@ function Login (): React.JSX.Element {
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group controlId="validPassword" className="mb-3">
+                <Form.Group controlId="validationCustom03" className="mb-3">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
                     required
@@ -81,11 +104,12 @@ function Login (): React.JSX.Element {
                     placeholder="Password"
                     onChange={handleChange}
                     name="password"
+                    minLength={6}
                   />
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 </Form.Group>
                 <Button type="submit" className="login-btn">
-                  Login
+                  Sign up
                 </Button>
               </Form>
               <div className="d-flex justify-content-between">
@@ -96,7 +120,7 @@ function Login (): React.JSX.Element {
                 </div>
                 <div className="register mt-3">
                   <span>
-                    <Link to="/signup">Dont have an account?</Link>
+                    <Link to="/login">Already have an account?</Link>
                   </span>
                 </div>
               </div>
@@ -108,4 +132,4 @@ function Login (): React.JSX.Element {
   )
 }
 
-export default Login
+export default Signup

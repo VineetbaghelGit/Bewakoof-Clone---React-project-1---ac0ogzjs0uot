@@ -5,7 +5,6 @@ import { authRoutes, protectedRoutes, publicRoutes } from './Routes'
 
 function AppRoutes (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
-  console.log('🚀 ~ file: index.tsx:8 ~ AppRoutes ~ isRouteProtected:', isRouteProtected)
   return (
     <React.Fragment>
       <Routes>

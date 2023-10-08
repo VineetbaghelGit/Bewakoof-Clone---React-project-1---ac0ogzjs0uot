@@ -54,7 +54,7 @@ function MainHeader (): React.JSX.Element {
                         </Link>
                         )
                       : (
-                        <Link to="/login">Login</Link>
+                        <Link to="/login" state={{ prevPage: location }}>Login</Link>
                         ))}
 
                     <div className="user-account-menuholder">

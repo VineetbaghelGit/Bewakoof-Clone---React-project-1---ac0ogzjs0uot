@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import ApiUtils from '../../../apis/ApiUtils'
-import BannerCarousel from './Home/BannerCarousel'
+import ApiUtils from '../../../../apis/ApiUtils'
+import BannerCarousel from './BannerCarousel'
 import { Container } from 'react-bootstrap'
-import FeaturedProduct from './Home/FeaturedProduct'
+import FeaturedProduct from './FeaturedProduct'
 
 function Home (): React.JSX.Element {
   const [data, setData] = useState([])
@@ -25,7 +25,7 @@ function Home (): React.JSX.Element {
       <BannerCarousel />
       <FeaturedProduct/>
       <Container fluid>
-        <h1>fjhsb</h1>
+        <h1>Sections</h1>
       </Container>
     </div>
   )

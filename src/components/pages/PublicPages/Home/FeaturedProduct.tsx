@@ -11,83 +11,33 @@ import {
   vote
 } from '../../../../config/Images'
 import { Container } from 'react-bootstrap'
+
+const featuredProducts = {
+  'New Arrivals': newarrivals,
+  Bestsellers: commonbestseller,
+  Collaborations: officialcollab,
+  Customization: customization,
+  Combos: combos,
+  'Coupon Offers': bwfoffers,
+  'Vote for Designs': vote,
+  'Plus Size': plussize,
+  'Last Sizes Left': lastsizeleft
+}
 function FeaturedProduct (): React.JSX.Element {
   return (
     <Container>
       <div className="featured-slider">
         <ul>
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={newarrivals} />
+          {Object.entries(featuredProducts).map(([key, value]) => (
+            <li className="featured-product" key={key}>
+              <div className="slider-inner">
+                <div className="slider-image">
+                  <img src={value} alt={key} />
+                </div>
+                <p>{key}</p>
               </div>
-              <p>New Arrivals</p>
-            </div>
-          </li>
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={commonbestseller} />
-              </div>
-              <p>Bestsellers</p>
-            </div>
-          </li>
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={officialcollab} />
-              </div>
-              <p>Official Collaborations</p>
-            </div>
-          </li>{' '}
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={customization} />
-              </div>
-              <p>Customization</p>
-            </div>
-          </li>
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={combos} />
-              </div>
-              <p>Combos</p>
-            </div>
-          </li>{' '}
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={bwfoffers} />
-              </div>
-              <p>Coupon Offers</p>
-            </div>
-          </li>
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={vote} />
-              </div>
-              <p>Vote for Designs</p>
-            </div>
-          </li>{' '}
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={plussize} />
-              </div>
-              <p>Plus Size</p>
-            </div>
-          </li>
-          <li className="featured-product">
-            <div className="slider-inner">
-              <div className="slider-image">
-                <img src={lastsizeleft} />
-              </div>
-              <p>Last Sizes Left</p>
-            </div>
-          </li>
+            </li>
+          ))}
         </ul>
       </div>
     </Container>

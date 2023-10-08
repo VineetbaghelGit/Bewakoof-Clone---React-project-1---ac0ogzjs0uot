@@ -1,16 +1,16 @@
 import api from './index'
 const ApiUtils = {
-  authLogin: async function (params: any) {
+  authSignup: async function (params: any) {
     try {
-      const response = await api.post('user/login', params)
+      const response = await api.post('user/signup', params)
       return response
     } catch (error: any) {
       throw error.response
     }
   },
-  authSignup: async function (params: any) {
+  authLogin: async function (params: any) {
     try {
-      const response = await api.post('user/signup', params)
+      const response = await api.post('user/login', params)
       return response
     } catch (error: any) {
       throw error.response

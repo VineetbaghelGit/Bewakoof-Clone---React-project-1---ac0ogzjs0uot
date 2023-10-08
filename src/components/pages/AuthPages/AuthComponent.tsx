@@ -1,46 +1,57 @@
-import React, { useState } from 'react'
+import React, { useState, type FormEvent } from 'react'
 import { Button, Col, Container, Row } from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
 import Form from 'react-bootstrap/Form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginCover } from '../../../config/Images'
-import ApiUtils from '../../../apis/ApiUtils'
 
-function Login (): React.JSX.Element {
+interface AuthComponentProps {
+  title: string
+  actionText: string
+  onSubmit: (formData: AuthFormData, navigate: any) => void
+  firstLinkTo: string
+  firstLinkText: string
+  secondLinkTo: string
+  secondLinkText: string
+  initialState: AuthFormData
+}
+
+type AuthFormData = Record<string, string>
+
+function AuthComponent ({
+  title,
+  actionText,
+  onSubmit,
+  firstLinkTo,
+  firstLinkText,
+  secondLinkTo,
+  secondLinkText,
+  initialState
+}: AuthComponentProps): JSX.Element {
+  const navigate = useNavigate()
   const [validated, setValidated] = useState(false)
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  })
-  const handleChange = (e: any): void => {
+  const [formData, setFormData] = useState<AuthFormData>(initialState)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     })
   }
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault()
     const form = event.currentTarget
+
     if (!form.checkValidity()) {
-      event.preventDefault()
       event.stopPropagation()
     } else {
-      const body = {
-        email: formData.email,
-        password: formData.password,
-        appType: 'ecommerce'
-      }
-      ApiUtils.authLogin(body)
-        .then((res: any) => {
-          console.log('🚀 ~ file: Login.tsx:35 ~ .then ~ res:', res)
-        })
-        .catch((err: any) => {
-          console.log('🚀 ~ file: Login.tsx:53 ~ handleSubmit ~ err:', err)
-        // ToasterMessage('error', 'Something went wrong')
-        })
+      onSubmit(formData, navigate)
     }
+
     setValidated(true)
   }
+
   return (
     <div className="auth-container">
       <Container fluid>
@@ -57,11 +68,25 @@ function Login (): React.JSX.Element {
           </Col>
           <Col md={5}>
             <div className="login-section">
-              <h3 className="login-text">Log in</h3>
+              <h3 className="login-text">{title}</h3>
               <p className="login-para">
                 for Latest trends, exciting offers and everything Bewakoof®!
               </p>
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                {(title === 'Sign up' || title === 'Reset') && (
+                  <Form.Group controlId="validationCustom01" className="mb-3">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                      required
+                      type="text"
+                      onChange={handleChange}
+                      placeholder="Name"
+                      name="name"
+                    />
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                  </Form.Group>
+                )}
+
                 <Form.Group controlId="validEmail" className="mb-3">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
@@ -85,18 +110,18 @@ function Login (): React.JSX.Element {
                   <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                 </Form.Group>
                 <Button type="submit" className="login-btn">
-                  Login
+                  {actionText}
                 </Button>
               </Form>
               <div className="d-flex justify-content-between">
                 <div className="forget-password mt-3">
                   <span>
-                    <Link to="/forget-password">Forget Password?</Link>
+                    <Link to={firstLinkTo}>{firstLinkText}</Link>
                   </span>
                 </div>
                 <div className="register mt-3">
                   <span>
-                    <Link to="/signup">Dont have an account?</Link>
+                    <Link to={secondLinkTo}>{secondLinkText}</Link>
                   </span>
                 </div>
               </div>
@@ -108,4 +133,4 @@ function Login (): React.JSX.Element {
   )
 }
 
-export default Login
+export default AuthComponent

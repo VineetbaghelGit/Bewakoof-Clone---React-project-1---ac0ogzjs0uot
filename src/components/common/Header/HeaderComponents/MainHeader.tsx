@@ -46,16 +46,16 @@ function MainHeader (): React.JSX.Element {
                 </div>
                 <div className="actions-menu col-differ">
                   <span className="action-innermenu">
-                    {location !== '/login' &&
-                      (isRouteProtected
-                        ? (
+                    {(location !== '/login' && location !== '/signup' && location !== '/forget-password') &&
+                    (isRouteProtected
+                      ? (
                         <Link to="" className="user-profile-icon">
                           <PermIdentityIcon />
                         </Link>
-                          )
-                        : (
-                        <Link to="/login">Login</Link>
-                          ))}
+                        )
+                      : (
+                        <Link to="/login" state={{ prevPage: location }}>Login</Link>
+                        ))}
 
                     <div className="user-account-menuholder">
                       <ul className="user-account-menu">

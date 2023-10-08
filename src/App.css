@@ -13,6 +13,9 @@
   padding: 0;
   box-sizing: border-box;
 }
+html{
+  scroll-behavior: smooth;
+}
 body {
   font-family: "Montserrat", sans-serif !important;
   text-rendering: optimizeLegibility;
@@ -477,7 +480,7 @@ p {
   padding: 10px;
   outline: none;
 }
-.login-section .login-input-wrapper button {
+.login-section .login-btn {
   width: 100%;
   height: 48px;
   border: none;
@@ -490,12 +493,15 @@ p {
   text-transform: uppercase;
   font-weight: 550;
 }
-.login-section .forget-password span {
+.login-section .login-btn:hover {
+  background-color: #5cb4b4;
+}
+.login-section .forget-password span a {
   font-size: 15px;
+  color: #45a2a2;
 }
 .register span a {
   font-size: 15px;
-  font-weight: 550;
   color: #45a2a2;
 }
 .form-control {
@@ -515,24 +521,85 @@ p {
     margin-bottom: 30px;
     font-size: 15px;
   }
-  .auth-container .login-welcome-text{
+  .auth-container .login-welcome-text {
     margin: 3% 0 0 5%;
     font-size: 20px;
     text-align: center;
   }
-  .login-section .login-text{
+  .login-section .login-text {
     margin: 3% 0 0 2%;
     font-size: 20px;
   }
 }
 
 @media (max-width: 460px) {
-  .login-section .login-text{
+  .login-section .login-text {
     margin: 6% 0 0 2%;
     font-size: 17px;
   }
-  .auth-container .login-welcome-text{
+  .auth-container .login-welcome-text {
     margin: 3% 0 0 6%;
     font-size: 18px;
+  }
+}
+/* home page css */
+.home-page-container {
+  width: 100%;
+  height: 100%;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 138px;
+}
+.home-page-container ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.alice-carousel__stage li .banner {
+  width: 97% !important;
+  height: auto !important;
+  margin-right: 20px !important;
+  cursor: pointer;
+}
+
+.alice-carousel__stage li .banner img {
+  width: 100%;
+}
+.featured-slider {
+  margin-top: 20px;
+}
+.featured-slider ul {
+  overflow-x: scroll;
+  display: flex;
+  /* justify-content: center */
+}
+.featured-slider .slider-inner {
+  margin: 0px 25px 0px 0px;
+  min-width: 108px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.18px;
+  margin-top: 6px;
+  font-size: 11px;
+  cursor: pointer;
+
+}
+.featured-slider .slider-inner .slider-image {
+  height: 175px;
+  width: 125px;
+}
+.featured-slider .slider-inner .slider-image img {
+  width: 100%;
+  border-style: none;
+  display: block;
+}
+
+.featured-slider ul::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none !important;
+}
+@media (max-width: 769px) {
+  .featured-slider .slider-inner {
+    min-width: 54px;
   }
 }

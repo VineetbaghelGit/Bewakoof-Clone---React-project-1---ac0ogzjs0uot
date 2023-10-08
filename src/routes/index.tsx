@@ -17,7 +17,7 @@ function AppRoutes (): React.JSX.Element {
               element={
                 !isRouteProtected
                   ? (
-                    <route.component />
+                  <route.component />
                     )
                   : (
                   <Navigate to="/" replace state={{ from: route.path }} />
@@ -29,23 +29,7 @@ function AppRoutes (): React.JSX.Element {
         {publicRoutes.map((route) => {
           const id = crypto.randomUUID()
           return (
-            <Route
-              key={id}
-              path={route.path}
-              element={
-                isRouteProtected
-                  ? (
-                  <Navigate
-                    to={route.path}
-                    replace
-                    state={{ from: route.path }}
-                  />
-                    )
-                  : (
-                  <route.component />
-                    )
-              }
-            />
+            <Route key={id} path={route.path} element={<route.component />} />
           )
         })}
         {protectedRoutes.map((route) => {

@@ -3,11 +3,15 @@ import ApiUtils from '../../../apis/ApiUtils'
 import { ToasterMessage } from '../../../helper/ToasterHelper'
 import AuthComponent from './AuthComponent'
 import { useLocation } from 'react-router-dom'
+import Cookies from 'js-cookie'
+import { useDispatch } from 'react-redux'
+import { setUserAuthDetails } from '../../../store/slices/authSlices'
 
 type AuthFormData = Record<string, string>
 
 function Login (): JSX.Element {
   const { state } = useLocation()
+  const dispatch = useDispatch()
   const initialState = {
     email: '',
     password: ''
@@ -23,7 +27,15 @@ function Login (): JSX.Element {
     ApiUtils.authLogin(body)
       .then((res: any) => {
         if (res.status === 200) {
+          const userData = {
+            name: res.data.data.name,
+            token: res.data.token,
+            email: res.data.data.email
+          }
+          const userDataString = JSON.stringify(userData)
+          dispatch(setUserAuthDetails(userData))
           ToasterMessage('success', 'Login Successfully')
+          Cookies.set('bwf-user-auth', userDataString)
           if (state?.prevPage?.length > 0) {
             navigate(state?.prevPage)
           } else {

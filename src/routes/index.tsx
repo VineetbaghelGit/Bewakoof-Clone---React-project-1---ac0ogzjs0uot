@@ -1,10 +1,12 @@
 import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { isUserAuthenticated } from '../helper/customUseSelector'
 import { authRoutes, protectedRoutes, publicRoutes } from './Routes'
 
 function AppRoutes (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
+  const { state } = useLocation()
+
   return (
     <React.Fragment>
       <Routes>
@@ -20,7 +22,7 @@ function AppRoutes (): React.JSX.Element {
                   <route.component />
                     )
                   : (
-                  <Navigate to="/" replace state={{ from: route.path }} />
+                  <Navigate to={state?.prevPage} replace state={{ prevPage: route.path }} />
                     )
               }
             />
@@ -41,7 +43,7 @@ function AppRoutes (): React.JSX.Element {
               element={
                 !isRouteProtected
                   ? (
-                  <Navigate to="/login" replace state={{ from: route.path }} />
+                  <Navigate to="/login" replace state={{ prevPage: route.path }} />
                     )
                   : (
                   <route.component />

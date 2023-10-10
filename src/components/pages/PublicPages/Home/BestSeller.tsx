@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
 import ApiUtils from '../../../../apis/ApiUtils'
 import { Link } from 'react-router-dom'
+import { wishlistIcon } from '../../../../config/Images'
 
 interface GetProductResType {
   brand: string
@@ -58,7 +59,7 @@ function BestSeller (): React.JSX.Element {
                           <div className="wishlist-product">
                             <Link to="/wishlist">
                               <Image
-                                src="https://images.bewakoof.com/web/Wishlist.svg"
+                                src={wishlistIcon}
                                 fluid
                               />
                             </Link>

@@ -11,6 +11,7 @@ type AuthFormData = Record<string, string>
 
 function Login (): JSX.Element {
   const { state } = useLocation()
+  console.log('🚀 ~ file: Login.tsx:14 ~ Login ~ state:', state)
   const dispatch = useDispatch()
   const initialState = {
     email: '',
@@ -39,6 +40,7 @@ function Login (): JSX.Element {
           if (state?.prevPage?.length > 0) {
             navigate(state?.prevPage)
           } else {
+            console.log('home')
             navigate('/')
           }
         }

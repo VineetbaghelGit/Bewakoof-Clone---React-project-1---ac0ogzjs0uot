@@ -117,7 +117,7 @@ function MainHeader (): React.JSX.Element {
                     </div>
                   </span>
                   <span className="action-innermenu">
-                    <Link to="/">
+                    <Link to="/wishlist">
                       <FavoriteBorderIcon />
                     </Link>
                   </span>

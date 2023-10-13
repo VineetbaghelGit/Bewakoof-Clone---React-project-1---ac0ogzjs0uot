@@ -1,3 +1,4 @@
+@import "~react-image-gallery/styles/css/image-gallery.css";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 :root {
   --navbar-links-color: rgba(0, 0, 0, 0.8);
@@ -765,10 +766,7 @@ p {
 .product-details-container {
   margin-top: 20px;
 }
-.product-gallery {
-  position: sticky;
-  top: 100px;
-}
+
 .details-wrapper .manufacturer-name .brand-name {
   font-size: 18px;
   line-height: 21px;
@@ -850,7 +848,7 @@ p {
   content: "";
   background: #eee;
   height: 3px;
-  width: calc(100% + 30px);
+  width: calc(100% + 0px);
   display: block;
   /* position: absolute; */
 }
@@ -869,7 +867,7 @@ p {
   content: "";
   background: #eee;
   height: 3px;
-  width: calc(100% + 30px);
+  width: calc(100% + 0px);
   display: block;
   position: absolute;
   margin: -17px 0;
@@ -979,6 +977,110 @@ label {
   font-weight: 550;
   padding-left: 8px;
 }
+.image-gallery-left-nav .image-gallery-svg, .image-gallery-right-nav .image-gallery-svg{
+  height: 60px !important;
+  width: 20px !important;
+}
+.about-product {
+  position: relative;
+  margin-top: 30px;
+  /* margin-bottom: 30px; */
+}
+.about-product::before {
+  content: "";
+  background: #eee;
+  height: 3px;
+  width: calc(100% + 0px);
+  display: block;
+  position: absolute;
+  margin: -17px 0;
+}
+.accordion-item {
+  border: none !important;
+  border-bottom: 1px solid #dee2e6 !important;
+}
+.accordion-title {
+  position: relative;
+  line-height: 19px !important;
+}
+.accordion img {
+  margin-top: 2px;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.accordion-title h2 {
+  font-weight: 550;
+  font-size: 14px !important;
+  line-height: 19px !important;
+  margin-bottom: 0 !important;
+}
+.accordion-subtitle {
+  color: #878787;
+  font-size: 12px !important;
+  line-height: 15px !important;
+}
+.accordion-button:not(.collapsed) {
+  color: #000 !important;
+}
+.accordion-button {
+  padding: 12px 20px !important;
+  background-color: #fff !important;
+}
+.accordion-button:focus {
+  border-color: #fff !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.coupon-body .desc-text {
+  margin-left: 10px;
+  line-height: 1.45;
+  color: #606060;
+  font-size: 12px;
+}
+.accordion-body {
+  padding: 0.1rem 1.25rem !important;
+}
+.product-desc-text{
+ color: #606060; 
+ font-size: 12px;
+}
+.trust-badge-container{
+  margin-top: 10px;
+  margin-bottom: 30px;
+  padding: 15px;
+}
+.trust-badge-container .containerInner img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 6px;
+  color: #8f98a9;
+}
+.trust-badge-container .containerInner .trustBadgeTitle {
+  font-family: montserrat-semibold,sans-serif!important;
+  font-size: 8px!important;
+  line-height: 12px!important;
+  text-align: center;
+  color: #8f98a9;
+  width: 79px;
+}
+@media (min-width: 767px) {
+  .product-gallery {
+    position: sticky;
+    top: 100px;
+    z-index: 100;
+  }
+}
+@media (max-width: 767px) {
+  .size-container::before,
+  .tribe-container::before {
+    width: calc(100% + 10px);
+  }
+  .details-wrapper{
+    margin-top: 20px !important;
+  }
+}
+
 /* wishlist css */
 .wishlist-wrapper {
   margin-top: 115px;
@@ -1016,6 +1118,6 @@ label {
   position: absolute !important;
 }
 
-.product-seller-tag.remove-item span{
- font-size: 9px !important; 
+.product-seller-tag.remove-item span {
+  font-size: 9px !important;
 }

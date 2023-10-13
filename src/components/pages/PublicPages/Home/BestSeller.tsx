@@ -32,7 +32,7 @@ function BestSeller (): React.JSX.Element {
     e.stopPropagation()
     navigate(`/product/${item._id}/${item.name}`, { state: item })
   }
-  const stopPropagation = (e: any, id: string): void => {
+  const notWishlistedItem = (e: any, id: string): void => {
     e.stopPropagation()
     if (isRouteProtected) {
       const body = {
@@ -49,6 +49,20 @@ function BestSeller (): React.JSX.Element {
         })
     } else {
       navigate('/wishlist')
+    }
+  }
+  const wishlistedItem = (e: any, id: string): void => {
+    e.stopPropagation()
+    if (isRouteProtected) {
+      ApiUtils.removeFromWishlist(id)
+        .then((res: any) => {
+          if (res.status === 200) {
+            fetchGetWishlist()
+          }
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
     }
   }
   useEffect(() => {
@@ -112,21 +126,28 @@ function BestSeller (): React.JSX.Element {
                               <h3 className="brand-name">{item.brand}</h3>
                               <h2 className="name">{item.name}</h2>
                             </div>
-                            <div
-                              className="wishlist-product"
-                              onClick={(e) => {
-                                stopPropagation(e, item._id)
-                              }}
-                            >
+                            <div className="wishlist-product">
                               {wishlist.some(
                                 (wishlistItem) =>
-                                  wishlistItem.products._id === item._id
+                                  wishlistItem.products?._id === item?._id
                               )
                                 ? (
-                                <Image src={wishlistSelected} fluid />
+                                <Image
+                                  src={wishlistSelected}
+                                  fluid
+                                  onClick={(e) => {
+                                    wishlistedItem(e, item?._id)
+                                  }}
+                                />
                                   )
                                 : (
-                                <Image src={wishlistIcon} fluid />
+                                <Image
+                                  src={wishlistIcon}
+                                  fluid
+                                  onClick={(e) => {
+                                    notWishlistedItem(e, item?._id)
+                                  }}
+                                />
                                   )}
                             </div>
                           </div>

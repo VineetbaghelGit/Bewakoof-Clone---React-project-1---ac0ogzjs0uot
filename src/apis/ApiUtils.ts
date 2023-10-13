@@ -42,7 +42,7 @@ const ApiUtils = {
   },
   searchingProduct: async function (params: string) {
     try {
-      const response = await api.get(`ecommerce/clothes/products?search={"title":"${params}"}`)
+      const response = await api.get(`ecommerce/clothes/products?search=${params}`)
       return response
     } catch (error: any) {
       throw error.response
@@ -51,6 +51,14 @@ const ApiUtils = {
   addToWishlist: async function (params: any) {
     try {
       const response = await api.patch('ecommerce/wishlist', params)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  removeFromWishlist: async function (params: any) {
+    try {
+      const response = await api.delete(`ecommerce/wishlist/${params}`)
       return response
     } catch (error: any) {
       throw error.response

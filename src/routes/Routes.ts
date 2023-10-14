@@ -14,7 +14,7 @@ const authRoutes = [
 
 const publicRoutes = [
   { path: '/', component: Home },
-  { path: '/product/:id/:name', component: ProductDetail },
+  { path: '/product/:id', component: ProductDetail },
   { path: '/cart', component: Cart }
 ]
 const protectedRoutes = [{ path: '/wishlist', component: UserWishlist }]

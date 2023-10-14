@@ -12,11 +12,15 @@ import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { userPathLocation } from '../../../../helper/GetUserLocation'
 import { mainLogo } from '../../../../config/Images'
 import ApiUtils from '../../../../apis/ApiUtils'
+import { useDispatch } from 'react-redux'
+import Cookies from 'js-cookie'
+import { removeUserAuth } from '../../../../store/slices/authSlices'
+import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 function MainHeader (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const location = userPathLocation()
   const [searchedValue, setSearchedValue] = useState<string>('')
-
+  const dispatch = useDispatch()
   function debounce<T extends (...args: any[]) => any> (
     fn: T,
     delay: number
@@ -46,6 +50,10 @@ function MainHeader (): React.JSX.Element {
     const newValue = e.target.value
     setSearchedValue(newValue)
     debouncedOnSearchItem(newValue) // Call the debounced function with the input value
+  }
+  const handleLogout = (): void => {
+    Cookies.remove(COOKIE_STORAGE_KEY)
+    dispatch(removeUserAuth())
   }
   return (
     <React.Fragment>
@@ -102,7 +110,7 @@ function MainHeader (): React.JSX.Element {
                           <Link to="/">My Account</Link>
                         </li>
                         <li>
-                          <Link to="/">My Wishlist</Link>
+                          <Link to="/wishlist">My Wishlist</Link>
                         </li>{' '}
                         <li>
                           <Link to="/">My Orders</Link>
@@ -110,7 +118,7 @@ function MainHeader (): React.JSX.Element {
                         <li>
                           <Link to="/">My Wallet</Link>
                         </li>
-                        <li>
+                        <li onClick={handleLogout}>
                           <Link to="/">Logout</Link>
                         </li>
                       </ul>
@@ -122,7 +130,7 @@ function MainHeader (): React.JSX.Element {
                     </Link>
                   </span>
                   <span className="action-innermenu">
-                    <Link to="/">
+                    <Link to="/cart">
                       <ShoppingCartIcon />
                     </Link>
                   </span>

@@ -30,7 +30,7 @@ function BestSeller (): React.JSX.Element {
 
   const redirectToProduct = (e: any, item: GetProductResType): void => {
     e.stopPropagation()
-    navigate(`/product/${item._id}/${item.name}`, { state: item })
+    navigate(`/product/${item._id}`, { state: item })
   }
   const notWishlistedItem = (e: any, id: string): void => {
     e.stopPropagation()

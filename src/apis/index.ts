@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { BASE_URL } from '../config/Constant'
+import Cookies from 'js-cookie'
+import { BASE_URL, COOKIE_STORAGE_KEY } from '../config/Constant'
 const instance = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -13,13 +14,16 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    const loader: HTMLElement | null = document.getElementById('loader-spinner')
+    const loader: HTMLElement | null =
+      document.getElementById('loader-spinner')
     if (loader !== null) {
       loader.style.display = 'block'
     }
-    const localStorageValue = localStorage.getItem('rat-auth') as string
-    const parsedValue: string = JSON.parse(localStorageValue)
-    if (parsedValue !== '') config.headers.Authorization = `Bearer ${parsedValue}`
+    const getCookiesValue = Cookies.get(COOKIE_STORAGE_KEY)
+    const cookieData = JSON.parse(getCookiesValue ?? 'null')
+    // if (config?.url.includes('ecommerce/wishlist/')) {
+    config.headers.Authorization = `Bearer ${cookieData?.token}`
+    // }
 
     return config
   },
@@ -34,7 +38,8 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    const loader: HTMLElement | null = document.getElementById('loader-spinner')
+    const loader: HTMLElement | null =
+      document.getElementById('loader-spinner')
     if (loader !== null) {
       loader.style.display = 'none'
     }
@@ -42,7 +47,8 @@ instance.interceptors.response.use(
   },
   async function (error) {
     if (error?.response?.status === 401) {
-      const loader: HTMLElement | null = document.getElementById('loader-spinner')
+      const loader: HTMLElement | null =
+        document.getElementById('loader-spinner')
       if (loader !== null) {
         loader.style.display = 'none'
       }
@@ -52,7 +58,8 @@ instance.interceptors.response.use(
     } else {
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
-      const loader: HTMLElement | null = document.getElementById('loader-spinner')
+      const loader: HTMLElement | null =
+        document.getElementById('loader-spinner')
       if (loader !== null) {
         loader.style.display = 'none'
       }

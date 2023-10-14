@@ -5,6 +5,8 @@ import { authRoutes, protectedRoutes, publicRoutes } from './Routes'
 
 function AppRoutes (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
+  // const { state } = useLocation()
+  // state?.prevPage}
   return (
     <React.Fragment>
       <Routes>
@@ -17,10 +19,10 @@ function AppRoutes (): React.JSX.Element {
               element={
                 !isRouteProtected
                   ? (
-                    <route.component />
+                  <route.component />
                     )
                   : (
-                  <Navigate to="/" replace state={{ from: route.path }} />
+                  <Navigate to='/' replace state={{ prevPage: route.path }} />
                     )
               }
             />
@@ -29,23 +31,7 @@ function AppRoutes (): React.JSX.Element {
         {publicRoutes.map((route) => {
           const id = crypto.randomUUID()
           return (
-            <Route
-              key={id}
-              path={route.path}
-              element={
-                isRouteProtected
-                  ? (
-                  <Navigate
-                    to={route.path}
-                    replace
-                    state={{ from: route.path }}
-                  />
-                    )
-                  : (
-                  <route.component />
-                    )
-              }
-            />
+            <Route key={id} path={route.path} element={<route.component />} />
           )
         })}
         {protectedRoutes.map((route) => {
@@ -57,7 +43,7 @@ function AppRoutes (): React.JSX.Element {
               element={
                 !isRouteProtected
                   ? (
-                  <Navigate to="/login" replace state={{ from: route.path }} />
+                  <Navigate to="/login" replace state={{ prevPage: route.path }} />
                     )
                   : (
                   <route.component />

@@ -1,25 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit'
-// import { LOCAL_STORAGE_KEY } from "../../config/Constant";
+import Cookies from 'js-cookie'
+import { COOKIE_STORAGE_KEY } from '../../config/Constant'
 
-// const getLocalStorage = localStorage.getItem(LOCAL_STORAGE_KEY)
+const getCookiesValue = Cookies.get(COOKIE_STORAGE_KEY)
+const parsedValue = JSON.parse(getCookiesValue ?? 'null')
 interface SliceState {
-  loginToken: boolean
+  userInfo: {
+    name: string
+    email: string
+    token: string
+  }
 }
 
 const initialState: SliceState = {
-  loginToken: true
+  userInfo: parsedValue?.token?.length > 0 ? parsedValue : ''
 }
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setLoginToken: (state, action) => {
-      state.loginToken = action.payload
+    setUserAuthDetails: (state, action) => {
+      state.userInfo = action.payload
     },
-    removeLoginToken: (state) => {
-      state.loginToken = false
+    removeUserAuth: (state) => {
+      state.userInfo = {
+        name: '',
+        email: '',
+        token: ''
+      }
     }
   }
 })
-export const { setLoginToken, removeLoginToken } = authSlice.actions
+export const { setUserAuthDetails, removeUserAuth } = authSlice.actions
 export default authSlice.reducer

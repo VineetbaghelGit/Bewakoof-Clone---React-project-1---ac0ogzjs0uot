@@ -14,7 +14,7 @@ function Headers (): React.JSX.Element {
         <MainHeader />
       </header>
       <SmallScSidebar />
-      {(location !== '/login' && location !== '/signup' && location !== '/forget-password') && <TabHeaderBar />}
+      {location === '/' && <TabHeaderBar />}
     </>
   )
 }

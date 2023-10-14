@@ -4,6 +4,7 @@ import Signup from '../components/pages/AuthPages/Signup'
 import UserWishlist from '../components/pages/ProtectedPages/UserWishlist'
 import Cart from '../components/pages/PublicPages/CartPage/Index'
 import Home from '../components/pages/PublicPages/Home/Index'
+import ProductDetail from '../components/pages/PublicPages/ProductDetails/Index'
 
 const authRoutes = [
   { path: '/login', component: Login },
@@ -13,6 +14,7 @@ const authRoutes = [
 
 const publicRoutes = [
   { path: '/', component: Home },
+  { path: '/product/:id', component: ProductDetail },
   { path: '/cart', component: Cart }
 ]
 const protectedRoutes = [{ path: '/wishlist', component: UserWishlist }]

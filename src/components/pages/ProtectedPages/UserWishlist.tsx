@@ -3,6 +3,9 @@ import { Col, Container, Image, Row } from 'react-bootstrap'
 import { bagIcon, wishlistEmpty } from '../../../config/Images'
 import ApiUtils from '../../../apis/ApiUtils'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setItemCountCart } from '../../../store/slices/cartSlice'
+import Cookies from 'js-cookie'
 
 interface WishlistItem {
   products: {
@@ -13,11 +16,23 @@ interface WishlistItem {
     _id: string
   }
 }
+interface cartList {
+  product: {
+    displayImage: string
+    name: string
+    price: number
+    ratings: number
+    _id: string
+  }
+}
 function UserWishlist (): React.JSX.Element {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
+  const [cartItemList, setCartItemList] = useState<cartList[]>([])
 
+  const dispatch = useDispatch()
   useEffect(() => {
     fetchUserWishlist()
+    fetchCartItemList()
   }, [])
   function fetchUserWishlist (): void {
     ApiUtils.getMyWishlist()
@@ -29,6 +44,50 @@ function UserWishlist (): React.JSX.Element {
       .catch((err: any) => {
         console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
         // ToasterMessage('error', 'Something went wrong');
+      })
+  }
+  const removewishlistedItem = (id: string): void => {
+    ApiUtils.removeFromWishlist(id)
+      .then((res: any) => {
+        if (res.status === 200) {
+          fetchUserWishlist()
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
+      })
+  }
+
+  function fetchCartItemList (): void {
+    ApiUtils.getCartItemList()
+      .then((res: any) => {
+        if (res.status === 200) {
+          setCartItemList(res.data.data.items)
+        }
+      })
+      .catch((err: any) => {
+        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
+        // ToasterMessage('error', 'Something went wrong');
+      })
+  }
+  const addProductToBag = (id: string): void => {
+    ApiUtils.addItemInCart(id)
+      .then((res: any) => {
+        if (res.status === 200) {
+          removewishlistedItem(id)
+          dispatch(setItemCountCart(res.data.results))
+          const existingUserDataString: any = Cookies.get('bwf-user-auth')
+          const existingUserData = JSON.parse(existingUserDataString)
+          const updatedUserData = {
+            ...existingUserData,
+            cart: res.data.results
+          }
+          const updatedUserDataString = JSON.stringify(updatedUserData)
+          Cookies.set('bwf-user-auth', updatedUserDataString)
+        }
+      })
+      .catch((err: any) => {
+        console.log(err)
       })
   }
   return (
@@ -50,7 +109,12 @@ function UserWishlist (): React.JSX.Element {
                               fluid
                               title={wishlistItem?.products?.name}
                             />{' '}
-                            <div className="product-seller-tag remove-item">
+                            <div
+                              className="product-seller-tag remove-item"
+                              onClick={() => {
+                                removewishlistedItem(wishlistItem.products._id)
+                              }}
+                            >
                               <span>X</span>
                             </div>
                           </div>
@@ -75,16 +139,45 @@ function UserWishlist (): React.JSX.Element {
                               <div className="discount-percent">65% OFF</div>
                             </div>
                             <div className="add-to-cart-btn">
-                              <div className="add-to-bag d-flex justify-content-center align-items-center">
-                                <span>
-                                  <Image
-                                    fluid
-                                    className="bag-icon"
-                                    src={bagIcon}
-                                  />
-                                </span>
-                                <p>ADD TO CART</p>
-                              </div>
+                              {cartItemList.length > 0 &&
+                              cartItemList?.some(
+                                (cartItem) =>
+                                  cartItem?.product?._id ===
+                                  wishlistItem?.products?._id
+                              )
+                                ? (
+                                <>
+                                  <div className="add-to-bag d-flex justify-content-center align-items-center">
+                                    <span>
+                                      <Image
+                                        fluid
+                                        className="bag-icon"
+                                        src={bagIcon}
+                                      />
+                                    </span>
+                                    <Link to="/cart">
+                                      <p>GO TO BAG</p>
+                                    </Link>
+                                  </div>
+                                </>
+                                  )
+                                : (
+                                <div
+                                  className="add-to-bag d-flex justify-content-center align-items-center"
+                                  onClick={() => {
+                                    addProductToBag(wishlistItem.products._id)
+                                  }}
+                                >
+                                  <span>
+                                    <Image
+                                      fluid
+                                      className="bag-icon"
+                                      src={bagIcon}
+                                    />
+                                  </span>
+                                  <p>ADD TO CART</p>
+                                </div>
+                                  )}
                             </div>
                           </div>
                         </div>
@@ -98,17 +191,14 @@ function UserWishlist (): React.JSX.Element {
             )
           : (
           <div className="wishlist-empty">
-            <Image
-              src={wishlistEmpty}
-              fluid
-            />
+            <Image src={wishlistEmpty} fluid />
             <div className="empty-list-title">Hey! Your wishlist is empty.</div>
             <div className="empty-list-subtitle">
               Save your favourites here and make them yours soon!
             </div>
-            <div className="wishlist-btn">
-              <Link to="/">Shop now</Link>
-            </div>
+            <Link to="/">
+              <div className="wishlist-btn">Shop now</div>
+            </Link>
           </div>
             )}
       </Container>

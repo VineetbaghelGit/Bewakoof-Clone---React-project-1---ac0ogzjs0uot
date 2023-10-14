@@ -8,7 +8,10 @@ import SearchIcon from '@mui/icons-material/Search'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
-import { isUserAuthenticated } from '../../../../helper/customUseSelector'
+import {
+  cartItemsCount,
+  isUserAuthenticated
+} from '../../../../helper/customUseSelector'
 import { userPathLocation } from '../../../../helper/GetUserLocation'
 import { mainLogo } from '../../../../config/Images'
 import ApiUtils from '../../../../apis/ApiUtils'
@@ -18,6 +21,7 @@ import { removeUserAuth } from '../../../../store/slices/authSlices'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 function MainHeader (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
+  const cartItemCount = cartItemsCount()
   const location = userPathLocation()
   const [searchedValue, setSearchedValue] = useState<string>('')
   const dispatch = useDispatch()
@@ -37,13 +41,20 @@ function MainHeader (): React.JSX.Element {
     // This function will be called after the debounce delay with the latest value
     console.log('Searched Value:', value)
     // You can call any other functions or set state here.
-    ApiUtils.searchingProduct(searchedValue).then((res) => {
-      console.log('🚀 ~ file: MainHeader.tsx:37 ~ ApiUtils.searchingProduct ~ res:', res)
-    }).catch((err) => {
-      console.log('🚀 ~ file: MainHeader.tsx:39 ~ ApiUtils.searchingProduct ~ err:', err)
-      return {
-      }
-    })
+    ApiUtils.searchingProduct(searchedValue)
+      .then((res) => {
+        console.log(
+          '🚀 ~ file: MainHeader.tsx:37 ~ ApiUtils.searchingProduct ~ res:',
+          res
+        )
+      })
+      .catch((err) => {
+        console.log(
+          '🚀 ~ file: MainHeader.tsx:39 ~ ApiUtils.searchingProduct ~ err:',
+          err
+        )
+        return {}
+      })
   }, 1500)
 
   const onSearchItem = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -63,10 +74,7 @@ function MainHeader (): React.JSX.Element {
             <Row>
               <Col xs={2} className="brand-img col-differ">
                 <Link to="/">
-                  <Image
-                    src={mainLogo}
-                    fluid
-                  />
+                  <Image src={mainLogo} fluid />
                 </Link>
               </Col>
               <Col xs={5} className="main-header-dropdown col-differ">
@@ -88,16 +96,20 @@ function MainHeader (): React.JSX.Element {
                 </div>
                 <div className="actions-menu col-differ">
                   <span className="action-innermenu">
-                    {(location !== '/login' && location !== '/signup' && location !== '/forget-password') &&
-                    (isRouteProtected
-                      ? (
+                    {location !== '/login' &&
+                      location !== '/signup' &&
+                      location !== '/forget-password' &&
+                      (isRouteProtected
+                        ? (
                         <Link to="" className="user-profile-icon">
                           <PermIdentityIcon />
                         </Link>
-                        )
-                      : (
-                        <Link to="/login" state={{ prevPage: location }}>Login</Link>
-                        ))}
+                          )
+                        : (
+                        <Link to="/login" state={{ prevPage: location }}>
+                          Login
+                        </Link>
+                          ))}
 
                     <div className="user-account-menuholder">
                       <ul className="user-account-menu">
@@ -132,6 +144,9 @@ function MainHeader (): React.JSX.Element {
                   <span className="action-innermenu">
                     <Link to="/cart">
                       <ShoppingCartIcon />
+                      {cartItemCount !== undefined && cartItemCount !== 0 && (
+                        <span className="cart-count">{cartItemCount}</span>
+                      )}
                     </Link>
                   </span>
                 </div>

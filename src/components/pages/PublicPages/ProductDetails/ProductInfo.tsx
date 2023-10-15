@@ -72,8 +72,10 @@ function ProductInfo (productDetails: any): React.JSX.Element {
     { size: '2XL' }
   ]
   useEffect(() => {
-    fetchGetWishlist()
-    fetchCartItemList()
+    if (isRouteProtected) {
+      fetchGetWishlist()
+      fetchCartItemList()
+    }
   }, [productDetails])
   function fetchGetWishlist (): void {
     ApiUtils.getMyWishlist()
@@ -119,24 +121,28 @@ function ProductInfo (productDetails: any): React.JSX.Element {
     }
   }
   const addProductToBag = (id: string): void => {
-    ApiUtils.addItemInCart(id)
-      .then((res: any) => {
-        if (res.status === 200) {
-          fetchCartItemList()
-          dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: any = Cookies.get('bwf-user-auth')
-          const existingUserData = JSON.parse(existingUserDataString)
-          const updatedUserData = {
-            ...existingUserData,
-            cart: res.data.results
+    if (isRouteProtected) {
+      ApiUtils.addItemInCart(id)
+        .then((res: any) => {
+          if (res.status === 200) {
+            fetchCartItemList()
+            dispatch(setItemCountCart(res.data.results))
+            const existingUserDataString: any = Cookies.get('bwf-user-auth')
+            const existingUserData = JSON.parse(existingUserDataString)
+            const updatedUserData = {
+              ...existingUserData,
+              cart: res.data.results
+            }
+            const updatedUserDataString = JSON.stringify(updatedUserData)
+            Cookies.set('bwf-user-auth', updatedUserDataString)
           }
-          const updatedUserDataString = JSON.stringify(updatedUserData)
-          Cookies.set('bwf-user-auth', updatedUserDataString)
-        }
-      })
-      .catch((err: any) => {
-        console.log(err)
-      })
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+    } else {
+      navigate('/wishlist')
+    }
   }
 
   function fetchCartItemList (): void {
@@ -267,36 +273,38 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                           productDetails?.productDetails?._id
                       )
                         ? (
-                        <>
+                        <div
+                          onClick={(e) => {
+                            wishlistedItem(
+                              e,
+                              productDetails?.productDetails?._id
+                            )
+                          }}
+                        >
                           <Image
                             fluid
                             className="bag-icon"
                             src={wishlistSelected}
-                            onClick={(e) => {
-                              wishlistedItem(
-                                e,
-                                productDetails?.productDetails?._id
-                              )
-                            }}
                           />
                           <span>WISHLISTED</span>
-                        </>
+                        </div>
                           )
                         : (
-                        <>
+                        <div
+                          onClick={(e) => {
+                            notWishlistedItem(
+                              e,
+                              productDetails?.productDetails?._id
+                            )
+                          }}
+                        >
                           <Image
                             fluid
                             className="bag-icon"
                             src={wishlistIcon}
-                            onClick={(e) => {
-                              notWishlistedItem(
-                                e,
-                                productDetails?.productDetails?._id
-                              )
-                            }}
                           />
                           <span>WISHLIST</span>
-                        </>
+                        </div>
                           )}
                     </div>
                     {cartItemList.length > 0 &&

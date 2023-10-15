@@ -10,7 +10,7 @@ interface cartState {
 }
 
 const initialState: cartState = {
-  cartItemCount: parsedValue.cart
+  cartItemCount: parsedValue?.cart
 }
 export const cartSlice = createSlice({
   name: 'cart',

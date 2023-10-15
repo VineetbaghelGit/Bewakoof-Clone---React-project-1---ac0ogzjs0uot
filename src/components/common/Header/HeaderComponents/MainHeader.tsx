@@ -119,13 +119,13 @@ function MainHeader (): React.JSX.Element {
                           </Link>
                         </li>
                         <li>
-                          <Link to="/">My Account</Link>
+                          <Link to="/account">My Account</Link>
                         </li>
                         <li>
                           <Link to="/wishlist">My Wishlist</Link>
                         </li>{' '}
                         <li>
-                          <Link to="/">My Orders</Link>
+                          <Link to="/account/orders">My Orders</Link>
                         </li>
                         <li>
                           <Link to="/">My Wallet</Link>

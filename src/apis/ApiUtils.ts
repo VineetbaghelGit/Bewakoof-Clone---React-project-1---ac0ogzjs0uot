@@ -95,6 +95,30 @@ const ApiUtils = {
     } catch (error: any) {
       throw error.response
     }
+  },
+  updateUserPassword: async function (params: any) {
+    try {
+      const response = await api.patch('user/updateMyPassword', params)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  buyItemNow: async function (params: any) {
+    try {
+      const response = await api.post('ecommerce/order', params)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  getOrderItemList: async function () {
+    try {
+      const response = await api.get('ecommerce/order')
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
   }
 }
 export default ApiUtils

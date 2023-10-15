@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Image, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import { cartBadgeTrust, cartEasyReturn, discount, qualityCheck } from '../../../../config/Images'
+import {
+  cartBadgeTrust,
+  cartEasyReturn,
+  discount,
+  qualityCheck
+} from '../../../../config/Images'
 import Form from 'react-bootstrap/Form'
 import ApiUtils from '../../../../apis/ApiUtils'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
+import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 
 interface cartList {
   product: {
@@ -18,6 +24,7 @@ interface cartList {
   }
 }
 function BagItem (): React.JSX.Element {
+  const isRouteProtected = isUserAuthenticated()
   const dispatch = useDispatch()
   const [cartItemList, setCartItemList] = useState<cartList[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
@@ -25,28 +32,33 @@ function BagItem (): React.JSX.Element {
     fetchCartItemList()
   }, [])
   useEffect(() => {
-    const total = cartItemList.reduce((acc, cartItem) => acc + cartItem.product.price, 0)
+    const total = cartItemList.reduce(
+      (acc, cartItem) => acc + cartItem.product.price,
+      0
+    )
     setTotalAmount(total)
   }, [cartItemList])
   const removeProductFromBag = (id: string): void => {
-    ApiUtils.removeItemFromCart(id)
-      .then((res: any) => {
-        if (res.status === 200) {
-          fetchCartItemList()
-          dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: any = Cookies.get('bwf-user-auth')
-          const existingUserData = JSON.parse(existingUserDataString)
-          const updatedUserData = {
-            ...existingUserData,
-            cart: res.data.results
+    if (isRouteProtected) {
+      ApiUtils.removeItemFromCart(id)
+        .then((res: any) => {
+          if (res.status === 200) {
+            fetchCartItemList()
+            dispatch(setItemCountCart(res.data.results))
+            const existingUserDataString: any = Cookies.get('bwf-user-auth')
+            const existingUserData = JSON.parse(existingUserDataString)
+            const updatedUserData = {
+              ...existingUserData,
+              cart: res.data.results
+            }
+            const updatedUserDataString = JSON.stringify(updatedUserData)
+            Cookies.set('bwf-user-auth', updatedUserDataString)
           }
-          const updatedUserDataString = JSON.stringify(updatedUserData)
-          Cookies.set('bwf-user-auth', updatedUserDataString)
-        }
-      })
-      .catch((err: any) => {
-        console.log(err)
-      })
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+    }
   }
   function fetchCartItemList (): void {
     ApiUtils.getCartItemList()
@@ -60,11 +72,32 @@ function BagItem (): React.JSX.Element {
         console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
       })
   }
+  const buyItem = (): void => {
+    const body = {
+      productId: '652675ccdaf00355a7838101',
+      quantity: 1,
+      addressType: 'HOME',
+      address: {
+        street: '123 Main St',
+        city: 'Anytown',
+        state: 'CA',
+        country: 'USA',
+        zipCode: '12345'
+      }
+    }
+    ApiUtils.buyItemNow(body)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   return (
     <div className="bag-item-wrapper">
       <Container className="cart-item-container">
         <Row>
-          <Col sm={7} className="noPadding">
+          <Col md={7} className="noPadding">
             {cartItemList.length > 0 &&
               cartItemList.map((cartItem, i) => {
                 return (
@@ -90,7 +123,10 @@ function BagItem (): React.JSX.Element {
                           <div className="product-left">
                             <div className="product-text">
                               <span>
-                                <Link to={`/product/${cartItem.product._id}`} className="product-name">
+                                <Link
+                                  to={`/product/${cartItem.product._id}`}
+                                  className="product-name"
+                                >
                                   {cartItem.product.name}
                                 </Link>
                               </span>
@@ -156,7 +192,7 @@ function BagItem (): React.JSX.Element {
               })}
           </Col>
 
-          <Col sm={5} className="noPadding">
+          <Col md={5} className="noPadding">
             <div className="right-section noPadding">
               <div className="offer-box">
                 <p>
@@ -197,7 +233,7 @@ function BagItem (): React.JSX.Element {
                     </div>
 
                     <div className="add-address">
-                      <Button>add address</Button>
+                      <Button onClick={buyItem}>add address</Button>
                     </div>
                   </div>
                 </div>
@@ -206,31 +242,19 @@ function BagItem (): React.JSX.Element {
                     <div className="d-flex justify-content-between">
                       <div className="d-flex flex-row">
                         <div className="d-flex inner  flex-column align-items-center">
-                          <Image
-                            fluid
-                            alt="offer"
-                            src={cartBadgeTrust}
-                          />
+                          <Image fluid alt="offer" src={cartBadgeTrust} />
                           <span>100% SECURE PAYMENTS</span>
                         </div>
                       </div>
                       <div className="d-flex flex-row">
                         <div className="d-flex inner  flex-column align-items-center">
-                          <Image
-                            fluid
-                            alt="offer"
-                            src={cartEasyReturn}
-                          />
+                          <Image fluid alt="offer" src={cartEasyReturn} />
                           <span>EASY RETURNS &amp; QUICK REFUNDS</span>
                         </div>
                       </div>
                       <div className="d-flex flex-row">
                         <div className="d-flex inner flex-column align-items-center">
-                          <Image
-                            fluid
-                            alt="offer"
-                            src={qualityCheck}
-                          />
+                          <Image fluid alt="offer" src={qualityCheck} />
                           <span>QUALITY ASSURANCE</span>
                         </div>
                       </div>

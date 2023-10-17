@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Image, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   cartBadgeTrust,
   cartEasyReturn,
@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 
 interface cartList {
   product: {
@@ -26,6 +27,7 @@ interface cartList {
 function BagItem (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [cartItemList, setCartItemList] = useState<cartList[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
   useEffect(() => {
@@ -73,25 +75,32 @@ function BagItem (): React.JSX.Element {
       })
   }
   const buyItem = (): void => {
-    const body = {
-      productId: '652675ccdaf00355a7838101',
-      quantity: 1,
-      addressType: 'HOME',
-      address: {
-        street: '123 Main St',
-        city: 'Anytown',
-        state: 'CA',
-        country: 'USA',
-        zipCode: '12345'
+    if (isRouteProtected) {
+      const body = {
+        productId: '652675cddaf00355a7838135',
+        quantity: 1,
+        addressType: 'HOME',
+        address: {
+          street: '123 Main St',
+          city: 'Anytown',
+          state: 'CA',
+          country: 'USA',
+          zipCode: '12345'
+        }
       }
+      ApiUtils.buyItemNow(body)
+        .then((res) => {
+          console.log(res)
+          if (res.status === 200) {
+            ToasterMessage('success', res.data.message)
+            removeProductFromBag('652675cddaf00355a7838135')
+            navigate('/ordersuccess/652675cddaf00355a7838135')
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
-    ApiUtils.buyItemNow(body)
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
   }
   return (
     <div className="bag-item-wrapper">

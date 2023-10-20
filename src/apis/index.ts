@@ -38,31 +38,29 @@ instance.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    const loader: HTMLElement | null =
-      document.getElementById('loader-spinner')
-    if (loader !== null) {
-      loader.style.display = 'none'
-    }
+    // const loader: HTMLElement | null =
+    //   document.getElementById('loader-spinner')
+    // if (loader !== null) {
+    //   loader.style.display = 'none'
+    // }
     return response
   },
   async function (error) {
     if (error?.response?.status === 401) {
-      const loader: HTMLElement | null =
-        document.getElementById('loader-spinner')
-      if (loader !== null) {
-        loader.style.display = 'none'
-      }
-      localStorage.removeItem('rat-auth')
-      window.location.reload()
+      // const loader: HTMLElement | null =
+      //   document.getElementById('loader-spinner')
+      // if (loader !== null) {
+      //   loader.style.display = 'none'
+      // }
       return await Promise.reject(error)
     } else {
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
-      const loader: HTMLElement | null =
-        document.getElementById('loader-spinner')
-      if (loader !== null) {
-        loader.style.display = 'none'
-      }
+      // const loader: HTMLElement | null =
+      //   document.getElementById('loader-spinner')
+      // if (loader !== null) {
+      //   loader.style.display = 'none'
+      // }
       return await Promise.reject(error)
     }
   }

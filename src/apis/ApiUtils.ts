@@ -42,7 +42,9 @@ const ApiUtils = {
   },
   searchingProduct: async function (params: string) {
     try {
-      const response = await api.get(`ecommerce/clothes/products?search=${params}`)
+      const response = await api.get(
+        `ecommerce/clothes/products?search=${params}`
+      )
       return response
     } catch (error: any) {
       throw error.response
@@ -67,6 +69,70 @@ const ApiUtils = {
   getMyWishlist: async function () {
     try {
       const response = await api.get('ecommerce/wishlist')
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  addItemInCart: async function (params: string) {
+    try {
+      const response = await api.patch(`ecommerce/cart/${params}`)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  getCartItemList: async function () {
+    try {
+      const response = await api.get('ecommerce/cart')
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  removeItemFromCart: async function (params: any) {
+    try {
+      const response = await api.delete(`ecommerce/cart/${params}`)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  updateUserPassword: async function (params: any) {
+    try {
+      const response = await api.patch('user/updateMyPassword', params)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  buyItemNow: async function (params: any) {
+    try {
+      const response = await api.post('ecommerce/order', params)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  getOrderItemList: async function () {
+    try {
+      const response = await api.get('ecommerce/order')
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  getOrderItem: async function (params: string) {
+    try {
+      const response = await api.get(`ecommerce/order/${params}`)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  deleteMyAccount: async function (params: any) {
+    try {
+      const response = await api.delete('user/deleteMe', params)
       return response
     } catch (error: any) {
       throw error.response

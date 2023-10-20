@@ -16,9 +16,21 @@ import ImageGallery from 'react-image-gallery'
 import Accordion from 'react-bootstrap/Accordion'
 import ApiUtils from '../../../../apis/ApiUtils'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import Cookies from 'js-cookie'
+import { setItemCountCart } from '../../../../store/slices/cartSlice'
 interface WishlistItem {
   products: {
+    displayImage: string
+    name: string
+    price: number
+    ratings: number
+    _id: string
+  }
+}
+interface cartList {
+  product: {
     displayImage: string
     name: string
     price: number
@@ -29,7 +41,9 @@ interface WishlistItem {
 function ProductInfo (productDetails: any): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
+  const [cartItemList, setCartItemList] = useState<cartList[]>([])
   const images = [
     {
       original: productDetails.productDetails.displayImage,
@@ -58,7 +72,10 @@ function ProductInfo (productDetails: any): React.JSX.Element {
     { size: '2XL' }
   ]
   useEffect(() => {
-    fetchGetWishlist()
+    if (isRouteProtected) {
+      fetchGetWishlist()
+      fetchCartItemList()
+    }
   }, [productDetails])
   function fetchGetWishlist (): void {
     ApiUtils.getMyWishlist()
@@ -102,6 +119,43 @@ function ProductInfo (productDetails: any): React.JSX.Element {
     } else {
       navigate('/wishlist')
     }
+  }
+  const addProductToBag = (id: string): void => {
+    if (isRouteProtected) {
+      ApiUtils.addItemInCart(id)
+        .then((res: any) => {
+          if (res.status === 200) {
+            fetchCartItemList()
+            dispatch(setItemCountCart(res.data.results))
+            const existingUserDataString: any = Cookies.get('bwf-user-auth')
+            const existingUserData = JSON.parse(existingUserDataString)
+            const updatedUserData = {
+              ...existingUserData,
+              cart: res.data.results
+            }
+            const updatedUserDataString = JSON.stringify(updatedUserData)
+            Cookies.set('bwf-user-auth', updatedUserDataString)
+          }
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
+    } else {
+      navigate('/wishlist')
+    }
+  }
+
+  function fetchCartItemList (): void {
+    ApiUtils.getCartItemList()
+      .then((res: any) => {
+        if (res.status === 200) {
+          setCartItemList(res.data.data.items)
+        }
+      })
+      .catch((err: any) => {
+        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
+        // ToasterMessage('error', 'Something went wrong');
+      })
   }
   return (
     <div className="product-details-container">
@@ -219,42 +273,71 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                           productDetails?.productDetails?._id
                       )
                         ? (
-                        <>
+                        <div
+                          onClick={(e) => {
+                            wishlistedItem(
+                              e,
+                              productDetails?.productDetails?._id
+                            )
+                          }}
+                        >
                           <Image
                             fluid
                             className="bag-icon"
                             src={wishlistSelected}
-                            onClick={(e) => {
-                              wishlistedItem(
-                                e,
-                                productDetails?.productDetails?._id
-                              )
-                            }}
                           />
                           <span>WISHLISTED</span>
-                        </>
+                        </div>
                           )
                         : (
-                        <>
+                        <div
+                          onClick={(e) => {
+                            notWishlistedItem(
+                              e,
+                              productDetails?.productDetails?._id
+                            )
+                          }}
+                        >
                           <Image
                             fluid
                             className="bag-icon"
                             src={wishlistIcon}
-                            onClick={(e) => {
-                              notWishlistedItem(
-                                e,
-                                productDetails?.productDetails?._id
-                              )
-                            }}
                           />
                           <span>WISHLIST</span>
-                        </>
+                        </div>
                           )}
                     </div>
-                    <div className="add-bag btn-border d-flex flex-row align-items-center justify-content-center">
-                      <Image fluid className="bag-icon" src={bagIcon} />
-                      <span>ADD TO BAG</span>
-                    </div>
+                    {cartItemList.length > 0 &&
+                    cartItemList?.some(
+                      (cartItem) =>
+                        cartItem?.product?._id ===
+                        productDetails?.productDetails?._id
+                    )
+                      ? (
+                      <>
+                        <div className="add-bag btn-border d-flex flex-row align-items-center justify-content-center">
+                          <Link to="/cart">
+                            <Image fluid className="bag-icon" src={bagIcon} />
+                            <span>GO TO BAG</span>
+                          </Link>
+                        </div>
+                      </>
+                        )
+                      : (
+                      <>
+                        <div
+                          className="add-bag btn-border d-flex flex-row align-items-center justify-content-center"
+                          onClick={() => {
+                            addProductToBag(
+                              productDetails?.productDetails?._id
+                            )
+                          }}
+                        >
+                          <Image fluid className="bag-icon" src={bagIcon} />
+                          <span>ADD TO BAG</span>
+                        </div>
+                      </>
+                        )}
                   </div>
                 </div>
                 <div className="about-product">
@@ -262,11 +345,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     <Accordion.Item eventKey="0">
                       <Accordion.Header>
                         <div className="accordion-title d-flex align-items-center mb-2">
-                          <Image
-                            fluid
-                            src={starOffer}
-                            className="mr-2"
-                          />
+                          <Image fluid src={starOffer} className="mr-2" />
                           <div className="d-flex flex-column">
                             <div className="d-flex flex-row pl-1">
                               <h2>Offers</h2>
@@ -323,11 +402,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     <Accordion.Item eventKey="1">
                       <Accordion.Header>
                         <div className="accordion-title d-flex align-items-center mb-2">
-                          <Image
-                            fluid
-                            src={prodDesc}
-                            className="mr-2"
-                          />
+                          <Image fluid src={prodDesc} className="mr-2" />
                           <div className="d-flex flex-column">
                             <div className="d-flex flex-row pl-1">
                               <h2>Product Description</h2>
@@ -347,11 +422,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     <Accordion.Item eventKey="2">
                       <Accordion.Header>
                         <div className="accordion-title d-flex align-items-center mb-2">
-                          <Image
-                            fluid
-                            src={returnImg}
-                            className="mr-2"
-                          />
+                          <Image fluid src={returnImg} className="mr-2" />
                           <div className="d-flex flex-column">
                             <div className="d-flex flex-row pl-1">
                               <h2>15 Days Returns & Exchange</h2>
@@ -401,12 +472,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     </div>
                     <div className="d-flex flex-row  containerInner">
                       <div className="d-flex flex-column align-items-center">
-                        <Image
-                          fluid
-                          loading="lazy"
-                          alt="offer"
-                          src={Globe}
-                        />
+                        <Image fluid loading="lazy" alt="offer" src={Globe} />
                         <span className="trustBadgeTitle">
                           SHIPPING GLOBALLY
                         </span>

@@ -1,2 +1,12 @@
 export const COOKIE_STORAGE_KEY = 'bwf-user-auth'
 export const BASE_URL = process.env.REACT_APP_BASE_URL
+export const APP_TYPE_ECOMMERCE = 'ecommerce'
+export const LOGIN_TITLE = 'Log In'
+export const SIGNUP_TITLE = 'Sign up'
+export const RESET_PASSWORD_TITLE = 'Reset Password'
+export const LINK_TO_FORGET_PASSWORD = '/forget-password'
+export const ASK_FORGET_PASSWORD_TEXT = 'Forget Password?'
+export const LINK_TO_SIGNUP = '/signup'
+export const LINK_TO_LOGIN = '/login'
+export const ASK_SIGNUP_TEXT = 'Dont have an account?'
+export const ASK_LOGIN_TEXT = 'Already have an account?'

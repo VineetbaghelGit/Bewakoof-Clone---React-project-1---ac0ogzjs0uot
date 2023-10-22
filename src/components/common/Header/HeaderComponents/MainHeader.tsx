@@ -19,7 +19,7 @@ import ApiUtils from '../../../../apis/ApiUtils'
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { removeUserAuth } from '../../../../store/slices/authSlices'
-import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
+import { COOKIE_STORAGE_KEY, LINK_TO_FORGET_PASSWORD, LINK_TO_LOGIN, LINK_TO_SIGNUP } from '../../../../config/Constant'
 import { type UserDetails } from '../../../../config/ResponseTypes'
 function MainHeader (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
@@ -70,9 +70,9 @@ function MainHeader (): React.JSX.Element {
                 </div>
                 <div className="actions-menu col-differ">
                   <span className="action-innermenu">
-                    {location !== '/login' &&
-                      location !== '/signup' &&
-                      location !== '/forget-password' &&
+                    {location !== LINK_TO_LOGIN &&
+                      location !== LINK_TO_SIGNUP &&
+                      location !== LINK_TO_FORGET_PASSWORD &&
                       (isRouteProtected
                         ? (
                         <Link to="" className="user-profile-icon">
@@ -80,7 +80,7 @@ function MainHeader (): React.JSX.Element {
                         </Link>
                           )
                         : (
-                        <Link to="/login" state={{ prevPage: location }}>
+                        <Link to={LINK_TO_LOGIN} state={{ prevPage: location }}>
                           Login
                         </Link>
                           ))}

@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { useDispatch } from 'react-redux'
 import { setUserAuthDetails } from '../../../store/slices/authSlices'
+import { APP_TYPE_ECOMMERCE, ASK_FORGET_PASSWORD_TEXT, ASK_SIGNUP_TEXT, COOKIE_STORAGE_KEY, LINK_TO_FORGET_PASSWORD, LINK_TO_SIGNUP, LOGIN_TITLE } from '../../../config/Constant'
 
 type AuthFormData = Record<string, string>
 
@@ -21,7 +22,7 @@ function Login (): JSX.Element {
     const body = {
       email: formData.email,
       password: formData.password,
-      appType: 'ecommerce'
+      appType: APP_TYPE_ECOMMERCE
     }
 
     ApiUtils.authLogin(body)
@@ -35,7 +36,7 @@ function Login (): JSX.Element {
           const userDataString = JSON.stringify(userData)
           dispatch(setUserAuthDetails(userData))
           ToasterMessage('success', 'Login Successfully')
-          Cookies.set('bwf-user-auth', userDataString)
+          Cookies.set(COOKIE_STORAGE_KEY, userDataString)
           if (state?.prevPage?.length > 0) {
             navigate(state?.prevPage)
           } else {
@@ -50,13 +51,13 @@ function Login (): JSX.Element {
 
   return (
     <AuthComponent
-      title="Log in"
-      actionText="Login"
+      title={LOGIN_TITLE}
+      actionText={LOGIN_TITLE}
       onSubmit={onSubmit}
-      firstLinkTo="/forget-password"
-      firstLinkText="Forget Password?"
-      secondLinkTo="/signup"
-      secondLinkText="Dont have an account?"
+      firstLinkTo={LINK_TO_FORGET_PASSWORD}
+      firstLinkText={ASK_FORGET_PASSWORD_TEXT}
+      secondLinkTo={LINK_TO_SIGNUP}
+      secondLinkText={ASK_SIGNUP_TEXT}
       initialState={initialState}
     />
   )

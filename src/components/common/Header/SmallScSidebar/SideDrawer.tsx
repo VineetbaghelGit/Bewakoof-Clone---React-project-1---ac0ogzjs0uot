@@ -7,6 +7,7 @@ import {
   loggedInUserInfo
 } from '../../../../helper/customUseSelector'
 import { type UserDetails } from '../../../../config/ResponseTypes'
+import { LINK_TO_LOGIN, LINK_TO_SIGNUP } from '../../../../config/Constant'
 interface SideDrawerProps {
   isOpen: boolean
   setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
@@ -53,11 +54,11 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
             <div className="register">
               {!isRouteProtected && (
                 <>
-                  <Link to="/login">Login</Link>
-                  <Link to="/register">Register</Link>
+                  <Link to={LINK_TO_LOGIN}>Login</Link>
+                  <span style={{ margin: '0px 3px' }}>/</span>
+                  <Link to={LINK_TO_SIGNUP}>Signup</Link>
                 </>
               )}
-              {/* <a>Login / Sign Up</a> */}
             </div>
           </h5>
         </div>
@@ -88,7 +89,6 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
             <li className="menu-list-option">
               <Link to="/">Help & Support</Link>
               <FaceIcon />
-              with usecall
             </li>
             <li className="menu-list-option">
               <Link to="/">Feedback & Suggestions</Link>

@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginCover } from '../../../config/Images'
 import { type AuthFormData, type AuthComponentProps } from '../../../config/ResponseTypes'
+import { RESET_PASSWORD_TITLE, SIGNUP_TITLE } from '../../../config/Constant'
 
 function AuthComponent ({
   title,
@@ -61,7 +62,7 @@ function AuthComponent ({
                 for Latest trends, exciting offers and everything Bewakoof®!
               </p>
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                {(title === 'Sign up' || title === 'Reset') && (
+                {(title === SIGNUP_TITLE || title === RESET_PASSWORD_TITLE) && (
                   <Form.Group controlId="validationCustom01" className="mb-3">
                     <Form.Label>Name</Form.Label>
                     <Form.Control

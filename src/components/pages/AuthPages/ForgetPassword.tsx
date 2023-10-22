@@ -2,6 +2,7 @@ import React from 'react'
 import ApiUtils from '../../../apis/ApiUtils'
 import { ToasterMessage } from '../../../helper/ToasterHelper'
 import AuthComponent from './AuthComponent'
+import { APP_TYPE_ECOMMERCE, ASK_LOGIN_TEXT, ASK_SIGNUP_TEXT, LINK_TO_LOGIN, LINK_TO_SIGNUP, RESET_PASSWORD_TITLE } from '../../../config/Constant'
 
 type AuthFormData = Record<string, string>
 
@@ -17,7 +18,7 @@ function ForgetPassword (): JSX.Element {
       name: formData.name,
       email: formData.email,
       password: formData.password,
-      appType: 'ecommerce'
+      appType: APP_TYPE_ECOMMERCE
     }
 
     ApiUtils.forgetPassword(body)
@@ -34,13 +35,13 @@ function ForgetPassword (): JSX.Element {
 
   return (
     <AuthComponent
-      title="Reset"
-      actionText="Reset Password"
+      title={RESET_PASSWORD_TITLE}
+      actionText={RESET_PASSWORD_TITLE}
       onSubmit={onSubmit}
-      firstLinkTo="/login"
-      firstLinkText="Login Here"
-      secondLinkTo="/signup"
-      secondLinkText="Dont have an account?"
+      firstLinkTo={LINK_TO_LOGIN}
+      firstLinkText={ASK_LOGIN_TEXT}
+      secondLinkTo={LINK_TO_SIGNUP}
+      secondLinkText={ASK_SIGNUP_TEXT}
       initialState={initialState}
     />
   )

@@ -32,3 +32,6 @@ export { default as cartEasyReturn } from '../assets/images/cart-easy-return.svg
 export { default as qualityCheck } from '../assets/images/quality-check.svg'
 export { default as OrderSuccessAnime } from '../assets/images/order-success-bag.gif'
 export { default as Error404Img } from '../assets/images/404-page.gif'
+export { default as AppAndriodStore } from '../assets/images/app_android_v1.webp'
+export { default as AppIosStore } from '../assets/images/app_ios_v1.webp'
+export { default as SecurePaymentsImg } from '../assets/images/secure-payments-image.webp'

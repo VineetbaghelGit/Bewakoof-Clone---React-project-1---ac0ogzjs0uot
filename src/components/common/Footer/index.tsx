@@ -7,6 +7,7 @@ import PinterestIcon from '@mui/icons-material/Pinterest'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import FacebookIcon from '@mui/icons-material/Facebook'
+import { AppAndriodStore, AppIosStore, SecurePaymentsImg } from '../../../config/Images'
 function Footer (): React.JSX.Element {
   return (
     <div className="footer-wrapper">
@@ -122,13 +123,13 @@ function Footer (): React.JSX.Element {
               <div className="download-app">
                 <Link to="/">
                   <Image
-                    src="https://images.bewakoof.com/web/app_android_v1.png"
+                    src={AppAndriodStore}
                     fluid
                   />
                 </Link>
                 <Link to="/">
                   <Image
-                    src="https://images.bewakoof.com/web/app_ios_v1.png"
+                    src={AppIosStore}
                     fluid
                   />
                 </Link>
@@ -137,7 +138,7 @@ function Footer (): React.JSX.Element {
             <Col sm={4} md={3} className="menu-section">
               <span className="title">100% SECURE PAYMENT</span>
               <Image
-                src="https://images.bewakoof.com/web/secure-payments-image.png"
+                src={SecurePaymentsImg}
                 fluid
               />
             </Col>

@@ -13,6 +13,7 @@ import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { type cartList } from '../../../../config/ResponseTypes'
+import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 
 function BagItem (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
@@ -37,14 +38,14 @@ function BagItem (): React.JSX.Element {
           if (res.status === 200) {
             fetchCartItemList()
             dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: any = Cookies.get('bwf-user-auth')
+            const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
             const existingUserData = JSON.parse(existingUserDataString)
             const updatedUserData = {
               ...existingUserData,
               cart: res.data.results
             }
             const updatedUserDataString = JSON.stringify(updatedUserData)
-            Cookies.set('bwf-user-auth', updatedUserDataString)
+            Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
           }
         })
         .catch((err: any) => {

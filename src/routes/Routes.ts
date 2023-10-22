@@ -8,7 +8,7 @@ import OrderSuccess from '../components/pages/ProtectedPages/OrderSuccess'
 import SingleOrder from '../components/pages/ProtectedPages/SingleOrder'
 import UserAccount from '../components/pages/ProtectedPages/UserAccount'
 import UserWishlist from '../components/pages/ProtectedPages/UserWishlist'
-import Cart from '../components/pages/PublicPages/CartPage/Index'
+import Cart from '../components/pages/ProtectedPages/CartPage/Index'
 import Home from '../components/pages/PublicPages/Home/Index'
 import ProductDetail from '../components/pages/PublicPages/ProductDetails/Index'
 

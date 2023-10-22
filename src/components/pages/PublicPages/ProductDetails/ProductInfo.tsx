@@ -155,6 +155,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                   useBrowserFullscreen={false}
                   showPlayButton={false}
                   slideOnThumbnailOver={true}
+                  showFullscreenButton={false}
                 />
               </div>
             </Col>

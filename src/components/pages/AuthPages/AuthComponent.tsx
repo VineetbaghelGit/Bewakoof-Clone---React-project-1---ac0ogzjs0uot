@@ -4,19 +4,7 @@ import Image from 'react-bootstrap/Image'
 import Form from 'react-bootstrap/Form'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginCover } from '../../../config/Images'
-
-interface AuthComponentProps {
-  title: string
-  actionText: string
-  onSubmit: (formData: AuthFormData, navigate: any) => void
-  firstLinkTo: string
-  firstLinkText: string
-  secondLinkTo: string
-  secondLinkText: string
-  initialState: AuthFormData
-}
-
-type AuthFormData = Record<string, string>
+import { type AuthFormData, type AuthComponentProps } from '../../../config/ResponseTypes'
 
 function AuthComponent ({
   title,

@@ -20,24 +20,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
-interface WishlistItem {
-  products: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
-interface cartList {
-  product: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
+import { type WishlistItem, type cartList } from '../../../../config/ResponseTypes'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
+
 function ProductInfo (productDetails: any): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const navigate = useNavigate()
@@ -86,7 +71,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
       })
       .catch((err: any) => {
         console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
-        // ToasterMessage('error', 'Something went wrong');
+        ToasterMessage('error', 'Something went wrong')
       })
   }
   const wishlistedItem = (e: any, id: string): void => {

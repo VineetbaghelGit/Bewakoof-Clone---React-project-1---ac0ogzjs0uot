@@ -2,6 +2,7 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { isUserAuthenticated } from '../helper/customUseSelector'
 import { authRoutes, protectedRoutes, publicRoutes } from './Routes'
+import Error404 from '../components/pages/Error/Error404'
 
 function AppRoutes (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
@@ -22,7 +23,7 @@ function AppRoutes (): React.JSX.Element {
                   <route.component />
                     )
                   : (
-                  <Navigate to='/' replace state={{ prevPage: route.path }} />
+                  <Navigate to="/" replace state={{ prevPage: route.path }} />
                     )
               }
             />
@@ -43,7 +44,11 @@ function AppRoutes (): React.JSX.Element {
               element={
                 !isRouteProtected
                   ? (
-                  <Navigate to="/login" replace state={{ prevPage: route.path }} />
+                  <Navigate
+                    to="/login"
+                    replace
+                    state={{ prevPage: route.path }}
+                  />
                     )
                   : (
                   <route.component />
@@ -52,6 +57,7 @@ function AppRoutes (): React.JSX.Element {
             />
           )
         })}
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </React.Fragment>
   )

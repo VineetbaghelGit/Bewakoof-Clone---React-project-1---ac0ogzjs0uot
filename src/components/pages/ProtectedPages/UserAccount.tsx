@@ -23,7 +23,7 @@ function UserAccount (): React.JSX.Element {
                 View, modify and track orders
               </span>
             </div>
-            <div className="account-inner">
+            {/* <div className="account-inner">
               <Link to="/account/address">
                 My Addresses
                 <ChevronRightIcon />
@@ -31,7 +31,7 @@ function UserAccount (): React.JSX.Element {
               <span className="account-text">
                 Edit, add or remove addresses{' '}
               </span>
-            </div>
+            </div> */}
             <div className="account-inner">
               <Link to="/account/profile">
                 My Profile

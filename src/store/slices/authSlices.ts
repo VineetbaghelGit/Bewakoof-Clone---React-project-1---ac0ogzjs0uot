@@ -1,16 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import Cookies from 'js-cookie'
 import { COOKIE_STORAGE_KEY } from '../../config/Constant'
+import { type SliceState } from '../../config/ResponseTypes'
 
 const getCookiesValue = Cookies.get(COOKIE_STORAGE_KEY)
 const parsedValue = JSON.parse(getCookiesValue ?? 'null')
-interface SliceState {
-  userInfo: {
-    name: string
-    email: string
-    token: string
-  }
-}
 
 const initialState: SliceState = {
   userInfo: parsedValue?.token?.length > 0 ? parsedValue : ''

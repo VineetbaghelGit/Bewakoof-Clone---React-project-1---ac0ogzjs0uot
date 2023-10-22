@@ -3,23 +3,8 @@ import { Container, Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ApiUtils from '../../../apis/ApiUtils'
+import { type OrderItem } from '../../../config/ResponseTypes'
 
-interface OrderItem {
-  order: Order
-}
-
-interface Order {
-  _id: number
-  items: Item[]
-}
-interface Item {
-  product: {
-    name: string
-    displayImage: string
-    status: string
-    _id: string
-  }
-}
 function MyOrders (): React.JSX.Element {
   const [orderList, setOrderList] = useState<OrderItem[]>([])
   function getOrderItemList (): void {

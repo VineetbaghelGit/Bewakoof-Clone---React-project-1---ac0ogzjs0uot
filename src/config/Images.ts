@@ -31,3 +31,4 @@ export { default as cartBadgeTrust } from '../assets/images/cart-badge-trust.svg
 export { default as cartEasyReturn } from '../assets/images/cart-easy-return.svg'
 export { default as qualityCheck } from '../assets/images/quality-check.svg'
 export { default as OrderSuccessAnime } from '../assets/images/order-success-bag.gif'
+export { default as Error404Img } from '../assets/images/404-page.gif'

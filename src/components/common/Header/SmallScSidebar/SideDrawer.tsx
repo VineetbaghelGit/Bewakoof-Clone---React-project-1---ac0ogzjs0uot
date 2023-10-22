@@ -2,11 +2,20 @@ import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import FaceIcon from '@mui/icons-material/Face'
 import Face3Icon from '@mui/icons-material/Face3'
+import {
+  isUserAuthenticated,
+  loggedInUserInfo
+} from '../../../../helper/customUseSelector'
+import { type UserDetails } from '../../../../config/ResponseTypes'
 interface SideDrawerProps {
   isOpen: boolean
   setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
+
 const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
+  const userInfo: UserDetails = loggedInUserInfo()
+  const isRouteProtected = isUserAuthenticated()
+
   const sideNavRef = useRef<HTMLDivElement | null>(null)
   const drawerClassName = isOpen ? 'sidemenu-drawer open' : 'sidemenu-drawer'
   useEffect(() => {
@@ -22,7 +31,6 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
     ) {
       setOpenSidebar(false)
 
-      // Additionally, if you want to update the body class, you can do it here.
       const bodyEl = document.body as HTMLElement | null
       if (bodyEl !== null) {
         bodyEl.classList.remove('open-side-drawer')
@@ -35,9 +43,21 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
       <div className="sidemenu-head">
         <div className="welcome-header">
           <h5 className="welcome-guest">
-            <span>Welcome Guest</span>
+            {isRouteProtected
+              ? (
+              <span>Welcome {userInfo.name}</span>
+                )
+              : (
+              <span>Welcome Guest</span>
+                )}
             <div className="register">
-              <a>Login / Sign Up</a>
+              {!isRouteProtected && (
+                <>
+                  <Link to="/login">Login</Link>
+                  <Link to="/register">Register</Link>
+                </>
+              )}
+              {/* <a>Login / Sign Up</a> */}
             </div>
           </h5>
         </div>
@@ -68,6 +88,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
             <li className="menu-list-option">
               <Link to="/">Help & Support</Link>
               <FaceIcon />
+              with usecall
             </li>
             <li className="menu-list-option">
               <Link to="/">Feedback & Suggestions</Link>

@@ -10,7 +10,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import PermIdentityIcon from '@mui/icons-material/PermIdentity'
 import {
   cartItemsCount,
-  isUserAuthenticated
+  isUserAuthenticated,
+  loggedInUserInfo
 } from '../../../../helper/customUseSelector'
 import { userPathLocation } from '../../../../helper/GetUserLocation'
 import { mainLogo } from '../../../../config/Images'
@@ -19,48 +20,21 @@ import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { removeUserAuth } from '../../../../store/slices/authSlices'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
+import { type UserDetails } from '../../../../config/ResponseTypes'
 function MainHeader (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
+  const userInfo: UserDetails = loggedInUserInfo()
   const cartItemCount = cartItemsCount()
   const location = userPathLocation()
   const [searchedValue, setSearchedValue] = useState<string>('')
   const dispatch = useDispatch()
-  function debounce<T extends (...args: any[]) => any> (
-    fn: T,
-    delay: number
-  ): (...args: Parameters<T>) => void {
-    let timer: NodeJS.Timeout | null = null
-    return function (this: ThisParameterType<T>, ...args: Parameters<T>): any {
-      clearTimeout(timer as NodeJS.Timeout)
-      timer = setTimeout(() => {
-        fn.apply(this, args)
-      }, delay)
-    }
-  }
-  const debouncedOnSearchItem = debounce((value: string) => {
-    // This function will be called after the debounce delay with the latest value
-    console.log('Searched Value:', value)
-    // You can call any other functions or set state here.
-    ApiUtils.searchingProduct(searchedValue)
-      .then((res) => {
-        console.log(
-          '🚀 ~ file: MainHeader.tsx:37 ~ ApiUtils.searchingProduct ~ res:',
-          res
-        )
-      })
-      .catch((err) => {
-        console.log(
-          '🚀 ~ file: MainHeader.tsx:39 ~ ApiUtils.searchingProduct ~ err:',
-          err
-        )
-        return {}
-      })
-  }, 1500)
 
   const onSearchItem = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newValue = e.target.value
     setSearchedValue(newValue)
-    debouncedOnSearchItem(newValue) // Call the debounced function with the input value
+    ApiUtils.searchingProduct(newValue)
+      .then((res) => {})
+      .catch((err) => { console.log(err) })
   }
   const handleLogout = (): void => {
     Cookies.remove(COOKIE_STORAGE_KEY)
@@ -115,7 +89,7 @@ function MainHeader (): React.JSX.Element {
                       <ul className="user-account-menu">
                         <li>
                           <Link to="/" className="username-style">
-                            Hi, vineet
+                            Hi, {userInfo.name}
                           </Link>
                         </li>
                         <li>
@@ -126,9 +100,6 @@ function MainHeader (): React.JSX.Element {
                         </li>{' '}
                         <li>
                           <Link to="/account/orders">My Orders</Link>
-                        </li>
-                        <li>
-                          <Link to="/">My Wallet</Link>
                         </li>
                         <li onClick={handleLogout}>
                           <Link to="/">Logout</Link>

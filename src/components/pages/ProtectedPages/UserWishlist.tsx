@@ -6,25 +6,8 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
+import { type WishlistItem, type cartList } from '../../../config/ResponseTypes'
 
-interface WishlistItem {
-  products: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
-interface cartList {
-  product: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
 function UserWishlist (): React.JSX.Element {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
   const [cartItemList, setCartItemList] = useState<cartList[]>([])

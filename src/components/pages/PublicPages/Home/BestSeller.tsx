@@ -4,24 +4,8 @@ import ApiUtils from '../../../../apis/ApiUtils'
 import { useNavigate } from 'react-router-dom'
 import { wishlistIcon, wishlistSelected } from '../../../../config/Images'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
+import { type GetProductResType, type WishlistItem } from '../../../../config/ResponseTypes'
 
-interface GetProductResType {
-  brand: string
-  displayImage: string
-  name: string
-  price: number
-  sellerTag: string
-  _id: string
-}
-interface WishlistItem {
-  products: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
 function BestSeller (): React.JSX.Element {
   const navigate = useNavigate()
   const isRouteProtected = isUserAuthenticated()

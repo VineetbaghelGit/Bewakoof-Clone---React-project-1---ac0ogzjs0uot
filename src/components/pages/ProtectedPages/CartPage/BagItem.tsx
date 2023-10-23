@@ -1,33 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Image, Row } from 'react-bootstrap'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
   cartBadgeTrust,
   cartEasyReturn,
   discount,
   qualityCheck
 } from '../../../../config/Images'
-import Form from 'react-bootstrap/Form'
 import ApiUtils from '../../../../apis/ApiUtils'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
-import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import { type cartList } from '../../../../config/ResponseTypes'
+import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 
-interface cartList {
-  product: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
 function BagItem (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [cartItemList, setCartItemList] = useState<cartList[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
   useEffect(() => {
@@ -47,14 +38,14 @@ function BagItem (): React.JSX.Element {
           if (res.status === 200) {
             fetchCartItemList()
             dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: any = Cookies.get('bwf-user-auth')
+            const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
             const existingUserData = JSON.parse(existingUserDataString)
             const updatedUserData = {
               ...existingUserData,
               cart: res.data.results
             }
             const updatedUserDataString = JSON.stringify(updatedUserData)
-            Cookies.set('bwf-user-auth', updatedUserDataString)
+            Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
           }
         })
         .catch((err: any) => {
@@ -73,34 +64,6 @@ function BagItem (): React.JSX.Element {
       .catch((err: any) => {
         console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
       })
-  }
-  const buyItem = (): void => {
-    if (isRouteProtected) {
-      const body = {
-        productId: '652675cddaf00355a7838135',
-        quantity: 1,
-        addressType: 'HOME',
-        address: {
-          street: '123 Main St',
-          city: 'Anytown',
-          state: 'CA',
-          country: 'USA',
-          zipCode: '12345'
-        }
-      }
-      ApiUtils.buyItemNow(body)
-        .then((res) => {
-          console.log(res)
-          if (res.status === 200) {
-            ToasterMessage('success', res.data.message)
-            removeProductFromBag('652675cddaf00355a7838135')
-            navigate('/ordersuccess/652675cddaf00355a7838135')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
   }
   return (
     <div className="bag-item-wrapper">
@@ -150,7 +113,7 @@ function BagItem (): React.JSX.Element {
                                 <p>Buy 1 Get 1 offer applicable</p>
                               </div>
                               <div className="product-quantity">
-                                <Form.Select
+                                {/* <Form.Select
                                   size="sm"
                                   className="select-quantity"
                                 >
@@ -160,7 +123,7 @@ function BagItem (): React.JSX.Element {
                                   <option>Qty: 4</option>
                                   <option>Qty: 5</option>
                                   <option>Qty: 6</option>
-                                </Form.Select>
+                                </Form.Select> */}
                               </div>
                               <div className="product-msg">
                                 Return not applicable.
@@ -242,7 +205,9 @@ function BagItem (): React.JSX.Element {
                     </div>
 
                     <div className="add-address">
-                      <Button onClick={buyItem}>add address</Button>
+                      <Link to="/checkout" state={{ data: cartItemList }}>
+                        <Button>Proceed to Checkout</Button>
+                      </Link>
                     </div>
                   </div>
                 </div>

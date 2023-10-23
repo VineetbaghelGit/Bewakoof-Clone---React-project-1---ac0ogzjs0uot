@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
 import BreadCrumBox from './BreadCrumBox'
 import ProductInfo from './ProductInfo'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ApiUtils from '../../../../apis/ApiUtils'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 
 function Index (): React.JSX.Element {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [productDetails, setProductDetails] = useState([])
   useEffect(() => {
     if (id !== null) {
@@ -22,6 +24,8 @@ function Index (): React.JSX.Element {
       })
       .catch((err) => {
         console.log(err)
+        ToasterMessage('error', 'Something went wrong')
+        navigate('/')
       })
   }
   return (

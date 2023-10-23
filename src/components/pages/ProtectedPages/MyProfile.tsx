@@ -11,16 +11,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useDispatch } from 'react-redux'
 import { COOKIE_STORAGE_KEY } from '../../../config/Constant'
 import { removeUserAuth } from '../../../store/slices/authSlices'
-interface UserDetails {
-  name: string
-  email: string
-}
-interface UserDetails {
-  name: string
-  email: string
-  passwordCurrent: string
-  password: string
-}
+import { type UserDetails } from '../../../config/ResponseTypes'
 
 function MyProfile (): React.JSX.Element {
   const navigate = useNavigate()

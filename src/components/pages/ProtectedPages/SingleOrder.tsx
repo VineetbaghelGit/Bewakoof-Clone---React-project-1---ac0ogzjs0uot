@@ -4,30 +4,10 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { Col, Container, Image, Row } from 'react-bootstrap'
 import ApiUtils from '../../../apis/ApiUtils'
 import { loggedInUserInfo } from '../../../helper/customUseSelector'
-
-interface OrderResponse {
-  items: any[]
-  orderDate: string
-  shipmentDetails: {
-    address: {
-      city: string
-      street: string
-      country: string
-      state: string
-      zipCode: string
-    }
-    type: string
-  }
-  status: string
-  totalPrice: number
-  _id: string
-}
-interface UserDetails {
-  name: string
-  email: string
-  passwordCurrent: string
-  password: string
-}
+import {
+  type OrderResponse,
+  type UserDetails
+} from '../../../config/ResponseTypes'
 
 function SingleOrder (): React.JSX.Element {
   const { id } = useParams()
@@ -49,7 +29,6 @@ function SingleOrder (): React.JSX.Element {
     totalPrice: 0,
     _id: ''
   })
-
   useEffect(() => {
     if (id !== null) {
       fetchOrderDetail(id as string)
@@ -66,6 +45,12 @@ function SingleOrder (): React.JSX.Element {
         console.log(err)
       })
   }
+  const convertTime = (timestamp: string): string => {
+    const date = new Date(timestamp)
+    const localDate = date.toLocaleDateString()
+    const localTime = date.toLocaleTimeString()
+    return localDate + ' ' + localTime
+  }
   return (
     <div className="single-order-wrapper">
       <Container>
@@ -81,7 +66,7 @@ function SingleOrder (): React.JSX.Element {
               <Col md={7}>
                 <div className="order-number">
                   <h6>
-                    ORDER# <strong>652bc00514432434954432f4</strong>{' '}
+                    ORDER# <strong>{orderDetails?._id}</strong>{' '}
                   </h6>
                 </div>
                 <div className="item-detail">
@@ -90,18 +75,19 @@ function SingleOrder (): React.JSX.Element {
                       <Link to="/">
                         <Image
                           fluid
-                          src="https://images.bewakoof.com/t320/men-s-white-t-shirt-1093-1672982318-1.jpg"
+                          src={orderDetails?.items[0]?.product?.displayImage}
                         />
                       </Link>
                     </div>
                     <div className="right">
                       <div className="d-flex flex-column justify-content-between ">
                         <div className="text">
-                          <p>Mens White T-shirt</p>
+                          <p>{orderDetails?.items[0]?.product?.name}</p>
                           <div className="size">Size:L</div>
-                          <p>Rs. 379</p>
+                          <p>Rs. {orderDetails?.items[0]?.product?.price}</p>
                           <h6>
-                            Order Placed <span>15th Oct 23 04:06 PM</span>
+                            Order Placed{' '}
+                            <span>{convertTime(orderDetails?.orderDate)}</span>
                           </h6>
                         </div>
                       </div>
@@ -113,29 +99,52 @@ function SingleOrder (): React.JSX.Element {
                 <div className="address">
                   <h5>Shipping Details</h5>
                   <h6>
-                    {userInfo.name} <label>{orderDetails.shipmentDetails.type}</label>{' '}
+                    {userInfo?.name}{' '}
+                    <label>{orderDetails?.shipmentDetails?.type}</label>{' '}
                   </h6>
                   <p>
-                    {orderDetails.shipmentDetails.address.street}, {orderDetails.shipmentDetails.address.city}, {orderDetails.shipmentDetails.address.zipCode}, {orderDetails.shipmentDetails.address.state}, {orderDetails.shipmentDetails.address.country}
+                    {orderDetails?.shipmentDetails?.address?.street},{' '}
+                    {orderDetails?.shipmentDetails?.address?.city},{' '}
+                    {orderDetails?.shipmentDetails?.address?.zipCode},{' '}
+                    {orderDetails?.shipmentDetails?.address?.state},{' '}
+                    {orderDetails?.shipmentDetails?.address?.country}
                   </p>
                 </div>
                 <div className="payment-wrapper">
                   <h4>Payment Summary</h4>
                   <div className="price-wrapper">
                     <span>Cart Total</span>
-                    <span className="amount">₹ 379</span>
+                    <span className="amount">
+                      ₹ {orderDetails?.items[0]?.product?.price}
+                    </span>
                   </div>
                   <div className="price-wrapper">
                     <span>Delivery Fee</span>
-                    <span className="amount">₹ 30</span>
+                    {orderDetails?.items[0]?.product?.price < 1000
+                      ? (
+                      <span className="amount">₹ 30</span>
+                        )
+                      : (
+                      <span className="amount">₹ 0</span>
+                        )}
                   </div>
                   <div className="price-wrapper">
                     <span>Order Total</span>
-                    <span className="amount">₹ 429</span>
+                    <span className="amount">
+                      ₹
+                      {orderDetails?.items[0]?.product?.price < 1000
+                        ? orderDetails?.items[0]?.product?.price + 30
+                        : orderDetails?.items[0]?.product?.price}
+                    </span>
                   </div>
                   <div className="price-wrapper totalrow">
                     <span>Amount To Be Paid</span>
-                    <span className="amount">₹ 429</span>
+                    <span className="amount">
+                      ₹
+                      {orderDetails?.items[0]?.product?.price < 1000
+                        ? orderDetails?.items[0]?.product?.price + 30
+                        : orderDetails?.items[0]?.product?.price}
+                    </span>
                   </div>
                 </div>
               </Col>

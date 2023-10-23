@@ -2,11 +2,21 @@ import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import FaceIcon from '@mui/icons-material/Face'
 import Face3Icon from '@mui/icons-material/Face3'
+import {
+  isUserAuthenticated,
+  loggedInUserInfo
+} from '../../../../helper/customUseSelector'
+import { type UserDetails } from '../../../../config/ResponseTypes'
+import { LINK_TO_LOGIN, LINK_TO_SIGNUP } from '../../../../config/Constant'
 interface SideDrawerProps {
   isOpen: boolean
   setOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
+
 const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
+  const userInfo: UserDetails = loggedInUserInfo()
+  const isRouteProtected = isUserAuthenticated()
+
   const sideNavRef = useRef<HTMLDivElement | null>(null)
   const drawerClassName = isOpen ? 'sidemenu-drawer open' : 'sidemenu-drawer'
   useEffect(() => {
@@ -22,7 +32,6 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
     ) {
       setOpenSidebar(false)
 
-      // Additionally, if you want to update the body class, you can do it here.
       const bodyEl = document.body as HTMLElement | null
       if (bodyEl !== null) {
         bodyEl.classList.remove('open-side-drawer')
@@ -35,9 +44,21 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
       <div className="sidemenu-head">
         <div className="welcome-header">
           <h5 className="welcome-guest">
-            <span>Welcome Guest</span>
+            {isRouteProtected
+              ? (
+              <span>Welcome {userInfo.name}</span>
+                )
+              : (
+              <span>Welcome Guest</span>
+                )}
             <div className="register">
-              <a>Login / Sign Up</a>
+              {!isRouteProtected && (
+                <>
+                  <Link to={LINK_TO_LOGIN}>Login</Link>
+                  <span style={{ margin: '0px 3px' }}>/</span>
+                  <Link to={LINK_TO_SIGNUP}>Signup</Link>
+                </>
+              )}
             </div>
           </h5>
         </div>

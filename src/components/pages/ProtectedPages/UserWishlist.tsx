@@ -6,25 +6,9 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
+import { type WishlistItem, type cartList } from '../../../config/ResponseTypes'
+import { COOKIE_STORAGE_KEY } from '../../../config/Constant'
 
-interface WishlistItem {
-  products: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
-interface cartList {
-  product: {
-    displayImage: string
-    name: string
-    price: number
-    ratings: number
-    _id: string
-  }
-}
 function UserWishlist (): React.JSX.Element {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
   const [cartItemList, setCartItemList] = useState<cartList[]>([])
@@ -76,14 +60,14 @@ function UserWishlist (): React.JSX.Element {
         if (res.status === 200) {
           removewishlistedItem(id)
           dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: any = Cookies.get('bwf-user-auth')
+          const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
           const existingUserData = JSON.parse(existingUserDataString)
           const updatedUserData = {
             ...existingUserData,
             cart: res.data.results
           }
           const updatedUserDataString = JSON.stringify(updatedUserData)
-          Cookies.set('bwf-user-auth', updatedUserDataString)
+          Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
         }
       })
       .catch((err: any) => {

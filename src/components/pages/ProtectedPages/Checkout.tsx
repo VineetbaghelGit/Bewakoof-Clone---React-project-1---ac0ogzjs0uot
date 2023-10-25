@@ -52,7 +52,6 @@ function Checkout (): React.JSX.Element {
         }
         await ApiUtils.buyItemNow(body)
           .then((res) => {
-            console.log(res)
             if (res.status === 200) {
               removeProductFromBag(item.product._id)
             }
@@ -89,7 +88,10 @@ function Checkout (): React.JSX.Element {
         }
       })
       .catch((err: any) => {
-        console.log(err)
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
   }
   const handleChange = (e: any): void => {

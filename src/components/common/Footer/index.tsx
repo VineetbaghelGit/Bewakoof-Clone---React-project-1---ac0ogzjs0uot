@@ -1,4 +1,5 @@
 import React from 'react'
+import './Footer.css'
 import { Col, Container, Image, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn'

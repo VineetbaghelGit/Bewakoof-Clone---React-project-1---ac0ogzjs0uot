@@ -5,6 +5,7 @@ import { emptyCartDoodle } from '../../../../config/Images'
 import CartHead from './CartHead'
 import BagItem from './BagItem'
 import { cartItemsCount } from '../../../../helper/customUseSelector'
+import './style.css'
 
 function Index (): React.JSX.Element {
   const cartItemCount: number | undefined = cartItemsCount()

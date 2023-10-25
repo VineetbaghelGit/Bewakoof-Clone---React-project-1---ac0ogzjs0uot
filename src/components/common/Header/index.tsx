@@ -4,6 +4,7 @@ import TabHeaderBar from './HeaderComponents/TabHeaderBar'
 import SmallScSidebar from './SmallScSidebar/SmallScSidebar'
 import TopHeaderBar from './HeaderComponents/TopHeaderBar'
 import { userPathLocation } from '../../../helper/GetUserLocation'
+import './style.css'
 
 function Headers (): React.JSX.Element {
   const location = userPathLocation()

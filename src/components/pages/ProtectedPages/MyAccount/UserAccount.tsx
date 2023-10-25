@@ -2,6 +2,7 @@ import React from 'react'
 import { Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import './style.css'
 function UserAccount (): React.JSX.Element {
   return (
     <div className="account-wrapper">

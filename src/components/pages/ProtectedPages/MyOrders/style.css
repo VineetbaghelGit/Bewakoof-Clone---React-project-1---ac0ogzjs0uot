@@ -1,0 +1,90 @@
+.orders-wrapper {
+    display: flex;
+    flex-flow: column;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .orders-wrapper .order-number {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    font-size: 1.1em;
+  }
+  .orders-wrapper .order-number h6 {
+    font-size: 12px;
+    letter-spacing: 0.11px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.7);
+    line-height: normal;
+  }
+  .orders-container .order-details {
+    width: 100%;
+  }
+  .order-details .order-outer-box {
+    position: relative;
+    background: #fff;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    width: 100%;
+    margin: 0 0 20px;
+  }
+  .order-details .inner-box {
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: flex-start;
+    position: relative;
+    /* height: 150px; */
+    /* margin: 0 0 26px; */
+    padding: 0;
+  }
+  .order-details .inner-box .box-left {
+    width: 150px;
+    height: 100%;
+    overflow: hidden;
+  }
+  .order-details .inner-box .box-right {
+    /* width: calc(100% - 228px); */
+    /* padding: 20px 20px 20px 51px; */
+    padding: 10px 20px 0px 40px;
+  }
+  .order-details .inner-box .box-right .text {
+    padding: 5px 0 20px;
+  }
+  .order-details .inner-box .box-right .text .name {
+    line-height: 1.7;
+  }
+  
+  .order-details .inner-box .box-right .text p {
+    font-size: 14px;
+    padding-bottom: 10px;
+    color: #000;
+    line-height: normal;
+    font-weight: 500;
+  }
+  
+  .order-details .inner-box .box-right .text .order-confirmed {
+    text-transform: uppercase;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 400;
+    padding: 4px 6px;
+    letter-spacing: 0.08px;
+    background-color: #e7ffeb;
+    color: #128a27;
+    line-height: normal;
+    margin-bottom: 8px;
+  }
+  
+  @media (max-width: 480px) {
+    .order-details .inner-box .box-right {
+      padding: 10px;
+    }
+  }
+  @media (max-width: 400px) {
+    .order-details .inner-box .box-left {
+      width: 100%;
+    }
+    .order-details .inner-box {
+      flex-wrap: wrap;
+    }
+  }

@@ -76,7 +76,7 @@ function SingleOrder (): React.JSX.Element {
                 <div className="item-detail">
                   <div className="inner-box">
                     <div className="left">
-                      <Link to="/">
+                      <Link to={`/product/${orderDetails?.items[0]?.product?._id}`}>
                         <Image
                           fluid
                           src={orderDetails?.items[0]?.product?.displayImage}

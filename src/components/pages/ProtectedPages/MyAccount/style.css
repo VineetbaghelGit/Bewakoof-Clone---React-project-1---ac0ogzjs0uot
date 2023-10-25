@@ -1,0 +1,44 @@
+.account-wrapper .account-options {
+    margin-bottom: 0px;
+  }
+  .account-wrapper .account-options .account-container {
+    border-bottom: 1px solid #e6e6e6;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .account-options .account-inner {
+    width: 200px;
+    float: left;
+    margin-right: 30px;
+    position: relative;
+    padding: 30px 0;
+  }
+  .account-options .account-inner::after {
+    content: "";
+    background-color: #979797;
+    width: 1px;
+    height: 64px;
+    opacity: 0.24;
+    position: absolute;
+    right: 0;
+    top: 30px;
+  }
+  .account-options .account-inner a {
+    display: block;
+    text-decoration: none;
+    position: relative;
+    color: #000;
+    font-weight: 500;
+  }
+  .account-options .account-inner a svg {
+    color: #979797;
+    margin-left: 5px;
+  }
+  .account-options .account-inner .account-text {
+    margin: 8px 0 0;
+    opacity: 0.4;
+    font-size: 12px;
+    letter-spacing: 0;
+    color: #181818;
+    display: block;
+  }

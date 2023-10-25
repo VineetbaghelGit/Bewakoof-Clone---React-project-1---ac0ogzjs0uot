@@ -1,38 +1,157 @@
-.App {
-  text-align: center;
+@import "~react-image-gallery/styles/css/image-gallery.css";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+:root {
+  --navbar-links-color: rgba(0, 0, 0, 0.8);
+  --navbar-second-links-color: rgb(51, 51, 51);
+  --navbar-third-link-color: #0e0e0e;
+  --navbar-one-bg-color: #eeeeee;
+  --main-bg-color: #ffffff;
+  --main-btn-color: #45a2a2;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "Montserrat", sans-serif !important;
+  text-rendering: optimizeLegibility;
+  transition: 0.2s linear;
+}
+body.noside-drawer {
+  overflow-y: overlay;
+  position: initial;
+  width: auto;
+  top: initial;
+}
+body.open-side-drawer {
+  overflow-y: hidden;
+  position: absolute;
+  width: 100%;
+  top: 0px;
+}
+ul {
+  list-style: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  font-size: 100% !important;
+  vertical-align: baseline !important;
+  background: transparent !important;
+}
+a {
+  text-decoration: none !important;
+  vertical-align: baseline;
+  background: transparent;
+  outline: none;
+}
+p {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  margin-bottom: 0 !important;
+}
+.product-wrapper {
+  margin-top: 90px;
+}
+.breadcrumbox {
+  padding: 12px;
+}
+.breadcrumbox ul li {
+  cursor: pointer;
+  display: inline-block;
+  padding-right: 14px;
+}
+.breadcrumbox ul li a {
+  font-size: 12px;
+  color: #2d2d2d;
+}
+.breadcrumbox ul li:after {
+  content: "/";
+  clear: both;
+  font-size: 12px;
+  padding-left: 14px;
+}
+.breadcrumbox ul li:last-child::after {
+  padding-right: 0;
+  content: " ";
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.noPadding {
+  padding-right: 0;
+}
+.account-wrapper,
+.profile-wrapper,
+.single-order-wrapper {
+  margin-top: 110px;
+}
+.account-wrapper .account-head,
+.profile-wrapper .profile-head {
+  width: 100%;
+  margin-top: 35px;
+}
+.account-wrapper .account-head .account-title,
+.profile-wrapper .profile-head .profile-title {
+  float: left;
+  width: 100%;
+  font-size: 1.7em;
+  color: #181818;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.account-wrapper .account-head hr,
+.profile-wrapper .profile-head hr {
+  width: 100%;
+  margin: 15px 0 40px;
+  height: 2px;
+  max-width: 100px;
+  background: #fdd835;
+  border-top: 0 !important;
+  opacity: 1 !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.backto-account a {
+  float: left;
+  width: 100%;
+  margin-bottom: 40px;
+  letter-spacing: 0.2px;
+  color: #51cccc;
+  font-size: 1em;
+}
+.profile-wrapper .form-control {
+  width: 40%;
+  padding: 26px 12px 10px 12px !important;
+}
+.checkout .form-control {
+  width: 100%;
+}
+.checkout .form-select {
+  padding: 19px 12px 10px 12px !important;
+}
+.profile-wrapper .form-control:focus {
+  box-shadow: none !important;
+  border-color: #51cccc;
+}
+.profile-wrapper .form-floating > label {
+  font-weight: 400;
+  font-size: 14px;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@media (max-width: 576px) {
+  .profile-wrapper .form-control {
+    width: 100%;
   }
 }

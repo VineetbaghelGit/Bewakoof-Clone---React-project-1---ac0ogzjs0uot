@@ -109,5 +109,5 @@ Manage your user account from the account settings page. You can update your pro
 
 ## Demo
 
-[Bewakoof Clone App - Vineet Baghel](https://www.google.com/)
+[Bewakoof Clone App - Vineet Baghel](https://bewakoof-clone-react-project-1-ac0ogzjs0uot.vercel.app/)
 

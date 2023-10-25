@@ -19,9 +19,7 @@ A clone of Bewakoof.com - An Online Fashion Shopping platform for Men, Women, an
   - [Shopping Bag](#shopping-bag)
   - [Checkout](#checkout)
   - [User Account](#user-account)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
+- [Demo](#demo)
 
 ## Project Overview
 
@@ -109,14 +107,7 @@ To make a purchase, click the "Buy Now" option. You'll be redirected to the chec
 
 Manage your user account from the account settings page. You can update your profile information and view your order history.
 
-## Screenshots
+## Demo
 
-Include screenshots of your application to provide a visual representation of the user interface.
+[Bewakoof Clone App - Vineet Baghel](https://www.google.com/)
 
-## Contributing
-
-Explain how others can contribute to your project, if applicable.
-
-## License
-
-Specify the project's open-source license, if applicable.

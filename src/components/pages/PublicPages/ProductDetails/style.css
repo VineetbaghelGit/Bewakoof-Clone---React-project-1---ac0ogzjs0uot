@@ -1,0 +1,314 @@
+.product-details-container {
+    margin-top: 20px;
+  }
+  
+  .details-wrapper .manufacturer-name .brand-name {
+    font-size: 18px;
+    line-height: 21px;
+    color: #4f5362;
+    font-weight: 550;
+  }
+  .details-wrapper .product-desc .product-name {
+    font-weight: 500;
+    margin-bottom: 2px;
+    font-size: 16px;
+    line-height: 25px;
+    /* padding-top: 8px; */
+    color: #737373;
+  }
+  .details-wrapper .product-desc .price-details {
+    padding: 5px 0 0;
+  }
+  .price-container .selling-price {
+    font-size: 24px;
+    color: #0f0f0f;
+    line-height: 24px;
+    font-weight: 550;
+  }
+  .price-container .selling-price span {
+    font-size: 16px;
+    line-height: 18px;
+  }
+  .price-container .disc-price {
+    text-decoration: line-through;
+    color: #949494;
+    font-size: 14px !important;
+    line-height: 18px !important;
+  }
+  .price-container .offer-perc p {
+    font-size: 16px;
+    line-height: 19px;
+    color: #00b852;
+  }
+  .price-details .inclusive-tax-text {
+    width: max-content;
+    color: #949494;
+    font-size: 12px;
+    line-height: 15px;
+    margin-top: 4px;
+  }
+  .mr-2 {
+    margin-right: 0.5rem;
+  }
+  .noPadding {
+    padding: 0px;
+  }
+  .tags-rect {
+    background-color: rgba(0, 184, 82, 0.8);
+    color: rgb(255, 255, 255);
+    border: none;
+    margin: 8px 16px 8px 0px;
+    padding: 3px 8px;
+  }
+  .tags-rect.second {
+    background-color: white;
+    color: rgb(115, 115, 115);
+    border: 1px solid rgb(115, 115, 115);
+  }
+  .tags-rect .desk {
+    font-size: 12px;
+    line-height: 15px;
+    font-weight: 550;
+    text-transform: capitalize;
+  }
+  
+  .tribe-container {
+    font-size: 12px;
+    margin-top: 4px;
+    line-height: normal;
+    cursor: pointer;
+    padding: 7px 0;
+  }
+  .tribe-container::before {
+    content: "";
+    background: #eee;
+    height: 3px;
+    width: calc(100% + 0px);
+    display: block;
+    /* position: absolute; */
+  }
+  .tribe-msg-wrapper {
+    padding: 16px 0;
+  }
+  .tribe-msg-wrapper .tribe-msg {
+    line-height: normal;
+  }
+  .product-desc .size-container {
+    margin-bottom: 32px;
+    padding: 10px 0 0;
+    position: relative;
+  }
+  .size-container::before {
+    content: "";
+    background: #eee;
+    height: 3px;
+    width: calc(100% + 0px);
+    display: block;
+    position: absolute;
+    margin: -17px 0;
+  }
+  
+  .color-block .color-name {
+    font-size: 14px;
+    font-weight: 550;
+    text-transform: uppercase;
+  }
+  .color-block .multi-color-box {
+    margin-top: 10px;
+  }
+  .multi-color-block {
+    height: 42px;
+    width: 42px;
+    float: left;
+    margin: 0 13px 13px 0;
+    border: 1px solid #ebebeb;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .multi-color-block span div {
+    height: calc(100%);
+    background-color: rgb(14, 14, 14);
+    border-radius: 8px;
+  }
+  .size-wrapper {
+    display: inline-block;
+    width: 100%;
+  }
+  
+  .size-wrapper .size-outer-wrapper {
+    margin-bottom: 10px;
+  }
+  .size-wrapper .size-outer-wrapper .select-size-title {
+    font-size: 12px;
+    line-height: 18px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: bold;
+  }
+  .size-wrapper .select-size .each-size {
+    width: 48px;
+    height: 48px;
+    float: left;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    margin: 0 9px 5px 0;
+    cursor: pointer;
+    border: 1px solid #000;
+    border-radius: 5px;
+    line-height: 45px;
+  }
+  .add-button-wrapper {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  .add-buttons {
+    gap: 16px;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+    background-color: #fff;
+  }
+  .add-buttons .add-bag {
+    background: #ffd84d;
+    border-color: transparent;
+    flex: 0.56 1 0%;
+    cursor: pointer;
+  }
+  .add-buttons .btn-border {
+    border: 1px solid #d6d6d6;
+    border-radius: 3px;
+    height: 44px;
+  }
+  .add-buttons .add-bag .bag-icon {
+    height: 20px;
+    width: 20px;
+  }
+  .add-buttons .add-bag span {
+    font-size: 14px;
+    line-height: 17px;
+    color: #303030;
+    padding-left: 8px;
+    font-weight: 550;
+  }
+  .add-buttons .add-wishlist {
+    flex: 0.56 1 0%;
+    cursor: pointer;
+  }
+  .add-buttons .add-wishlist .bag-icon {
+    height: 20px;
+    width: 20px;
+  }
+  .add-buttons .add-wishlist span {
+    font-size: 14px;
+    line-height: 17px;
+    color: #949494;
+    font-weight: 550;
+    padding-left: 8px;
+  }
+  .image-gallery-left-nav .image-gallery-svg,
+  .image-gallery-right-nav .image-gallery-svg {
+    height: 60px !important;
+    width: 20px !important;
+  }
+  .about-product {
+    position: relative;
+    margin-top: 30px;
+    /* margin-bottom: 30px; */
+  }
+  .about-product::before {
+    content: "";
+    background: #eee;
+    height: 3px;
+    width: calc(100% + 0px);
+    display: block;
+    position: absolute;
+    margin: -17px 0;
+  }
+  .accordion-item {
+    border: none !important;
+    border-bottom: 1px solid #dee2e6 !important;
+  }
+  .accordion-title {
+    position: relative;
+    line-height: 19px !important;
+  }
+  .accordion img {
+    margin-top: 2px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+  .accordion-title h2 {
+    font-weight: 550;
+    font-size: 14px !important;
+    line-height: 19px !important;
+    margin-bottom: 0 !important;
+  }
+  .accordion-subtitle {
+    color: #878787;
+    font-size: 12px !important;
+    line-height: 15px !important;
+  }
+  .accordion-button:not(.collapsed) {
+    color: #000 !important;
+  }
+  .accordion-button {
+    padding: 12px 20px !important;
+    background-color: #fff !important;
+  }
+  .accordion-button:focus {
+    border-color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .coupon-body .desc-text {
+    margin-left: 10px;
+    line-height: 1.45;
+    color: #606060;
+    font-size: 12px;
+  }
+  .accordion-body {
+    padding: 0.1rem 1.25rem !important;
+  }
+  .product-desc-text {
+    color: #606060;
+    font-size: 12px;
+  }
+  .trust-badge-container {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 15px;
+  }
+  .trust-badge-container .containerInner img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+    color: #8f98a9;
+  }
+  .trust-badge-container .containerInner .trustBadgeTitle {
+    font-family: montserrat-semibold, sans-serif !important;
+    font-size: 8px !important;
+    line-height: 12px !important;
+    text-align: center;
+    color: #8f98a9;
+    width: 79px;
+  }
+  @media (min-width: 767px) {
+    .product-gallery {
+      position: sticky;
+      top: 100px;
+      /* z-index: 100; */
+    }
+  }
+  @media (max-width: 767px) {
+    .size-container::before,
+    .tribe-container::before {
+      width: calc(100% + 10px);
+    }
+    .details-wrapper {
+      margin-top: 20px !important;
+    }
+  }
+  

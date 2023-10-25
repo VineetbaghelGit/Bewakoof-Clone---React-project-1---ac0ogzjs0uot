@@ -1,0 +1,176 @@
+
+.single-order-wrapper .order-wrapper {
+    display: flex;
+    flex-flow: column;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-top: 30px;
+  }
+  .order-wrapper .order-number {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    font-size: 1.1em;
+  }
+  .order-wrapper .order-number h6 {
+    font-size: 12px;
+    letter-spacing: 0.11px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.7);
+    line-height: normal;
+  }
+  .order-container .order-details {
+    width: 100%;
+  }
+  .single-order-wrapper .backto-account a {
+    float: none;
+    width: 100%;
+    margin-bottom: 40px;
+    letter-spacing: 0.2px;
+    color: #51cccc;
+    font-size: 1em;
+  }
+  .order-container .item-detail {
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background: #fff;
+    width: 100%;
+    margin: 6px 0 15px;
+    padding: 14px;
+    position: relative;
+    clear: both;
+  }
+  
+  .order-container .item-detail .inner-box .left {
+    width: 121px;
+    height: 164px;
+    position: static;
+  }
+  
+  .order-container .item-detail .inner-box .left a img {
+    width: 100%;
+  }
+  .order-container .item-detail .inner-box .right .text {
+    padding: 0 0 3px;
+  }
+  .order-container .item-detail .inner-box .right .text p {
+    padding-bottom: 5px;
+    color: #000;
+    font-size: 12px !important;
+    line-height: normal !important;
+  }
+  .order-container .item-detail .inner-box .right .size {
+    font-size: 11px !important;
+    line-height: 12px !important;
+    color: #8f98a9;
+    margin: 4px 0 8px;
+  }
+  .order-container .item-detail .inner-box .right .text h6 {
+    font-size: 12px;
+    letter-spacing: 0.11px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.7);
+    line-height: normal;
+    margin-top: 14px;
+  }
+  
+  .order-container .item-detail .inner-box .right .text h6 span {
+    font-weight: 550;
+  }
+  .order-container .shipping-detail {
+    padding-top: 20px;
+  }
+  .shipping-detail .address {
+    padding: 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background: #fff;
+    margin: 19px 0 15px;
+  }
+  .shipping-detail .address h5 {
+    margin: 3px 0 18px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.38);
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: 550;
+  }
+  .shipping-detail .address h6 {
+    display: flex;
+    font-size: 11px;
+    color: #000;
+    line-height: normal;
+    margin-bottom: 8px;
+    justify-content: space-between;
+    text-transform: capitalize;
+  }
+  .shipping-detail .address h6 label {
+    border-radius: 9px;
+    color: #181818;
+    font-size: 9px;
+    padding: 0 10px;
+    line-height: 18px;
+    margin: 0;
+    background-color: rgba(24, 24, 24, 0.15);
+  }
+  
+  .shipping-detail .address p {
+    line-height: 18px;
+    font-size: 10px;
+    color: #000;
+  }
+  .shipping-detail .payment-wrapper {
+    padding: 5px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    margin: 0 0 15px;
+  }
+  .shipping-detail .payment-wrapper h4 {
+    font-size: 12px;
+    padding: 15px 11px 12px;
+    color: rgba(0, 0, 0, 0.38);
+    line-height: normal;
+    text-transform: uppercase;
+    font-weight: 550;
+  }
+  .shipping-detail .payment-wrapper .price-wrapper {
+    padding: 0 11px 15px;
+  }
+  .shipping-detail .payment-wrapper .price-wrapper span {
+    font-size: 12px;
+    color: #000;
+    line-height: normal;
+    display: inline-block;
+  }
+  .shipping-detail .payment-wrapper .price-wrapper .amount {
+    float: right;
+  }
+  .order-container .item-detail .inner-box .right {
+    width: calc(100% - 121px);
+    padding: 0 0 20px 23px;
+  }
+  .shipping-detail .payment-wrapper .totalrow {
+    padding: 14px 11px 16px;
+    border-top: 1px solid hsla(0, 0%, 74.1%, 0.4);
+    margin-top: 11px;
+  }
+  .shipping-detail .payment-wrapper .totalrow span {
+    font-size: 14px;
+    color: #000;
+    line-height: normal;
+    display: inline-block;
+    font-weight: 700;
+  }
+  
+  @media only screen and (min-width: 480px) {
+    .order-container .item-detail .inner-box {
+      display: flex;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    .order-container .item-detail .inner-box .right {
+      padding: 0px !important;
+    }
+  }
+  

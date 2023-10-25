@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { loginCover } from '../../../config/Images'
 import { type AuthFormData, type AuthComponentProps } from '../../../config/ResponseTypes'
 import { RESET_PASSWORD_TITLE, SIGNUP_TITLE } from '../../../config/Constant'
-
+import './AuthStyle.css'
 function AuthComponent ({
   title,
   actionText,

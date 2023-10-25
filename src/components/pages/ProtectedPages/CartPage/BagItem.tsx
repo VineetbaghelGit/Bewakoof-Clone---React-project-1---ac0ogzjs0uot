@@ -14,11 +14,11 @@ import Cookies from 'js-cookie'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { type cartList } from '../../../../config/ResponseTypes'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 
 function BagItem (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const dispatch = useDispatch()
-  // const navigate = useNavigate()
   const [cartItemList, setCartItemList] = useState<cartList[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
   useEffect(() => {
@@ -49,7 +49,10 @@ function BagItem (): React.JSX.Element {
           }
         })
         .catch((err: any) => {
-          console.log(err)
+          if (err === undefined) {
+            ToasterMessage('error', 'Network error')
+          }
+          ToasterMessage('error', err?.data?.message)
         })
     }
   }
@@ -62,8 +65,28 @@ function BagItem (): React.JSX.Element {
         }
       })
       .catch((err: any) => {
-        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
+  }
+  const moveItemToWishlist = (id: string): void => {
+    if (isRouteProtected) {
+      const body = {
+        productId: id
+      }
+      ApiUtils.addToWishlist(body)
+        .then((res: any) => {
+          if (res.status === 200) {
+            removeProductFromBag(id)
+            ToasterMessage('success', res?.data?.message)
+          }
+        })
+        .catch((err: any) => {
+          ToasterMessage('error', err?.data?.message)
+        })
+    }
   }
   return (
     <div className="bag-item-wrapper">
@@ -151,7 +174,11 @@ function BagItem (): React.JSX.Element {
                               >
                                 Remove
                               </div>
-                              <div className="move-item-wishlist">
+                              <div className="move-item-wishlist"
+                               onClick={() => {
+                                 moveItemToWishlist(cartItem.product._id)
+                               }}
+                              >
                                 Move to Wishlist
                               </div>
                             </div>

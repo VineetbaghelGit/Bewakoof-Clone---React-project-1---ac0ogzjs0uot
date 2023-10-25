@@ -2,7 +2,7 @@ import React from 'react'
 import { Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { Error404Img } from '../../../config/Images'
-
+import './ErrorStyle.css'
 function Error404 (): React.JSX.Element {
   return (
     <div className="errorpage-wrapper">

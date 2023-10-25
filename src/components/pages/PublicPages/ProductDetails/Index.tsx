@@ -5,6 +5,7 @@ import ProductInfo from './ProductInfo'
 import { useNavigate, useParams } from 'react-router-dom'
 import ApiUtils from '../../../../apis/ApiUtils'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import './style.css'
 
 function Index (): React.JSX.Element {
   const { id } = useParams()
@@ -22,9 +23,11 @@ function Index (): React.JSX.Element {
           setProductDetails(res.data.data)
         }
       })
-      .catch((err) => {
-        console.log(err)
-        ToasterMessage('error', 'Something went wrong')
+      .catch((err: any) => {
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
         navigate('/')
       })
   }

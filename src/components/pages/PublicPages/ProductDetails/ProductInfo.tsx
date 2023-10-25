@@ -20,7 +20,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
-import { type WishlistItem, type cartList } from '../../../../config/ResponseTypes'
+import {
+  type WishlistItem,
+  type cartList
+} from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 
@@ -71,8 +74,10 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         }
       })
       .catch((err: any) => {
-        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
-        ToasterMessage('error', 'Something went wrong')
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
   }
   const wishlistedItem = (e: any, id: string): void => {
@@ -81,10 +86,11 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
+            ToasterMessage('success', res?.data?.message)
           }
         })
         .catch((err: any) => {
-          console.log(err)
+          ToasterMessage('error', err?.data?.message)
         })
     }
   }
@@ -97,10 +103,11 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
+            ToasterMessage('success', res?.data?.message)
           }
         })
         .catch((err: any) => {
-          console.log(err)
+          ToasterMessage('error', err?.data?.message)
         })
     } else {
       navigate('/wishlist')
@@ -124,7 +131,10 @@ function ProductInfo (productDetails: any): React.JSX.Element {
           }
         })
         .catch((err: any) => {
-          console.log(err)
+          if (err === undefined) {
+            ToasterMessage('error', 'Network error')
+          }
+          ToasterMessage('error', err?.data?.message)
         })
     } else {
       navigate('/wishlist')
@@ -139,8 +149,10 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         }
       })
       .catch((err: any) => {
-        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
-        // ToasterMessage('error', 'Something went wrong');
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
   }
   return (

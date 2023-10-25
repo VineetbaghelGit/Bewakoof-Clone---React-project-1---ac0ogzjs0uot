@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { Col, Container, Image, Row } from 'react-bootstrap'
-import ApiUtils from '../../../apis/ApiUtils'
-import { loggedInUserInfo } from '../../../helper/customUseSelector'
+import ApiUtils from '../../../../apis/ApiUtils'
+import { loggedInUserInfo } from '../../../../helper/customUseSelector'
 import {
   type OrderResponse,
   type UserDetails
-} from '../../../config/ResponseTypes'
-
+} from '../../../../config/ResponseTypes'
+import './style.css'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 function SingleOrder (): React.JSX.Element {
   const { id } = useParams()
   const userInfo: UserDetails = loggedInUserInfo()
@@ -41,8 +42,11 @@ function SingleOrder (): React.JSX.Element {
           setOrderDetails(res.data.data)
         }
       })
-      .catch((err) => {
-        console.log(err)
+      .catch((err: any) => {
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
   }
   const convertTime = (timestamp: string): string => {

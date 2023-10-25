@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Container, Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ApiUtils from '../../../apis/ApiUtils'
-import { type OrderItem } from '../../../config/ResponseTypes'
+import ApiUtils from '../../../../apis/ApiUtils'
+import { type OrderItem } from '../../../../config/ResponseTypes'
+import './style.css'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 
 function MyOrders (): React.JSX.Element {
   const [orderList, setOrderList] = useState<OrderItem[]>([])
@@ -15,7 +17,10 @@ function MyOrders (): React.JSX.Element {
         }
       })
       .catch((err: any) => {
-        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
   }
   useEffect(() => {

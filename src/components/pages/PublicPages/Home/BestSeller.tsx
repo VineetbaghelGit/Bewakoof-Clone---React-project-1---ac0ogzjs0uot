@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { wishlistIcon, wishlistSelected } from '../../../../config/Images'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { type GetProductResType, type WishlistItem } from '../../../../config/ResponseTypes'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 
 function BestSeller (): React.JSX.Element {
   const navigate = useNavigate()
@@ -26,10 +27,11 @@ function BestSeller (): React.JSX.Element {
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
+            ToasterMessage('success', res?.data?.message)
           }
         })
         .catch((err: any) => {
-          console.log(err)
+          ToasterMessage('error', err?.data?.message)
         })
     } else {
       navigate('/wishlist')
@@ -42,10 +44,11 @@ function BestSeller (): React.JSX.Element {
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
+            ToasterMessage('success', res?.data?.message)
           }
         })
         .catch((err: any) => {
-          console.log(err)
+          ToasterMessage('error', err?.data?.message)
         })
     }
   }
@@ -57,8 +60,10 @@ function BestSeller (): React.JSX.Element {
         }
       })
       .catch((err: any) => {
-        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
-        // ToasterMessage('error', 'Something went wrong');
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
     if (isRouteProtected) {
       fetchGetWishlist()
@@ -72,8 +77,10 @@ function BestSeller (): React.JSX.Element {
         }
       })
       .catch((err: any) => {
-        console.error('🚀 ~ file: Home.tsx:53 ~ useEffect ~ err:', err)
-        // ToasterMessage('error', 'Something went wrong');
+        if (err === undefined) {
+          ToasterMessage('error', 'Network error')
+        }
+        ToasterMessage('error', err?.data?.message)
       })
   }
   return (

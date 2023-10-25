@@ -72,10 +72,8 @@ Before you start, make sure you have the following software and dependencies ins
 2. Navigate to the project directory.
 3. Run the following command to install the necessary dependencies:
 
-```bash
-npm install
-# or
-yarn install
+- npm install
+- yarn install
 
 ## Usage
 

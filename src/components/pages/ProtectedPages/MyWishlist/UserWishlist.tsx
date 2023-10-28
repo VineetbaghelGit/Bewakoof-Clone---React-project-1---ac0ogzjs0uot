@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Container, Image, Row } from 'react-bootstrap'
+import { Button, Col, Container, Image, Row } from 'react-bootstrap'
 import { bagIcon, wishlistEmpty } from '../../../../config/Images'
 import ApiUtils from '../../../../apis/ApiUtils'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
-import { type WishlistItem, type cartList } from '../../../../config/ResponseTypes'
+import {
+  type WishlistItem,
+  type cartList
+} from '../../../../config/ResponseTypes'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 import './style.css'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 
 function UserWishlist (): React.JSX.Element {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
@@ -84,9 +88,35 @@ function UserWishlist (): React.JSX.Element {
         ToasterMessage('error', err?.data?.message)
       })
   }
+  const removeItem = (): void => {
+    ApiUtils.deleteAllItemWishlist()
+      .then((res) => {
+        if (res.status === 200) {
+          ToasterMessage('success', res?.data?.message)
+          fetchUserWishlist()
+        }
+      })
+      .catch((err) => {
+        ToasterMessage('error', err?.data?.message)
+      })
+  }
   return (
     <div className="wishlist-wrapper">
       <Container>
+        {wishlist.length > 0 && (
+          <Row>
+            <span>
+              <Button
+                className="remove-all-item-btn"
+                onClick={removeItem}
+              >
+                <DeleteOutlineIcon />
+                Remove All Items
+              </Button>
+            </span>
+          </Row>
+        )}
+
         {wishlist.length > 0
           ? (
           <div className="product-widget">

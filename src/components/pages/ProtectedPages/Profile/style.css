@@ -15,7 +15,6 @@
     justify-content: center;
     align-items: center;
     border: 1px solid rgb(66, 162, 162) !important;
-    zoom: 1;
     user-select: none;
     border-radius: 4px;
     color: rgb(255, 255, 255);
@@ -32,3 +31,80 @@
     user-select: none;
     border-radius: 4px;
   }
+  input[type="file" i] {
+    font-size: 12px;
+  }
+.profile-img{
+  margin-bottom: 20px;
+}
+  .profile-img img{
+    border: 3px solid #fdd835;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: cover;
+    box-shadow: 0px 0px 5px 0px #c1c1c1;
+    cursor: pointer;
+  }
+
+  /* profile img*/
+.profile-user-img {
+  width: 135px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+ border: 3px solid #d2d6de; 
+ padding: 3px;
+}
+.img-circle{
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-upload {
+  position: relative;
+  max-width: 205px;
+  margin-bottom: 20px;
+}
+.avatar-upload .avatar-edit {
+  position: absolute;
+  right: 80px;
+  z-index: 1;
+  top: 90px;
+}
+.avatar-upload .avatar-edit input {
+  display: none;
+}
+.avatar-upload .avatar-edit input + label {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0;
+  border-radius: 100%;
+  background: #FFFFFF;
+  border: 1px solid #d2d6de;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  font-weight: normal;
+  transition: all 0.2s ease-in-out;
+}
+.avatar-upload .avatar-edit input + label:hover {
+  background: #f1f1f1;
+  border-color: #d6d6d6;
+}
+.avatar-upload .avatar-edit input + label:after {
+  content: "";
+  font-family: "FontAwesome";
+  color: #337AB7;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  line-height: 34px;
+  margin: auto;
+}
+.image-upload-cam svg{
+  position: absolute !important;
+    left: 7px !important;
+    top: 7px !important;
+    font-size: 1.2rem !important;
+}

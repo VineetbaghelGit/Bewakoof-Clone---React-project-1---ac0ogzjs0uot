@@ -75,7 +75,7 @@ function MainHeader (): React.JSX.Element {
                       location !== LINK_TO_FORGET_PASSWORD &&
                       (isRouteProtected
                         ? (
-                        <Link to="" className="user-profile-icon">
+                        <Link to="#" className="user-profile-icon">
                           <PermIdentityIcon />
                         </Link>
                           )

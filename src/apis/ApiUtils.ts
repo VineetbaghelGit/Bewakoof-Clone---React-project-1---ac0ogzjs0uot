@@ -137,6 +137,46 @@ const ApiUtils = {
     } catch (error: any) {
       throw error.response
     }
+  },
+  deleteAllItemWishlist: async function () {
+    try {
+      const response = await api.delete('ecommerce/wishlist')
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  uploadUserProfileImg: async function (params: any) {
+    try {
+      const response = await api.patch('user/updateProfileImage', params)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  getProductReviews: async function (params: string) {
+    try {
+      const response = await api.get(`ecommerce/review/${params}`)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  deleteProductReview: async function (params: string) {
+    try {
+      const response = await api.delete(`ecommerce/review/${params}`)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
+  },
+  addProductReview: async function (params: string) {
+    try {
+      const response = await api.post(`ecommerce/review/${params}`)
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
   }
 }
 export default ApiUtils

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
 import React, { useState } from 'react'
-import { Button, Container } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import { Link, useNavigate } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -12,15 +14,23 @@ import { useDispatch } from 'react-redux'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 import { removeUserAuth } from '../../../../store/slices/authSlices'
 import { type UserDetails } from '../../../../config/ResponseTypes'
+import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import './style.css'
+// interface ImageObj {
+//   lastModified: string
+//   name: string
+//   type: string
 
+// }
 function MyProfile (): React.JSX.Element {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const userInfo: UserDetails = loggedInUserInfo()
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [userData, setUserData] = useState<UserDetails>({
     name: userInfo?.name,
     email: userInfo?.email,
+    profileImage: userInfo?.profileImage,
     passwordCurrent: '',
     password: ''
   })
@@ -42,7 +52,8 @@ function MyProfile (): React.JSX.Element {
               name: userInfo?.name,
               email: userInfo?.email,
               passwordCurrent: '',
-              password: ''
+              password: '',
+              profileImage: userInfo.profileImage
             })
           }
         })
@@ -72,7 +83,8 @@ function MyProfile (): React.JSX.Element {
               name: userInfo?.name,
               email: userInfo?.email,
               passwordCurrent: '',
-              password: ''
+              password: '',
+              profileImage: ''
             })
           }
         })
@@ -88,6 +100,38 @@ function MyProfile (): React.JSX.Element {
       [e.target.name]: e.target.value
     })
   }
+  const handleImage = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files != null && e.target.files[0]) {
+      setSelectedFile(e.target.files[0])
+      const objectUrl: string = URL.createObjectURL(e.target.files[0])
+      setUserData({
+        ...userData,
+        profileImage: objectUrl
+      })
+    }
+  }
+
+  const handleImageUpload = (): void => {
+    if (selectedFile !== null) {
+      const formData = new FormData()
+      formData.append('profileImage', selectedFile)
+      ApiUtils.uploadUserProfileImg(formData)
+        .then((res) => {
+          const getCookiesValue = Cookies.get(COOKIE_STORAGE_KEY)
+          const parsedValue = JSON.parse(getCookiesValue ?? 'null')
+          const updateData = {
+            ...parsedValue,
+            profileImage: res?.data?.data?.user?.profileImage
+          }
+          const userDataString = JSON.stringify(updateData)
+          ToasterMessage('success', 'Upload Successfully')
+          Cookies.set(COOKIE_STORAGE_KEY, userDataString)
+        })
+        .catch((err) => {
+          ToasterMessage('error', err.data.message)
+        })
+    }
+  }
   return (
     <div className="profile-wrapper">
       <Container>
@@ -101,56 +145,103 @@ function MyProfile (): React.JSX.Element {
           <div className="profile-title">My Profile</div>
           <hr />
         </div>
-        <Form noValidate>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="profile-name"
-              type="text"
-              placeholder="Name"
-              value={userData.name}
-              onChange={handleChange}
-              name="name"
-            />
-            <label htmlFor="profile-name">Name</label>
-          </Form.Floating>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="profile-email"
-              type="email"
-              placeholder="Email"
-              value={userData.email}
-              name="email"
-            />
-            <label htmlFor="profile-email">Email address</label>
-          </Form.Floating>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="profile-password"
-              type="password"
-              placeholder="Password"
-              onChange={handleChange}
-              name="passwordCurrent"
-            />
-            <label htmlFor="new-password">Password</label>
-          </Form.Floating>
-          <Form.Floating className="mb-3">
-            <Form.Control
-              id="new-password"
-              type="password"
-              placeholder="Password"
-              onChange={handleChange}
-              name="password"
-            />
-            <label htmlFor="new-password">New Password</label>
-          </Form.Floating>
-        </Form>
-        <Button type="button" onClick={handleSaveChange} className="save-btn">
-          Save Changes
-        </Button>
-        <Button type="button" onClick={handleDeleteAccount} className="save-btn delete-account">
-          <DeleteOutlineIcon/>
-          Delete My Account
-        </Button>
+
+        <Row>
+          <Col md={4}>
+            <div className="avatar-upload">
+              <div className="avatar-edit">
+                <form action="" method="post" id="form-image">
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    onChange={handleImage}
+                    accept=".png, .jpg, .jpeg"
+                  />
+                  <label htmlFor="imageUpload" className="image-upload-cam">
+                    <CameraAltIcon />
+                  </label>
+                </form>
+              </div>
+              <div className="avatar-preview">
+                <img
+                  className="profile-user-img img-responsive img-circle"
+                  id="imagePreview"
+                  alt="User profile picture"
+                  src={userData.profileImage}
+                  style={{ height: '130px' }}
+                />
+              </div>
+              <Button
+                type="button"
+                onClick={handleImageUpload}
+                className="save-btn"
+                style={{ height: '30px' }}
+              >
+                Upload Image
+              </Button>
+            </div>
+          </Col>
+          <Col md={8}>
+            <Form noValidate>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  id="profile-name"
+                  type="text"
+                  placeholder="Name"
+                  value={userData.name}
+                  onChange={handleChange}
+                  name="name"
+                />
+                <label htmlFor="profile-name">Name</label>
+              </Form.Floating>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  id="profile-email"
+                  type="email"
+                  placeholder="Email"
+                  value={userData.email}
+                  name="email"
+                />
+                <label htmlFor="profile-email">Email address</label>
+              </Form.Floating>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  id="profile-password"
+                  type="password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                  name="passwordCurrent"
+                />
+                <label htmlFor="new-password">Password</label>
+              </Form.Floating>
+              <Form.Floating className="mb-3">
+                <Form.Control
+                  id="new-password"
+                  type="password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                  name="password"
+                />
+                <label htmlFor="new-password">New Password</label>
+              </Form.Floating>
+            </Form>
+            <Button
+              type="button"
+              onClick={handleSaveChange}
+              className="save-btn"
+            >
+              Save Changes
+            </Button>
+            <Button
+              type="button"
+              onClick={handleDeleteAccount}
+              className="save-btn delete-account"
+            >
+              <DeleteOutlineIcon />
+              Delete My Account
+            </Button>
+          </Col>
+        </Row>
       </Container>
     </div>
   )

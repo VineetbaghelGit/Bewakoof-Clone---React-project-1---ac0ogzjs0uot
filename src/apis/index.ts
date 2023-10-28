@@ -5,7 +5,7 @@ const instance = axios.create({
   baseURL: BASE_URL,
   headers: {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
+    // 'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
     projectId: 'ac0ogzjs0uot'
   }
@@ -21,6 +21,11 @@ instance.interceptors.request.use(
     const getCookiesValue = Cookies.get(COOKIE_STORAGE_KEY)
     const cookieData = JSON.parse(getCookiesValue ?? 'null')
     config.headers.Authorization = `Bearer ${cookieData?.token}`
+    if (config.url === 'user/updateProfileImage') {
+      config.headers['Content-Type'] = 'multipart/form-data'
+    } else {
+      config.headers['Content-Type'] = 'application/json'
+    }
     return config
   },
   async function (error) {

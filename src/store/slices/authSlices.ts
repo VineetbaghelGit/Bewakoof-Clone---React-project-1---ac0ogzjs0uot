@@ -20,7 +20,8 @@ export const authSlice = createSlice({
       state.userInfo = {
         name: '',
         email: '',
-        token: ''
+        token: '',
+        profileImage: ''
       }
     }
   }

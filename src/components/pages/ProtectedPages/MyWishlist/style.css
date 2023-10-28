@@ -92,6 +92,41 @@
   .wishlist-wrapper .wishlist-empty .wishlist-btn:hover {
     opacity: 0.7;
   }
+  .remove-all-item-btn{
+    float: right;
+    height: 40px;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    line-height: 16px !important;
+    text-transform: uppercase;
+    padding: 16px;
+    display: inline-flex;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 0;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(66, 162, 162) !important;
+    zoom: 1;
+    user-select: none;
+    border-radius: 4px;
+    background-color: #fff !important;
+    color: #7e7a7a !important;
+    border: 1px solid rgb(171 169 169) !important;
+    user-select: none;
+    border-radius: 4px;
+  }
+  .remove-all-item-btn svg{
+    font-size: 20px;
+    margin-right: 2px;
+  }
+  @media (max-width: 767px) {
+    .remove-all-item-btn{
+      float: left;
+    }
+
+  }
   @media (max-width: 480px) {
     .card-col {
       width: max-content !important;

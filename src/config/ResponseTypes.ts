@@ -3,6 +3,7 @@ export interface UserDetails {
   email: string
   passwordCurrent: string
   password: string
+  profileImage: string
 }
 export interface SideDrawerProps {
   isOpen: boolean
@@ -29,6 +30,7 @@ export interface SliceState {
     name: string
     email: string
     token: string
+    profileImage: string
   }
 }
 export interface WishlistItem {

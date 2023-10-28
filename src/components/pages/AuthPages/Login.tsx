@@ -31,7 +31,8 @@ function Login (): JSX.Element {
           const userData = {
             name: res.data.data.name,
             token: res.data.token,
-            email: res.data.data.email
+            email: res.data.data.email,
+            profileImage: res?.data?.data?.profileImage
           }
           const userDataString = JSON.stringify(userData)
           dispatch(setUserAuthDetails(userData))

@@ -13,11 +13,11 @@ function BestSeller (): React.JSX.Element {
   const [product, setProduct] = useState<GetProductResType[]>([])
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
 
-  const redirectToProduct = (e: any, item: GetProductResType): void => {
+  const redirectToProduct = (e: React.MouseEvent<HTMLDivElement>, item: GetProductResType): void => {
     e.stopPropagation()
     navigate(`/product/${item._id}`, { state: item })
   }
-  const notWishlistedItem = (e: any, id: string): void => {
+  const notWishlistedItem = (e: React.MouseEvent<HTMLImageElement>, id: string): void => {
     e.stopPropagation()
     if (isRouteProtected) {
       const body = {
@@ -37,7 +37,7 @@ function BestSeller (): React.JSX.Element {
       navigate('/wishlist')
     }
   }
-  const wishlistedItem = (e: any, id: string): void => {
+  const wishlistedItem = (e: React.MouseEvent<HTMLImageElement>, id: string): void => {
     e.stopPropagation()
     if (isRouteProtected) {
       ApiUtils.removeFromWishlist(id)

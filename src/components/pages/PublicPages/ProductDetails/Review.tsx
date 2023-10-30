@@ -71,7 +71,7 @@ function Review ({ id }: { id: string | undefined }): React.JSX.Element {
                   </span>
                 </div>
                 <div className="user-name">
-                  <p>Vineet baghe</p>
+                  <p>Test User</p>
                   {/* <span onClick={deleteReview}>
                     <DeleteOutlineIcon />
                   </span> */}
@@ -112,7 +112,7 @@ function Review ({ id }: { id: string | undefined }): React.JSX.Element {
                   </span>
                 </div>
                 <div className="user-name">
-                  <p>Vineet baghe</p>
+                  <p>Test User</p>
                 </div>
                 <div className="review-time">
                   <p>2023-10-26 </p>

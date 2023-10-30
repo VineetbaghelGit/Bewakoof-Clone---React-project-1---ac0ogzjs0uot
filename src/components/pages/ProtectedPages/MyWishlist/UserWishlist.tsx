@@ -71,7 +71,7 @@ function UserWishlist (): React.JSX.Element {
         if (res.status === 200) {
           removewishlistedItem(id)
           dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
+          const existingUserDataString: string = Cookies.get(COOKIE_STORAGE_KEY) ?? ''
           const existingUserData = JSON.parse(existingUserDataString)
           const updatedUserData = {
             ...existingUserData,
@@ -121,10 +121,9 @@ function UserWishlist (): React.JSX.Element {
           ? (
           <div className="product-widget">
             <Row>
-              {wishlist.map((wishlistItem) => {
+              {wishlist.map((wishlistItem, i) => {
                 return (
-                  <>
-                    <Col md={3} xs={6} sm={6} className="card-col">
+                    <Col key={i} md={3} xs={6} sm={6} className="card-col">
                       <div className="product-card-box">
                         <div>
                           <div className="product-card-img">
@@ -207,7 +206,6 @@ function UserWishlist (): React.JSX.Element {
                         </div>
                       </div>
                     </Col>
-                  </>
                 )
               })}
             </Row>

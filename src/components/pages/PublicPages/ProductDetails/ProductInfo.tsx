@@ -21,13 +21,14 @@ import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import {
+  type ProductInfoType,
   type WishlistItem,
   type cartList
 } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 
-function ProductInfo (productDetails: any): React.JSX.Element {
+function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -80,7 +81,10 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         ToasterMessage('error', err?.data?.message)
       })
   }
-  const wishlistedItem = (e: any, id: string): void => {
+  const wishlistedItem = (
+    e: React.MouseEvent<HTMLDivElement>,
+    id: string
+  ): void => {
     if (isRouteProtected) {
       ApiUtils.removeFromWishlist(id)
         .then((res: any) => {
@@ -94,7 +98,10 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         })
     }
   }
-  const notWishlistedItem = (e: any, id: string): void => {
+  const notWishlistedItem = (
+    e: React.MouseEvent<HTMLDivElement>,
+    id: string
+  ): void => {
     if (isRouteProtected) {
       const body = {
         productId: id
@@ -120,7 +127,8 @@ function ProductInfo (productDetails: any): React.JSX.Element {
           if (res.status === 200) {
             fetchCartItemList()
             dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
+            const existingUserDataString: string =
+              Cookies.get(COOKIE_STORAGE_KEY) ?? ''
             const existingUserData = JSON.parse(existingUserDataString)
             const updatedUserData = {
               ...existingUserData,
@@ -226,17 +234,15 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     </div>
                     <div className="multi-color-box">
                       <div className="multi-color-div d-flex align-items-center justify-content-start flex-wrap">
-                        {colorShade.map((box) => {
+                        {colorShade.map((box, i) => {
                           return (
-                            <>
-                              <div className="multi-color-block">
-                                <span>
-                                  <div
-                                    style={{ backgroundColor: `${box.color}` }}
-                                  ></div>
-                                </span>
-                              </div>
-                            </>
+                            <div className="multi-color-block" key={i}>
+                              <span>
+                                <div
+                                  style={{ backgroundColor: `${box.color}` }}
+                                ></div>
+                              </span>
+                            </div>
                           )
                         })}
                       </div>
@@ -249,14 +255,13 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     <div className="select-size">
                       {sizeSelect.map((item, i) => {
                         return (
-                          <>
-                            <div
-                              className="each-size"
-                              id={`test-size-${item.size}`}
-                            >
-                              <span>{item.size}</span>
-                            </div>
-                          </>
+                          <div
+                            className="each-size"
+                            key={i}
+                            id={`test-size-${item.size}`}
+                          >
+                            <span>{item.size}</span>
+                          </div>
                         )
                       })}
                     </div>

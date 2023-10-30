@@ -25,7 +25,7 @@ function Checkout (): React.JSX.Element {
       addressType: 'HOME'
     }
   )
-  const handleSaveChange = (e: any): void => {
+  const handleSaveChange = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
     if (
       userAddressDetails.street.length === 0 ||
@@ -77,7 +77,7 @@ function Checkout (): React.JSX.Element {
       .then((res: any) => {
         if (res.status === 200) {
           dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
+          const existingUserDataString: string = Cookies.get(COOKIE_STORAGE_KEY) ?? ''
           const existingUserData = JSON.parse(existingUserDataString)
           const updatedUserData = {
             ...existingUserData,
@@ -94,7 +94,13 @@ function Checkout (): React.JSX.Element {
         ToasterMessage('error', err?.data?.message)
       })
   }
-  const handleChange = (e: any): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setUserAddressDetails({
+      ...userAddressDetails,
+      [e.target.name]: e.target.value
+    })
+  }
+  function handleSelectChange (e: React.ChangeEvent<HTMLSelectElement>): void {
     setUserAddressDetails({
       ...userAddressDetails,
       [e.target.name]: e.target.value
@@ -186,7 +192,7 @@ function Checkout (): React.JSX.Element {
                 name="addressType"
                 size="sm"
                 className="select-quantity"
-                onChange={handleChange}
+                onChange={handleSelectChange}
               >
                 <option value="HOME">Home</option>
                 <option value="OFFICE">Office</option>

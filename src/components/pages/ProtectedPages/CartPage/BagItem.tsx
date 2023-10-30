@@ -38,7 +38,7 @@ function BagItem (): React.JSX.Element {
           if (res.status === 200) {
             fetchCartItemList()
             dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
+            const existingUserDataString: string = Cookies.get(COOKIE_STORAGE_KEY) ?? ''
             const existingUserData = JSON.parse(existingUserDataString)
             const updatedUserData = {
               ...existingUserData,

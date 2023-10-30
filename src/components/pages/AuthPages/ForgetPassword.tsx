@@ -3,6 +3,7 @@ import ApiUtils from '../../../apis/ApiUtils'
 import { ToasterMessage } from '../../../helper/ToasterHelper'
 import AuthComponent from './AuthComponent'
 import { APP_TYPE_ECOMMERCE, ASK_LOGIN_TEXT, ASK_SIGNUP_TEXT, LINK_TO_LOGIN, LINK_TO_SIGNUP, RESET_PASSWORD_TITLE } from '../../../config/Constant'
+import { type NavigateFunction } from 'react-router-dom'
 
 type AuthFormData = Record<string, string>
 
@@ -13,7 +14,7 @@ function ForgetPassword (): JSX.Element {
     password: ''
   }
 
-  const onSubmit = (formData: AuthFormData, navigate: any): void => {
+  const onSubmit = (formData: AuthFormData, navigate: NavigateFunction): void => {
     const body = {
       name: formData.name,
       email: formData.email,

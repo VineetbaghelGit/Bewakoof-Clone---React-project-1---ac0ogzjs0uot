@@ -25,10 +25,10 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
-  function handleClickOutside (event: any): void {
+  function handleClickOutside (event: MouseEvent): void {
     if (
       sideNavRef.current !== null &&
-      !sideNavRef.current.contains(event.target)
+      !sideNavRef.current.contains(event.target as Node)
     ) {
       setOpenSidebar(false)
 

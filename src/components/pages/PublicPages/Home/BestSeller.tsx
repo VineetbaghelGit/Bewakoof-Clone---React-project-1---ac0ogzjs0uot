@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { useNavigate } from 'react-router-dom'
 import { wishlistIcon, wishlistSelected } from '../../../../config/Images'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
-import { type GetProductResType, type WishlistItem } from '../../../../config/ResponseTypes'
+import {
+  type GetProductResType,
+  type WishlistItem
+} from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import WishlistUtils from '../../../../apis/WishlistUtils'
+import ProductUtils from '../../../../apis/ProductUtils'
 
 function BestSeller (): React.JSX.Element {
   const navigate = useNavigate()
@@ -13,17 +17,23 @@ function BestSeller (): React.JSX.Element {
   const [product, setProduct] = useState<GetProductResType[]>([])
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
 
-  const redirectToProduct = (e: any, item: GetProductResType): void => {
+  const redirectToProduct = (
+    e: React.MouseEvent<HTMLDivElement>,
+    item: GetProductResType
+  ): void => {
     e.stopPropagation()
     navigate(`/product/${item._id}`, { state: item })
   }
-  const notWishlistedItem = (e: any, id: string): void => {
+  const notWishlistedItem = (
+    e: React.MouseEvent<HTMLImageElement>,
+    id: string
+  ): void => {
     e.stopPropagation()
     if (isRouteProtected) {
       const body = {
         productId: id
       }
-      ApiUtils.addToWishlist(body)
+      WishlistUtils.addToWishlist(body)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -37,10 +47,13 @@ function BestSeller (): React.JSX.Element {
       navigate('/wishlist')
     }
   }
-  const wishlistedItem = (e: any, id: string): void => {
+  const wishlistedItem = (
+    e: React.MouseEvent<HTMLImageElement>,
+    id: string
+  ): void => {
     e.stopPropagation()
     if (isRouteProtected) {
-      ApiUtils.removeFromWishlist(id)
+      WishlistUtils.removeFromWishlist(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -50,10 +63,12 @@ function BestSeller (): React.JSX.Element {
         .catch((err: any) => {
           ToasterMessage('error', err?.data?.message)
         })
+    } else {
+      navigate('/wishlist')
     }
   }
   useEffect(() => {
-    ApiUtils.getProductList()
+    ProductUtils.getProductList()
       .then((res: any) => {
         if (res.status === 200) {
           setProduct(res?.data.data)
@@ -70,7 +85,7 @@ function BestSeller (): React.JSX.Element {
     }
   }, [isRouteProtected])
   function fetchGetWishlist (): void {
-    ApiUtils.getMyWishlist()
+    WishlistUtils.getMyWishlist()
       .then((res: any) => {
         if (res.status === 200) {
           setWishlist(res.data.data.items)
@@ -106,6 +121,7 @@ function BestSeller (): React.JSX.Element {
                             src={item.displayImage}
                             fluid
                             title={item.name}
+                            loading="lazy"
                           />
                           <div className="product-seller-tag">
                             <span>{item.sellerTag}</span>
@@ -126,6 +142,7 @@ function BestSeller (): React.JSX.Element {
                                 <Image
                                   src={wishlistSelected}
                                   fluid
+                                  loading="lazy"
                                   onClick={(e) => {
                                     wishlistedItem(e, item?._id)
                                   }}
@@ -135,6 +152,7 @@ function BestSeller (): React.JSX.Element {
                                 <Image
                                   src={wishlistIcon}
                                   fluid
+                                  loading="lazy"
                                   onClick={(e) => {
                                     notWishlistedItem(e, item?._id)
                                   }}

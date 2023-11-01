@@ -14,20 +14,22 @@ import {
 } from '../../../../config/Images'
 import ImageGallery from 'react-image-gallery'
 import Accordion from 'react-bootstrap/Accordion'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import {
+  type ProductInfoType,
   type WishlistItem,
   type cartList
 } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
+import WishlistUtils from '../../../../apis/WishlistUtils'
+import CartUtils from '../../../../apis/CartUtils'
 
-function ProductInfo (productDetails: any): React.JSX.Element {
+function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -67,7 +69,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
     }
   }, [productDetails])
   function fetchGetWishlist (): void {
-    ApiUtils.getMyWishlist()
+    WishlistUtils.getMyWishlist()
       .then((res: any) => {
         if (res.status === 200) {
           setWishlist(res.data.data.items)
@@ -80,9 +82,12 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         ToasterMessage('error', err?.data?.message)
       })
   }
-  const wishlistedItem = (e: any, id: string): void => {
+  const wishlistedItem = (
+    e: React.MouseEvent<HTMLDivElement>,
+    id: string
+  ): void => {
     if (isRouteProtected) {
-      ApiUtils.removeFromWishlist(id)
+      WishlistUtils.removeFromWishlist(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -94,12 +99,15 @@ function ProductInfo (productDetails: any): React.JSX.Element {
         })
     }
   }
-  const notWishlistedItem = (e: any, id: string): void => {
+  const notWishlistedItem = (
+    e: React.MouseEvent<HTMLDivElement>,
+    id: string
+  ): void => {
     if (isRouteProtected) {
       const body = {
         productId: id
       }
-      ApiUtils.addToWishlist(body)
+      WishlistUtils.addToWishlist(body)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -115,12 +123,13 @@ function ProductInfo (productDetails: any): React.JSX.Element {
   }
   const addProductToBag = (id: string): void => {
     if (isRouteProtected) {
-      ApiUtils.addItemInCart(id)
+      CartUtils.addItemInCart(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchCartItemList()
             dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
+            const existingUserDataString: string =
+              Cookies.get(COOKIE_STORAGE_KEY) ?? ''
             const existingUserData = JSON.parse(existingUserDataString)
             const updatedUserData = {
               ...existingUserData,
@@ -142,7 +151,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
   }
 
   function fetchCartItemList (): void {
-    ApiUtils.getCartItemList()
+    CartUtils.getCartItemList()
       .then((res: any) => {
         if (res.status === 200) {
           setCartItemList(res.data.data.items)
@@ -169,6 +178,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                   showPlayButton={false}
                   slideOnThumbnailOver={true}
                   showFullscreenButton={false}
+                  lazyLoad={true}
                 />
               </div>
             </Col>
@@ -226,17 +236,15 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     </div>
                     <div className="multi-color-box">
                       <div className="multi-color-div d-flex align-items-center justify-content-start flex-wrap">
-                        {colorShade.map((box) => {
+                        {colorShade.map((box, i) => {
                           return (
-                            <>
-                              <div className="multi-color-block">
-                                <span>
-                                  <div
-                                    style={{ backgroundColor: `${box.color}` }}
-                                  ></div>
-                                </span>
-                              </div>
-                            </>
+                            <div className="multi-color-block" key={i}>
+                              <span>
+                                <div
+                                  style={{ backgroundColor: `${box.color}` }}
+                                ></div>
+                              </span>
+                            </div>
                           )
                         })}
                       </div>
@@ -249,14 +257,13 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     <div className="select-size">
                       {sizeSelect.map((item, i) => {
                         return (
-                          <>
-                            <div
-                              className="each-size"
-                              id={`test-size-${item.size}`}
-                            >
-                              <span>{item.size}</span>
-                            </div>
-                          </>
+                          <div
+                            className="each-size"
+                            key={i}
+                            id={`test-size-${item.size}`}
+                          >
+                            <span>{item.size}</span>
+                          </div>
                         )
                       })}
                     </div>
@@ -283,6 +290,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                           <Image
                             fluid
                             className="bag-icon"
+                            loading="lazy"
                             src={wishlistSelected}
                           />
                           <span>WISHLISTED</span>
@@ -300,6 +308,7 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                           <Image
                             fluid
                             className="bag-icon"
+                            loading="lazy"
                             src={wishlistIcon}
                           />
                           <span>WISHLIST</span>
@@ -316,7 +325,12 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                       <>
                         <div className="add-bag btn-border d-flex flex-row align-items-center justify-content-center">
                           <Link to="/cart">
-                            <Image fluid className="bag-icon" src={bagIcon} />
+                            <Image
+                              fluid
+                              className="bag-icon"
+                              loading="lazy"
+                              src={bagIcon}
+                            />
                             <span>GO TO BAG</span>
                           </Link>
                         </div>
@@ -332,7 +346,12 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                             )
                           }}
                         >
-                          <Image fluid className="bag-icon" src={bagIcon} />
+                          <Image
+                            fluid
+                            className="bag-icon"
+                            loading="lazy"
+                            src={bagIcon}
+                          />
                           <span>ADD TO BAG</span>
                         </div>
                       </>
@@ -471,7 +490,12 @@ function ProductInfo (productDetails: any): React.JSX.Element {
                     </div>
                     <div className="d-flex flex-row  containerInner">
                       <div className="d-flex flex-column align-items-center">
-                        <Image fluid loading="lazy" alt="offer" src={Globe} />
+                        <Image
+                          fluid
+                          loading="lazy"
+                          alt="offer"
+                          src={Globe}
+                        />
                         <span className="trustBadgeTitle">
                           SHIPPING GLOBALLY
                         </span>

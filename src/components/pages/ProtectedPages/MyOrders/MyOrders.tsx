@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { Container, Image } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { type OrderItem } from '../../../../config/ResponseTypes'
 import './style.css'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import OrderUtils from '../../../../apis/OrderUtils'
 
 function MyOrders (): React.JSX.Element {
   const [orderList, setOrderList] = useState<OrderItem[]>([])
   function getOrderItemList (): void {
-    ApiUtils.getOrderItemList()
+    OrderUtils.getOrderItemList()
       .then((res: any) => {
         if (res.status === 200) {
           setOrderList(res.data.data)
@@ -61,6 +61,7 @@ function MyOrders (): React.JSX.Element {
                                       <Image
                                         fluid
                                         src={item.product.displayImage}
+                                        loading='lazy'
                                       />
                                     </Link>
                                   </div>

@@ -1,3 +1,5 @@
+import { type NavigateFunction } from 'react-router-dom'
+
 export interface UserDetails {
   name: string
   email: string
@@ -14,7 +16,7 @@ export type AuthFormData = Record<string, string>
 export interface AuthComponentProps {
   title: string
   actionText: string
-  onSubmit: (formData: AuthFormData, navigate: any) => void
+  onSubmit: (formData: AuthFormData, navigate: NavigateFunction) => void
   firstLinkTo: string
   firstLinkText: string
   secondLinkTo: string
@@ -22,6 +24,16 @@ export interface AuthComponentProps {
   initialState: AuthFormData
 }
 
+export interface ProductInfoType {
+  productDetails: {
+    displayImage: string
+    images: []
+    name: string
+    _id: string
+    price: string
+    description: string
+  }
+}
 export interface cartState {
   cartItemCount: number
 }

@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { loggedInUserInfo } from '../../../../helper/customUseSelector'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
-import ApiUtils from '../../../../apis/ApiUtils'
 import Cookies from 'js-cookie'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useDispatch } from 'react-redux'
@@ -16,12 +15,8 @@ import { removeUserAuth } from '../../../../store/slices/authSlices'
 import { type UserDetails } from '../../../../config/ResponseTypes'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import './style.css'
-// interface ImageObj {
-//   lastModified: string
-//   name: string
-//   type: string
+import ProfileUtils from '../../../../apis/ProfileUtils'
 
-// }
 function MyProfile (): React.JSX.Element {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -34,7 +29,7 @@ function MyProfile (): React.JSX.Element {
     passwordCurrent: '',
     password: ''
   })
-  const handleSaveChange = (e: any): void => {
+  const handleSaveChange = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
     if (
       userData.email.length === 0 ||
@@ -44,7 +39,7 @@ function MyProfile (): React.JSX.Element {
     ) {
       ToasterMessage('error', 'All fields are mandatory')
     } else {
-      ApiUtils.updateUserPassword(userData)
+      ProfileUtils.updateUserPassword(userData)
         .then((res) => {
           if (res.status === 200) {
             ToasterMessage('success', 'Password changed successfully')
@@ -62,7 +57,7 @@ function MyProfile (): React.JSX.Element {
         })
     }
   }
-  const handleDeleteAccount = (e: any): void => {
+  const handleDeleteAccount = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
     if (
       userData.email.length === 0 ||
@@ -72,7 +67,7 @@ function MyProfile (): React.JSX.Element {
     ) {
       ToasterMessage('error', 'All fields are mandatory')
     } else {
-      ApiUtils.deleteMyAccount(userData)
+      ProfileUtils.deleteMyAccount(userData)
         .then((res) => {
           if (res.status === 204) {
             navigate('/signup')
@@ -94,7 +89,7 @@ function MyProfile (): React.JSX.Element {
     }
   }
 
-  const handleChange = (e: any): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setUserData({
       ...userData,
       [e.target.name]: e.target.value
@@ -115,7 +110,7 @@ function MyProfile (): React.JSX.Element {
     if (selectedFile !== null) {
       const formData = new FormData()
       formData.append('profileImage', selectedFile)
-      ApiUtils.uploadUserProfileImg(formData)
+      ProfileUtils.uploadUserProfileImg(formData)
         .then((res) => {
           const getCookiesValue = Cookies.get(COOKIE_STORAGE_KEY)
           const parsedValue = JSON.parse(getCookiesValue ?? 'null')
@@ -199,8 +194,9 @@ function MyProfile (): React.JSX.Element {
                   id="profile-email"
                   type="email"
                   placeholder="Email"
-                  value={userData.email}
+                  defaultValue={userData.email}
                   name="email"
+                  readOnly
                 />
                 <label htmlFor="profile-email">Email address</label>
               </Form.Floating>

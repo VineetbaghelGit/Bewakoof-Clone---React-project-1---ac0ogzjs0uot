@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { Col, Container, Image, Row } from 'react-bootstrap'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { loggedInUserInfo } from '../../../../helper/customUseSelector'
 import {
   type OrderResponse,
@@ -10,6 +9,7 @@ import {
 } from '../../../../config/ResponseTypes'
 import './style.css'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import OrderUtils from '../../../../apis/OrderUtils'
 function SingleOrder (): React.JSX.Element {
   const { id } = useParams()
   const userInfo: UserDetails = loggedInUserInfo()
@@ -36,7 +36,7 @@ function SingleOrder (): React.JSX.Element {
     }
   }, [id])
   function fetchOrderDetail (params: string): void {
-    ApiUtils.getOrderItem(params)
+    OrderUtils.getOrderItem(params)
       .then((res) => {
         if (res.status === 200) {
           setOrderDetails(res.data.data)

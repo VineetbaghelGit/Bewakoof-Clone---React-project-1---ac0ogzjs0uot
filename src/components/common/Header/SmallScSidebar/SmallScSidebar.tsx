@@ -17,6 +17,7 @@ import { COOKIE_STORAGE_KEY, LINK_TO_FORGET_PASSWORD, LINK_TO_LOGIN, LINK_TO_SIG
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { removeUserAuth } from '../../../../store/slices/authSlices'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 function SmallScSidebar (): React.JSX.Element {
   const [openSidebar, setOpenSidebar] = useState(false)
   const cartItemCount = cartItemsCount()
@@ -37,6 +38,7 @@ function SmallScSidebar (): React.JSX.Element {
   const handleLogout = (): void => {
     Cookies.remove(COOKIE_STORAGE_KEY)
     dispatch(removeUserAuth())
+    ToasterMessage('success', 'Logout Successfully')
   }
   return (
     <>

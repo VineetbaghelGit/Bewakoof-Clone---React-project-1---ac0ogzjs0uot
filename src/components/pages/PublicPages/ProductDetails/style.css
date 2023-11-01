@@ -50,9 +50,9 @@
 .mr-2 {
   margin-right: 0.5rem;
 }
-.noPadding {
+/* .noPadding {
   padding: 0px;
-}
+} */
 .tags-rect {
   background-color: rgba(0, 184, 82, 0.8);
   color: rgb(255, 255, 255);

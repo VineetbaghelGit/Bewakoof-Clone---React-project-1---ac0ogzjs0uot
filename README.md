@@ -23,7 +23,7 @@ A clone of Bewakoof.com - An Online Fashion Shopping platform for Men, Women, an
 
 ## Project Overview
 
-This project is a clone of Bewakoof.com, an online fashion shopping platform offering a wide range of products for Men, Women, and Accessories. The web app replicates key features of the original Bewakoof website, allowing users to browse and purchase fashion items.
+This project is a clone of Bewakoof.com, an online fashion shopping platform offering a wide range of products for Men, Women, and Accessories. The web app replicates some key features of the Bewakoof website, allowing users to browse and purchase fashion items.
 
 ## Features
 
@@ -105,9 +105,9 @@ To make a purchase, click the "Buy Now" option. You'll be redirected to the chec
 
 ### User Account
 
-Manage your user account from the account settings page. You can update your profile information and view your order history.
+Manage your user account from the account settings page. You can update your profile information by changing your password, name, or display picture. In my order section, you can view the order history.
 
 ## Demo
 
-[Bewakoof Clone App - Vineet Baghel](https://bewakoof-clone-react-project-1-ac0ogzjs0uot.vercel.app/)
+[Bewakoof Clone App - by Vineet Baghel](https://bewakoof-clone-react-project-1-ac0ogzjs0uot.vercel.app/)
 

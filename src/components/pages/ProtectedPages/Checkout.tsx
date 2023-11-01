@@ -4,12 +4,13 @@ import Form from 'react-bootstrap/Form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { ToasterMessage } from '../../../helper/ToasterHelper'
-import ApiUtils from '../../../apis/ApiUtils'
 import { type UserAddressInfo } from '../../../config/ResponseTypes'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
 import { COOKIE_STORAGE_KEY } from '../../../config/Constant'
+import OrderUtils from '../../../apis/OrderUtils'
+import CartUtils from '../../../apis/CartUtils'
 
 function Checkout (): React.JSX.Element {
   const { state } = useLocation()
@@ -25,7 +26,7 @@ function Checkout (): React.JSX.Element {
       addressType: 'HOME'
     }
   )
-  const handleSaveChange = (e: any): void => {
+  const handleSaveChange = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
     if (
       userAddressDetails.street.length === 0 ||
@@ -50,7 +51,7 @@ function Checkout (): React.JSX.Element {
             zipCode: userAddressDetails.zipCode
           }
         }
-        await ApiUtils.buyItemNow(body)
+        await OrderUtils.buyItemNow(body)
           .then((res) => {
             if (res.status === 200) {
               removeProductFromBag(item.product._id)
@@ -73,11 +74,11 @@ function Checkout (): React.JSX.Element {
   }
 
   const removeProductFromBag = (id: string): void => {
-    ApiUtils.removeItemFromCart(id)
+    CartUtils.removeItemFromCart(id)
       .then((res: any) => {
         if (res.status === 200) {
           dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
+          const existingUserDataString: string = Cookies.get(COOKIE_STORAGE_KEY) ?? ''
           const existingUserData = JSON.parse(existingUserDataString)
           const updatedUserData = {
             ...existingUserData,
@@ -94,7 +95,13 @@ function Checkout (): React.JSX.Element {
         ToasterMessage('error', err?.data?.message)
       })
   }
-  const handleChange = (e: any): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setUserAddressDetails({
+      ...userAddressDetails,
+      [e.target.name]: e.target.value
+    })
+  }
+  function handleSelectChange (e: React.ChangeEvent<HTMLSelectElement>): void {
     setUserAddressDetails({
       ...userAddressDetails,
       [e.target.name]: e.target.value
@@ -186,7 +193,7 @@ function Checkout (): React.JSX.Element {
                 name="addressType"
                 size="sm"
                 className="select-quantity"
-                onChange={handleChange}
+                onChange={handleSelectChange}
               >
                 <option value="HOME">Home</option>
                 <option value="OFFICE">Office</option>

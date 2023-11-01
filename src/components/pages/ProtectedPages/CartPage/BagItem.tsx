@@ -7,7 +7,6 @@ import {
   discount,
   qualityCheck
 } from '../../../../config/Images'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
@@ -15,6 +14,8 @@ import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { type cartList } from '../../../../config/ResponseTypes'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import WishlistUtils from '../../../../apis/WishlistUtils'
+import CartUtils from '../../../../apis/CartUtils'
 
 function BagItem (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
@@ -33,12 +34,13 @@ function BagItem (): React.JSX.Element {
   }, [cartItemList])
   const removeProductFromBag = (id: string): void => {
     if (isRouteProtected) {
-      ApiUtils.removeItemFromCart(id)
+      CartUtils.removeItemFromCart(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchCartItemList()
             dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: any = Cookies.get(COOKIE_STORAGE_KEY)
+            const existingUserDataString: string =
+              Cookies.get(COOKIE_STORAGE_KEY) ?? ''
             const existingUserData = JSON.parse(existingUserDataString)
             const updatedUserData = {
               ...existingUserData,
@@ -57,7 +59,7 @@ function BagItem (): React.JSX.Element {
     }
   }
   function fetchCartItemList (): void {
-    ApiUtils.getCartItemList()
+    CartUtils.getCartItemList()
       .then((res: any) => {
         if (res.status === 200) {
           setCartItemList(res.data.data.items)
@@ -76,7 +78,7 @@ function BagItem (): React.JSX.Element {
       const body = {
         productId: id
       }
-      ApiUtils.addToWishlist(body)
+      WishlistUtils.addToWishlist(body)
         .then((res: any) => {
           if (res.status === 200) {
             removeProductFromBag(id)
@@ -132,7 +134,7 @@ function BagItem (): React.JSX.Element {
                                 <span className="actual-price">₹999</span>
                               </div>
                               <div className="product-apply">
-                                <Image src={discount} />
+                                <Image loading="lazy" src={discount} />
                                 <p>Buy 1 Get 1 offer applicable</p>
                               </div>
                               <div className="product-quantity">
@@ -174,10 +176,11 @@ function BagItem (): React.JSX.Element {
                               >
                                 Remove
                               </div>
-                              <div className="move-item-wishlist"
-                               onClick={() => {
-                                 moveItemToWishlist(cartItem.product._id)
-                               }}
+                              <div
+                                className="move-item-wishlist"
+                                onClick={() => {
+                                  moveItemToWishlist(cartItem.product._id)
+                                }}
                               >
                                 Move to Wishlist
                               </div>
@@ -243,19 +246,34 @@ function BagItem (): React.JSX.Element {
                     <div className="d-flex justify-content-between">
                       <div className="d-flex flex-row">
                         <div className="d-flex inner  flex-column align-items-center">
-                          <Image fluid alt="offer" src={cartBadgeTrust} />
+                          <Image
+                            fluid
+                            alt="offer"
+                            loading="lazy"
+                            src={cartBadgeTrust}
+                          />
                           <span>100% SECURE PAYMENTS</span>
                         </div>
                       </div>
                       <div className="d-flex flex-row">
                         <div className="d-flex inner  flex-column align-items-center">
-                          <Image fluid alt="offer" src={cartEasyReturn} />
+                          <Image
+                            fluid
+                            alt="offer"
+                            loading="lazy"
+                            src={cartEasyReturn}
+                          />
                           <span>EASY RETURNS &amp; QUICK REFUNDS</span>
                         </div>
                       </div>
                       <div className="d-flex flex-row">
                         <div className="d-flex inner flex-column align-items-center">
-                          <Image fluid alt="offer" src={qualityCheck} />
+                          <Image
+                            fluid
+                            alt="offer"
+                            loading="lazy"
+                            src={qualityCheck}
+                          />
                           <span>QUALITY ASSURANCE</span>
                         </div>
                       </div>

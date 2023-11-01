@@ -1,16 +1,16 @@
 import React from 'react'
 import { Button, Col, Image, Row } from 'react-bootstrap'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
+import ReviewUtils from '../../../../apis/ReviewUtils'
 
 function Review ({ id }: { id: string | undefined }): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
 
   const deleteReview = (): void => {
     if (id !== undefined) {
-      ApiUtils.deleteProductReview(id)
+      ReviewUtils.deleteProductReview(id)
         .then((res) => {
           if (res.status === 200) {
             ToasterMessage('success', res?.data?.message)
@@ -23,7 +23,7 @@ function Review ({ id }: { id: string | undefined }): React.JSX.Element {
   }
   const addReview = (): void => {
     if (id !== undefined && isRouteProtected) {
-      ApiUtils.addProductReview(id)
+      ReviewUtils.addProductReview(id)
         .then((res) => {
           if (res.status === 201) {
             ToasterMessage('success', res?.data?.message)
@@ -46,22 +46,27 @@ function Review ({ id }: { id: string | undefined }): React.JSX.Element {
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />{' '}
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                 </div>
                 <div className="review-msg">
@@ -71,7 +76,7 @@ function Review ({ id }: { id: string | undefined }): React.JSX.Element {
                   </span>
                 </div>
                 <div className="user-name">
-                  <p>Vineet baghe</p>
+                  <p>Test User</p>
                   {/* <span onClick={deleteReview}>
                     <DeleteOutlineIcon />
                   </span> */}
@@ -112,7 +117,7 @@ function Review ({ id }: { id: string | undefined }): React.JSX.Element {
                   </span>
                 </div>
                 <div className="user-name">
-                  <p>Vineet baghe</p>
+                  <p>Test User</p>
                 </div>
                 <div className="review-time">
                   <p>2023-10-26 </p>

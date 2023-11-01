@@ -21,6 +21,7 @@ import Cookies from 'js-cookie'
 import { removeUserAuth } from '../../../../store/slices/authSlices'
 import { COOKIE_STORAGE_KEY, LINK_TO_FORGET_PASSWORD, LINK_TO_LOGIN, LINK_TO_SIGNUP } from '../../../../config/Constant'
 import { type UserDetails } from '../../../../config/ResponseTypes'
+import { ToasterMessage } from '../../../../helper/ToasterHelper'
 function MainHeader (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const userInfo: UserDetails = loggedInUserInfo()
@@ -39,6 +40,7 @@ function MainHeader (): React.JSX.Element {
   const handleLogout = (): void => {
     Cookies.remove(COOKIE_STORAGE_KEY)
     dispatch(removeUserAuth())
+    ToasterMessage('success', 'Logout Successfully')
   }
   return (
     <React.Fragment>

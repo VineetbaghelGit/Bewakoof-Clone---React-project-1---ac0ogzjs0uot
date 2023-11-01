@@ -61,6 +61,7 @@ function MyOrders (): React.JSX.Element {
                                       <Image
                                         fluid
                                         src={item.product.displayImage}
+                                        loading='lazy'
                                       />
                                     </Link>
                                   </div>

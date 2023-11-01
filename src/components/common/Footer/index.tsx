@@ -126,12 +126,14 @@ function Footer (): React.JSX.Element {
                   <Image
                     src={AppAndriodStore}
                     fluid
+                    loading='lazy'
                   />
                 </Link>
                 <Link to="/">
                   <Image
                     src={AppIosStore}
                     fluid
+                    loading='lazy'
                   />
                 </Link>
               </div>
@@ -141,6 +143,7 @@ function Footer (): React.JSX.Element {
               <Image
                 src={SecurePaymentsImg}
                 fluid
+                loading='lazy'
               />
             </Col>
           </Row>

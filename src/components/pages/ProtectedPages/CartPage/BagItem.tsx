@@ -38,7 +38,8 @@ function BagItem (): React.JSX.Element {
           if (res.status === 200) {
             fetchCartItemList()
             dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: string = Cookies.get(COOKIE_STORAGE_KEY) ?? ''
+            const existingUserDataString: string =
+              Cookies.get(COOKIE_STORAGE_KEY) ?? ''
             const existingUserData = JSON.parse(existingUserDataString)
             const updatedUserData = {
               ...existingUserData,
@@ -132,7 +133,7 @@ function BagItem (): React.JSX.Element {
                                 <span className="actual-price">₹999</span>
                               </div>
                               <div className="product-apply">
-                                <Image src={discount} />
+                                <Image loading="lazy" src={discount} />
                                 <p>Buy 1 Get 1 offer applicable</p>
                               </div>
                               <div className="product-quantity">
@@ -174,10 +175,11 @@ function BagItem (): React.JSX.Element {
                               >
                                 Remove
                               </div>
-                              <div className="move-item-wishlist"
-                               onClick={() => {
-                                 moveItemToWishlist(cartItem.product._id)
-                               }}
+                              <div
+                                className="move-item-wishlist"
+                                onClick={() => {
+                                  moveItemToWishlist(cartItem.product._id)
+                                }}
                               >
                                 Move to Wishlist
                               </div>
@@ -243,19 +245,34 @@ function BagItem (): React.JSX.Element {
                     <div className="d-flex justify-content-between">
                       <div className="d-flex flex-row">
                         <div className="d-flex inner  flex-column align-items-center">
-                          <Image fluid alt="offer" src={cartBadgeTrust} />
+                          <Image
+                            fluid
+                            alt="offer"
+                            loading="lazy"
+                            src={cartBadgeTrust}
+                          />
                           <span>100% SECURE PAYMENTS</span>
                         </div>
                       </div>
                       <div className="d-flex flex-row">
                         <div className="d-flex inner  flex-column align-items-center">
-                          <Image fluid alt="offer" src={cartEasyReturn} />
+                          <Image
+                            fluid
+                            alt="offer"
+                            loading="lazy"
+                            src={cartEasyReturn}
+                          />
                           <span>EASY RETURNS &amp; QUICK REFUNDS</span>
                         </div>
                       </div>
                       <div className="d-flex flex-row">
                         <div className="d-flex inner flex-column align-items-center">
-                          <Image fluid alt="offer" src={qualityCheck} />
+                          <Image
+                            fluid
+                            alt="offer"
+                            loading="lazy"
+                            src={qualityCheck}
+                          />
                           <span>QUALITY ASSURANCE</span>
                         </div>
                       </div>

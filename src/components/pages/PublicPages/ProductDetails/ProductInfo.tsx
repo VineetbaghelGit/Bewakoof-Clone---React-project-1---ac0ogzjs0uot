@@ -177,6 +177,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                   showPlayButton={false}
                   slideOnThumbnailOver={true}
                   showFullscreenButton={false}
+                  lazyLoad={true}
                 />
               </div>
             </Col>
@@ -288,6 +289,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                           <Image
                             fluid
                             className="bag-icon"
+                            loading="lazy"
                             src={wishlistSelected}
                           />
                           <span>WISHLISTED</span>
@@ -305,6 +307,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                           <Image
                             fluid
                             className="bag-icon"
+                            loading="lazy"
                             src={wishlistIcon}
                           />
                           <span>WISHLIST</span>
@@ -321,7 +324,12 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                       <>
                         <div className="add-bag btn-border d-flex flex-row align-items-center justify-content-center">
                           <Link to="/cart">
-                            <Image fluid className="bag-icon" src={bagIcon} />
+                            <Image
+                              fluid
+                              className="bag-icon"
+                              loading="lazy"
+                              src={bagIcon}
+                            />
                             <span>GO TO BAG</span>
                           </Link>
                         </div>
@@ -337,7 +345,12 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                             )
                           }}
                         >
-                          <Image fluid className="bag-icon" src={bagIcon} />
+                          <Image
+                            fluid
+                            className="bag-icon"
+                            loading="lazy"
+                            src={bagIcon}
+                          />
                           <span>ADD TO BAG</span>
                         </div>
                       </>
@@ -476,7 +489,12 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                     </div>
                     <div className="d-flex flex-row  containerInner">
                       <div className="d-flex flex-column align-items-center">
-                        <Image fluid loading="lazy" alt="offer" src={Globe} />
+                        <Image
+                          fluid
+                          loading="lazy"
+                          alt="offer"
+                          src={Globe}
+                        />
                         <span className="trustBadgeTitle">
                           SHIPPING GLOBALLY
                         </span>

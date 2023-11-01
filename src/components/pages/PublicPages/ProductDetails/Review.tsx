@@ -46,22 +46,27 @@ function Review ({ id }: { id: string | undefined }): React.JSX.Element {
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />{' '}
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                   <Image
                     fluid
                     src="https://images.bewakoof.com/web/ic-star-mb-filled.svg"
+                    loading="lazy"
                   />
                 </div>
                 <div className="review-msg">

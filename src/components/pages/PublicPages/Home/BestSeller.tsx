@@ -4,7 +4,10 @@ import ApiUtils from '../../../../apis/ApiUtils'
 import { useNavigate } from 'react-router-dom'
 import { wishlistIcon, wishlistSelected } from '../../../../config/Images'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
-import { type GetProductResType, type WishlistItem } from '../../../../config/ResponseTypes'
+import {
+  type GetProductResType,
+  type WishlistItem
+} from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 
 function BestSeller (): React.JSX.Element {
@@ -13,11 +16,17 @@ function BestSeller (): React.JSX.Element {
   const [product, setProduct] = useState<GetProductResType[]>([])
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
 
-  const redirectToProduct = (e: React.MouseEvent<HTMLDivElement>, item: GetProductResType): void => {
+  const redirectToProduct = (
+    e: React.MouseEvent<HTMLDivElement>,
+    item: GetProductResType
+  ): void => {
     e.stopPropagation()
     navigate(`/product/${item._id}`, { state: item })
   }
-  const notWishlistedItem = (e: React.MouseEvent<HTMLImageElement>, id: string): void => {
+  const notWishlistedItem = (
+    e: React.MouseEvent<HTMLImageElement>,
+    id: string
+  ): void => {
     e.stopPropagation()
     if (isRouteProtected) {
       const body = {
@@ -37,7 +46,10 @@ function BestSeller (): React.JSX.Element {
       navigate('/wishlist')
     }
   }
-  const wishlistedItem = (e: React.MouseEvent<HTMLImageElement>, id: string): void => {
+  const wishlistedItem = (
+    e: React.MouseEvent<HTMLImageElement>,
+    id: string
+  ): void => {
     e.stopPropagation()
     if (isRouteProtected) {
       ApiUtils.removeFromWishlist(id)
@@ -106,6 +118,7 @@ function BestSeller (): React.JSX.Element {
                             src={item.displayImage}
                             fluid
                             title={item.name}
+                            loading="lazy"
                           />
                           <div className="product-seller-tag">
                             <span>{item.sellerTag}</span>
@@ -126,6 +139,7 @@ function BestSeller (): React.JSX.Element {
                                 <Image
                                   src={wishlistSelected}
                                   fluid
+                                  loading="lazy"
                                   onClick={(e) => {
                                     wishlistedItem(e, item?._id)
                                   }}
@@ -135,6 +149,7 @@ function BestSeller (): React.JSX.Element {
                                 <Image
                                   src={wishlistIcon}
                                   fluid
+                                  loading="lazy"
                                   onClick={(e) => {
                                     notWishlistedItem(e, item?._id)
                                   }}

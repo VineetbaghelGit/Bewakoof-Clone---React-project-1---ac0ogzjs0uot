@@ -71,7 +71,8 @@ function UserWishlist (): React.JSX.Element {
         if (res.status === 200) {
           removewishlistedItem(id)
           dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: string = Cookies.get(COOKIE_STORAGE_KEY) ?? ''
+          const existingUserDataString: string =
+            Cookies.get(COOKIE_STORAGE_KEY) ?? ''
           const existingUserData = JSON.parse(existingUserDataString)
           const updatedUserData = {
             ...existingUserData,
@@ -106,10 +107,7 @@ function UserWishlist (): React.JSX.Element {
         {wishlist.length > 0 && (
           <Row>
             <span>
-              <Button
-                className="remove-all-item-btn"
-                onClick={removeItem}
-              >
+              <Button className="remove-all-item-btn" onClick={removeItem}>
                 <DeleteOutlineIcon />
                 Remove All Items
               </Button>
@@ -123,74 +121,55 @@ function UserWishlist (): React.JSX.Element {
             <Row>
               {wishlist.map((wishlistItem, i) => {
                 return (
-                    <Col key={i} md={3} xs={6} sm={6} className="card-col">
-                      <div className="product-card-box">
-                        <div>
-                          <div className="product-card-img">
-                            <Image
-                              src={wishlistItem?.products?.displayImage}
-                              fluid
-                              title={wishlistItem?.products?.name}
-                            />{' '}
-                            <div
-                              className="product-seller-tag remove-item"
-                              onClick={() => {
-                                removewishlistedItem(wishlistItem.products._id)
-                              }}
-                            >
-                              <span>X</span>
+                  <Col key={i} md={3} xs={6} sm={6} className="card-col">
+                    <div className="product-card-box">
+                      <div>
+                        <div className="product-card-img">
+                          <Image
+                            src={wishlistItem?.products?.displayImage}
+                            fluid
+                            loading="lazy"
+                            title={wishlistItem?.products?.name}
+                          />{' '}
+                          <div
+                            className="product-seller-tag remove-item"
+                            onClick={() => {
+                              removewishlistedItem(wishlistItem.products._id)
+                            }}
+                          >
+                            <span>X</span>
+                          </div>
+                        </div>
+                        <div className="product-card-detail">
+                          <div className="d-flex justify-content-between p-1">
+                            <div className="product-naming">
+                              <h3 className="brand-name">Bewakoof®</h3>
+                              <h2 className="name">
+                                {wishlistItem?.products?.name}
+                              </h2>
                             </div>
                           </div>
-                          <div className="product-card-detail">
-                            <div className="d-flex justify-content-between p-1">
-                              <div className="product-naming">
-                                <h3 className="brand-name">Bewakoof®</h3>
-                                <h2 className="name">
-                                  {wishlistItem?.products?.name}
-                                </h2>
-                              </div>
+                          <div className="d-flex product-price-box px-1">
+                            <div className="discounted-price-text">
+                              <span>₹</span>
+                              {wishlistItem?.products?.price}
                             </div>
-                            <div className="d-flex product-price-box px-1">
-                              <div className="discounted-price-text">
-                                <span>₹</span>
-                                {wishlistItem?.products?.price}
-                              </div>
-                              <div className="actual-price-text">
-                                <span>₹</span>
-                                3456
-                              </div>
-                              <div className="discount-percent">65% OFF</div>
+                            <div className="actual-price-text">
+                              <span>₹</span>
+                              3456
                             </div>
-                            <div className="add-to-cart-btn">
-                              {cartItemList.length > 0 &&
-                              cartItemList?.some(
-                                (cartItem) =>
-                                  cartItem?.product?._id ===
-                                  wishlistItem?.products?._id
-                              )
-                                ? (
-                                <>
-                                  <div className="add-to-bag d-flex justify-content-center align-items-center">
-                                    <span>
-                                      <Image
-                                        fluid
-                                        className="bag-icon"
-                                        src={bagIcon}
-                                      />
-                                    </span>
-                                    <Link to="/cart">
-                                      <p>GO TO BAG</p>
-                                    </Link>
-                                  </div>
-                                </>
-                                  )
-                                : (
-                                <div
-                                  className="add-to-bag d-flex justify-content-center align-items-center"
-                                  onClick={() => {
-                                    addProductToBag(wishlistItem.products._id)
-                                  }}
-                                >
+                            <div className="discount-percent">65% OFF</div>
+                          </div>
+                          <div className="add-to-cart-btn">
+                            {cartItemList.length > 0 &&
+                            cartItemList?.some(
+                              (cartItem) =>
+                                cartItem?.product?._id ===
+                                wishlistItem?.products?._id
+                            )
+                              ? (
+                              <>
+                                <div className="add-to-bag d-flex justify-content-center align-items-center">
                                   <span>
                                     <Image
                                       fluid
@@ -198,14 +177,34 @@ function UserWishlist (): React.JSX.Element {
                                       src={bagIcon}
                                     />
                                   </span>
-                                  <p>ADD TO CART</p>
+                                  <Link to="/cart">
+                                    <p>GO TO BAG</p>
+                                  </Link>
                                 </div>
-                                  )}
-                            </div>
+                              </>
+                                )
+                              : (
+                              <div
+                                className="add-to-bag d-flex justify-content-center align-items-center"
+                                onClick={() => {
+                                  addProductToBag(wishlistItem.products._id)
+                                }}
+                              >
+                                <span>
+                                  <Image
+                                    fluid
+                                    className="bag-icon"
+                                    src={bagIcon}
+                                  />
+                                </span>
+                                <p>ADD TO CART</p>
+                              </div>
+                                )}
                           </div>
                         </div>
                       </div>
-                    </Col>
+                    </div>
+                  </Col>
                 )
               })}
             </Row>

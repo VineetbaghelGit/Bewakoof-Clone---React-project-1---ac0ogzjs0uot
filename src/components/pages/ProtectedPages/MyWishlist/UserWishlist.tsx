@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Container, Image, Row } from 'react-bootstrap'
 import { bagIcon, wishlistEmpty } from '../../../../config/Images'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
@@ -14,6 +13,8 @@ import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 import './style.css'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import WishlistUtils from '../../../../apis/WishlistUtils'
+import CartUtils from '../../../../apis/CartUtils'
 
 function UserWishlist (): React.JSX.Element {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
@@ -25,7 +26,7 @@ function UserWishlist (): React.JSX.Element {
     fetchCartItemList()
   }, [])
   function fetchUserWishlist (): void {
-    ApiUtils.getMyWishlist()
+    WishlistUtils.getMyWishlist()
       .then((res: any) => {
         if (res.status === 200) {
           setWishlist(res.data.data.items)
@@ -39,7 +40,7 @@ function UserWishlist (): React.JSX.Element {
       })
   }
   const removewishlistedItem = (id: string): void => {
-    ApiUtils.removeFromWishlist(id)
+    WishlistUtils.removeFromWishlist(id)
       .then((res: any) => {
         if (res.status === 200) {
           fetchUserWishlist()
@@ -52,7 +53,7 @@ function UserWishlist (): React.JSX.Element {
   }
 
   function fetchCartItemList (): void {
-    ApiUtils.getCartItemList()
+    CartUtils.getCartItemList()
       .then((res: any) => {
         if (res.status === 200) {
           setCartItemList(res.data.data.items)
@@ -66,7 +67,7 @@ function UserWishlist (): React.JSX.Element {
       })
   }
   const addProductToBag = (id: string): void => {
-    ApiUtils.addItemInCart(id)
+    CartUtils.addItemInCart(id)
       .then((res: any) => {
         if (res.status === 200) {
           removewishlistedItem(id)
@@ -90,7 +91,7 @@ function UserWishlist (): React.JSX.Element {
       })
   }
   const removeItem = (): void => {
-    ApiUtils.deleteAllItemWishlist()
+    WishlistUtils.deleteAllItemWishlist()
       .then((res) => {
         if (res.status === 200) {
           ToasterMessage('success', res?.data?.message)

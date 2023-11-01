@@ -3,10 +3,11 @@ import { Container } from 'react-bootstrap'
 import BreadCrumBox from './BreadCrumBox'
 import ProductInfo from './ProductInfo'
 import { useNavigate, useParams } from 'react-router-dom'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import './style.css'
 import Review from './Review'
+import ReviewUtils from '../../../../apis/ReviewUtils'
+import ProductUtils from '../../../../apis/ProductUtils'
 
 export interface ProductInfoType {
   displayImage: string
@@ -34,7 +35,7 @@ function Index (): React.JSX.Element {
     }
   }, [id])
   function fetchProductDetails (params: string): void {
-    ApiUtils.getProductInfo(params)
+    ProductUtils.getProductInfo(params)
       .then((res) => {
         if (res.status === 200) {
           setProductDetails(res.data.data)
@@ -49,7 +50,7 @@ function Index (): React.JSX.Element {
       })
   }
   function fetchReviewOfProduct (params: string): void {
-    ApiUtils.getProductReviews(params)
+    ReviewUtils.getProductReviews(params)
       .then((res) => {
         // console.log('🚀 ~ file: Index.tsx:39 ~ .then ~ res:', res)
         // if (res.status === 200) {

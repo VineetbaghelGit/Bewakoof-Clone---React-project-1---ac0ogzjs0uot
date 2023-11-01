@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Image, Row } from 'react-bootstrap'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { useNavigate } from 'react-router-dom'
 import { wishlistIcon, wishlistSelected } from '../../../../config/Images'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
@@ -9,6 +8,8 @@ import {
   type WishlistItem
 } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import WishlistUtils from '../../../../apis/WishlistUtils'
+import ProductUtils from '../../../../apis/ProductUtils'
 
 function BestSeller (): React.JSX.Element {
   const navigate = useNavigate()
@@ -32,7 +33,7 @@ function BestSeller (): React.JSX.Element {
       const body = {
         productId: id
       }
-      ApiUtils.addToWishlist(body)
+      WishlistUtils.addToWishlist(body)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -52,7 +53,7 @@ function BestSeller (): React.JSX.Element {
   ): void => {
     e.stopPropagation()
     if (isRouteProtected) {
-      ApiUtils.removeFromWishlist(id)
+      WishlistUtils.removeFromWishlist(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -62,10 +63,12 @@ function BestSeller (): React.JSX.Element {
         .catch((err: any) => {
           ToasterMessage('error', err?.data?.message)
         })
+    } else {
+      navigate('/wishlist')
     }
   }
   useEffect(() => {
-    ApiUtils.getProductList()
+    ProductUtils.getProductList()
       .then((res: any) => {
         if (res.status === 200) {
           setProduct(res?.data.data)
@@ -82,7 +85,7 @@ function BestSeller (): React.JSX.Element {
     }
   }, [isRouteProtected])
   function fetchGetWishlist (): void {
-    ApiUtils.getMyWishlist()
+    WishlistUtils.getMyWishlist()
       .then((res: any) => {
         if (res.status === 200) {
           setWishlist(res.data.data.items)

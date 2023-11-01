@@ -7,7 +7,6 @@ import {
   discount,
   qualityCheck
 } from '../../../../config/Images'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
@@ -15,6 +14,8 @@ import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { type cartList } from '../../../../config/ResponseTypes'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import WishlistUtils from '../../../../apis/WishlistUtils'
+import CartUtils from '../../../../apis/CartUtils'
 
 function BagItem (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
@@ -33,7 +34,7 @@ function BagItem (): React.JSX.Element {
   }, [cartItemList])
   const removeProductFromBag = (id: string): void => {
     if (isRouteProtected) {
-      ApiUtils.removeItemFromCart(id)
+      CartUtils.removeItemFromCart(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchCartItemList()
@@ -58,7 +59,7 @@ function BagItem (): React.JSX.Element {
     }
   }
   function fetchCartItemList (): void {
-    ApiUtils.getCartItemList()
+    CartUtils.getCartItemList()
       .then((res: any) => {
         if (res.status === 200) {
           setCartItemList(res.data.data.items)
@@ -77,7 +78,7 @@ function BagItem (): React.JSX.Element {
       const body = {
         productId: id
       }
-      ApiUtils.addToWishlist(body)
+      WishlistUtils.addToWishlist(body)
         .then((res: any) => {
           if (res.status === 200) {
             removeProductFromBag(id)

@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { loggedInUserInfo } from '../../../../helper/customUseSelector'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
-import ApiUtils from '../../../../apis/ApiUtils'
 import Cookies from 'js-cookie'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useDispatch } from 'react-redux'
@@ -16,6 +15,7 @@ import { removeUserAuth } from '../../../../store/slices/authSlices'
 import { type UserDetails } from '../../../../config/ResponseTypes'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import './style.css'
+import ProfileUtils from '../../../../apis/ProfileUtils'
 
 function MyProfile (): React.JSX.Element {
   const navigate = useNavigate()
@@ -39,7 +39,7 @@ function MyProfile (): React.JSX.Element {
     ) {
       ToasterMessage('error', 'All fields are mandatory')
     } else {
-      ApiUtils.updateUserPassword(userData)
+      ProfileUtils.updateUserPassword(userData)
         .then((res) => {
           if (res.status === 200) {
             ToasterMessage('success', 'Password changed successfully')
@@ -67,7 +67,7 @@ function MyProfile (): React.JSX.Element {
     ) {
       ToasterMessage('error', 'All fields are mandatory')
     } else {
-      ApiUtils.deleteMyAccount(userData)
+      ProfileUtils.deleteMyAccount(userData)
         .then((res) => {
           if (res.status === 204) {
             navigate('/signup')
@@ -110,7 +110,7 @@ function MyProfile (): React.JSX.Element {
     if (selectedFile !== null) {
       const formData = new FormData()
       formData.append('profileImage', selectedFile)
-      ApiUtils.uploadUserProfileImg(formData)
+      ProfileUtils.uploadUserProfileImg(formData)
         .then((res) => {
           const getCookiesValue = Cookies.get(COOKIE_STORAGE_KEY)
           const parsedValue = JSON.parse(getCookiesValue ?? 'null')

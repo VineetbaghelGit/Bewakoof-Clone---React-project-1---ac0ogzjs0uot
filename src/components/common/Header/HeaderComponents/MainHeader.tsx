@@ -15,13 +15,13 @@ import {
 } from '../../../../helper/customUseSelector'
 import { userPathLocation } from '../../../../helper/GetUserLocation'
 import { mainLogo } from '../../../../config/Images'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { useDispatch } from 'react-redux'
 import Cookies from 'js-cookie'
 import { removeUserAuth } from '../../../../store/slices/authSlices'
 import { COOKIE_STORAGE_KEY, LINK_TO_FORGET_PASSWORD, LINK_TO_LOGIN, LINK_TO_SIGNUP } from '../../../../config/Constant'
 import { type UserDetails } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
+import ProductUtils from '../../../../apis/ProductUtils'
 function MainHeader (): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const userInfo: UserDetails = loggedInUserInfo()
@@ -33,7 +33,7 @@ function MainHeader (): React.JSX.Element {
   const onSearchItem = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const newValue = e.target.value
     setSearchedValue(newValue)
-    ApiUtils.searchingProduct(newValue)
+    ProductUtils.searchingProduct(newValue)
       .then((res) => {})
       .catch((err) => { console.log(err) })
   }

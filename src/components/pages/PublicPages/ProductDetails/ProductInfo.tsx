@@ -14,7 +14,6 @@ import {
 } from '../../../../config/Images'
 import ImageGallery from 'react-image-gallery'
 import Accordion from 'react-bootstrap/Accordion'
-import ApiUtils from '../../../../apis/ApiUtils'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -27,6 +26,8 @@ import {
 } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
+import WishlistUtils from '../../../../apis/WishlistUtils'
+import CartUtils from '../../../../apis/CartUtils'
 
 function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
@@ -68,7 +69,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
     }
   }, [productDetails])
   function fetchGetWishlist (): void {
-    ApiUtils.getMyWishlist()
+    WishlistUtils.getMyWishlist()
       .then((res: any) => {
         if (res.status === 200) {
           setWishlist(res.data.data.items)
@@ -86,7 +87,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
     id: string
   ): void => {
     if (isRouteProtected) {
-      ApiUtils.removeFromWishlist(id)
+      WishlistUtils.removeFromWishlist(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -106,7 +107,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
       const body = {
         productId: id
       }
-      ApiUtils.addToWishlist(body)
+      WishlistUtils.addToWishlist(body)
         .then((res: any) => {
           if (res.status === 200) {
             fetchGetWishlist()
@@ -122,7 +123,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
   }
   const addProductToBag = (id: string): void => {
     if (isRouteProtected) {
-      ApiUtils.addItemInCart(id)
+      CartUtils.addItemInCart(id)
         .then((res: any) => {
           if (res.status === 200) {
             fetchCartItemList()
@@ -150,7 +151,7 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
   }
 
   function fetchCartItemList (): void {
-    ApiUtils.getCartItemList()
+    CartUtils.getCartItemList()
       .then((res: any) => {
         if (res.status === 200) {
           setCartItemList(res.data.data.items)

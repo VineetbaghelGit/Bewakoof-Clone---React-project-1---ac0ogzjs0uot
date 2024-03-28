@@ -21,7 +21,8 @@ const authRoutes = [
 
 const publicRoutes = [
   { path: '/', component: Home },
-  { path: '/product/:id', component: ProductDetail }
+  { path: '/product/:id', component: ProductDetail },
+  { path: '/coming-soon', component: ComingSoon }
 ]
 const protectedRoutes = [
   { path: '/cart', component: Cart },
@@ -31,8 +32,7 @@ const protectedRoutes = [
   { path: '/account', component: UserAccount },
   { path: '/account/profile', component: MyProfile },
   { path: '/account/orders', component: MyOrders },
-  { path: '/checkout', component: Checkout },
-  { path: '/coming-soon', component: ComingSoon }
+  { path: '/checkout', component: Checkout }
 
 ]
 export { publicRoutes, protectedRoutes, authRoutes }

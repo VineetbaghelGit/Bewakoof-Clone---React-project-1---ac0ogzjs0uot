@@ -11,6 +11,7 @@ import UserWishlist from '../components/pages/ProtectedPages/MyWishlist/UserWish
 import Cart from '../components/pages/ProtectedPages/CartPage/Index'
 import Home from '../components/pages/PublicPages/Home/Index'
 import ProductDetail from '../components/pages/PublicPages/ProductDetails/Index'
+import ComingSoon from '../components/pages/ProtectedPages/ComingSoon'
 
 const authRoutes = [
   { path: '/login', component: Login },
@@ -30,7 +31,8 @@ const protectedRoutes = [
   { path: '/account', component: UserAccount },
   { path: '/account/profile', component: MyProfile },
   { path: '/account/orders', component: MyOrders },
-  { path: '/checkout', component: Checkout }
+  { path: '/checkout', component: Checkout },
+  { path: '/coming-soon', component: ComingSoon }
 
 ]
 export { publicRoutes, protectedRoutes, authRoutes }

@@ -1,95 +1,108 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Col, Container, Image, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/comma-dangle */
+/* eslint-disable @typescript-eslint/semi */
+/* eslint-disable @typescript-eslint/quotes */
+import React, { useEffect, useState } from "react";
+import { Button, Col, Container, Image, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import {
   cartBadgeTrust,
   cartEasyReturn,
   discount,
-  qualityCheck
-} from '../../../../config/Images'
-import { useDispatch } from 'react-redux'
-import { setItemCountCart } from '../../../../store/slices/cartSlice'
-import Cookies from 'js-cookie'
-import { isUserAuthenticated } from '../../../../helper/customUseSelector'
-import { type cartList } from '../../../../config/ResponseTypes'
-import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
-import { ToasterMessage } from '../../../../helper/ToasterHelper'
-import WishlistUtils from '../../../../apis/WishlistUtils'
-import CartUtils from '../../../../apis/CartUtils'
+  qualityCheck,
+} from "../../../../config/Images";
+import { useDispatch } from "react-redux";
+import { setItemCountCart } from "../../../../store/slices/cartSlice";
+import Cookies from "js-cookie";
+import { isUserAuthenticated } from "../../../../helper/customUseSelector";
+import { type cartList } from "../../../../config/ResponseTypes";
+import { COOKIE_STORAGE_KEY } from "../../../../config/Constant";
+import { ToasterMessage } from "../../../../helper/ToasterHelper";
+import WishlistUtils from "../../../../apis/WishlistUtils";
+import CartUtils from "../../../../apis/CartUtils";
 
 function BagItem (): React.JSX.Element {
-  const isRouteProtected = isUserAuthenticated()
-  const dispatch = useDispatch()
-  const [cartItemList, setCartItemList] = useState<cartList[]>([])
-  const [totalAmount, setTotalAmount] = useState(0)
+  const isRouteProtected = isUserAuthenticated();
+  const dispatch = useDispatch();
+  const [cartItemList, setCartItemList] = useState<cartList[]>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
   useEffect(() => {
-    fetchCartItemList()
-  }, [])
+    fetchCartItemList();
+  }, []);
   useEffect(() => {
     const total = cartItemList.reduce(
       (acc, cartItem) => acc + cartItem.product.price,
       0
-    )
-    setTotalAmount(total)
-  }, [cartItemList])
+    );
+    setTotalAmount(total);
+  }, [cartItemList]);
   const removeProductFromBag = (id: string): void => {
     if (isRouteProtected) {
       CartUtils.removeItemFromCart(id)
         .then((res: any) => {
           if (res.status === 200) {
-            fetchCartItemList()
-            dispatch(setItemCountCart(res.data.results))
+            fetchCartItemList();
+            dispatch(setItemCountCart(res.data.results));
             const existingUserDataString: string =
-              Cookies.get(COOKIE_STORAGE_KEY) ?? ''
-            const existingUserData = JSON.parse(existingUserDataString)
+              Cookies.get(COOKIE_STORAGE_KEY) ?? "";
+            const existingUserData = JSON.parse(existingUserDataString);
             const updatedUserData = {
               ...existingUserData,
-              cart: res.data.results
-            }
-            const updatedUserDataString = JSON.stringify(updatedUserData)
-            Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
+              cart: res.data.results,
+            };
+            const updatedUserDataString = JSON.stringify(updatedUserData);
+            Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString);
           }
         })
         .catch((err: any) => {
           if (err === undefined) {
-            ToasterMessage('error', 'Network error')
+            ToasterMessage("error", "Network error");
           }
-          ToasterMessage('error', err?.data?.message)
-        })
+          ToasterMessage("error", err?.data?.message);
+        });
     }
-  }
+  };
   function fetchCartItemList (): void {
     CartUtils.getCartItemList()
       .then((res: any) => {
         if (res.status === 200) {
-          setCartItemList(res.data.data.items)
-          dispatch(setItemCountCart(res.data.results))
+          setCartItemList(res.data.data.items);
+          dispatch(setItemCountCart(res.data.results));
         }
       })
       .catch((err: any) => {
         if (err === undefined) {
-          ToasterMessage('error', 'Network error')
+          ToasterMessage("error", "Network error");
         }
-        ToasterMessage('error', err?.data?.message)
-      })
+        ToasterMessage("error", err?.data?.message);
+      });
   }
   const moveItemToWishlist = (id: string): void => {
     if (isRouteProtected) {
       const body = {
-        productId: id
-      }
+        productId: id,
+      };
       WishlistUtils.addToWishlist(body)
         .then((res: any) => {
           if (res.status === 200) {
-            removeProductFromBag(id)
-            ToasterMessage('success', res?.data?.message)
+            removeProductFromBag(id);
+            ToasterMessage("success", res?.data?.message);
           }
         })
         .catch((err: any) => {
-          ToasterMessage('error', err?.data?.message)
-        })
+          ToasterMessage("error", err?.data?.message);
+        });
     }
-  }
+  };
+  const handleClearCart = async (): Promise<void> => {
+    try {
+      const response = await CartUtils.deleteCartItems();
+      console.log("🚀 ~ handleClearCart ~ response:", response);
+      fetchCartItemList();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="bag-item-wrapper">
       <Container className="cart-item-container">
@@ -171,7 +184,7 @@ function BagItem (): React.JSX.Element {
                               <div
                                 className="remove-cart-item"
                                 onClick={() => {
-                                  removeProductFromBag(cartItem.product._id)
+                                  removeProductFromBag(cartItem.product._id);
                                 }}
                               >
                                 Remove
@@ -179,7 +192,7 @@ function BagItem (): React.JSX.Element {
                               <div
                                 className="move-item-wishlist"
                                 onClick={() => {
-                                  moveItemToWishlist(cartItem.product._id)
+                                  moveItemToWishlist(cartItem.product._id);
                                 }}
                               >
                                 Move to Wishlist
@@ -190,7 +203,7 @@ function BagItem (): React.JSX.Element {
                       </div>
                     </div>
                   </div>
-                )
+                );
               })}
           </Col>
 
@@ -227,7 +240,7 @@ function BagItem (): React.JSX.Element {
                     </div>
                     <div className="d-flex justify-content-between w-100 inner">
                       <p>Shipping Charges &nbsp;</p>
-                      <p style={{ color: 'green' }}>Free</p>
+                      <p style={{ color: "green" }}>Free</p>
                     </div>
                     <div className="d-flex justify-content-between w-100 inner">
                       <p className="subtotal">Subtotal &nbsp;</p>
@@ -238,6 +251,16 @@ function BagItem (): React.JSX.Element {
                       <Link to="/checkout" state={{ data: cartItemList }}>
                         <Button>Proceed to Checkout</Button>
                       </Link>
+                    </div>
+                    <div
+                      className="add-bag btn-border d-flex flex-row align-items-center justify-content-center"
+                      // onClick={() => {
+                      //   addProductToBag(
+                      //     productDetails?.productDetails?._id
+                      //   )
+                      // }}
+                    >
+                      <Button onClick={handleClearCart}>Clear Cart</Button>
                     </div>
                   </div>
                 </div>
@@ -286,7 +309,7 @@ function BagItem (): React.JSX.Element {
         </Row>
       </Container>
     </div>
-  )
+  );
 }
 
-export default BagItem
+export default BagItem;

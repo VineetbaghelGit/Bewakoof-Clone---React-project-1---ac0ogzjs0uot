@@ -68,18 +68,18 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
           <p className="menu-heading">shop in</p>
           <ul>
             <li className="menu-list-option">
-              <Link to="/">Men</Link>
+              <Link to="/coming-soon">Men</Link>
               <FaceIcon />
             </li>
             <li className="menu-list-option">
-              <Link to="/">Women</Link>
+              <Link to="/coming-soon">Women</Link>
               <Face3Icon />
             </li>
             <li className="menu-list-option">
-              <Link to="/">COTM x Naruto</Link>
+              <Link to="/coming-soon">COTM x Naruto</Link>
             </li>
             <li className="menu-list-option">
-              <Link to="/">Mobile Covers</Link>
+              <Link to="/coming-soon">Mobile Covers</Link>
             </li>
           </ul>
         </div>
@@ -87,15 +87,15 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
           <p className="menu-heading">contact us</p>
           <ul>
             <li className="menu-list-option">
-              <Link to="/">Help & Support</Link>
+              <Link to="/coming-soon">Help & Support</Link>
               <FaceIcon />
             </li>
             <li className="menu-list-option">
-              <Link to="/">Feedback & Suggestions</Link>
+              <Link to="/coming-soon">Feedback & Suggestions</Link>
               <Face3Icon />
             </li>
             <li className="menu-list-option">
-              <Link to="/">Become a seller</Link>
+              <Link to="/coming-soon">Become a seller</Link>
             </li>
           </ul>
         </div>
@@ -103,15 +103,15 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ isOpen, setOpenSidebar }) => {
           <p className="menu-heading">about us</p>
           <ul>
             <li className="menu-list-option">
-              <Link to="/">Our Story</Link>
+              <Link to="/coming-soon">Our Story</Link>
               <FaceIcon />
             </li>
             <li className="menu-list-option">
-              <Link to="/">Fanbook</Link>
+              <Link to="/coming-soon">Fanbook</Link>
               <Face3Icon />
             </li>
             <li className="menu-list-option">
-              <Link to="/">Blog</Link>
+              <Link to="/coming-soon">Blog</Link>
             </li>
           </ul>
         </div>

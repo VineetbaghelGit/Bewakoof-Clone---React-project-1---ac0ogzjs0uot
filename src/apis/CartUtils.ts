@@ -23,6 +23,14 @@ const CartUtils = {
     } catch (error: any) {
       throw error.response
     }
+  },
+  deleteCartItems: async function () {
+    try {
+      const response = await api.delete('ecommerce/cart')
+      return response
+    } catch (error: any) {
+      throw error.response
+    }
   }
 }
 export default CartUtils

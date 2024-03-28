@@ -43,7 +43,6 @@ function MainHeader (): React.JSX.Element {
     ToasterMessage('success', 'Logout Successfully')
   }
   return (
-    <React.Fragment>
       <div className="main-head">
         <div className="main-header">
           <Container className="main-header-left">
@@ -128,7 +127,6 @@ function MainHeader (): React.JSX.Element {
           </Container>
         </div>
       </div>
-    </React.Fragment>
   )
 }
 

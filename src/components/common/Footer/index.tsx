@@ -24,16 +24,16 @@ function Footer (): React.JSX.Element {
               <span className="title">CUSTOMER SERVICE</span>
               <ul>
                 <li>
-                  <Link to="">Contact us</Link>
+                  <Link to="/coming-soon">Contact us</Link>
                 </li>
                 <li>
-                  <Link to="">Track Order</Link>
+                  <Link to="/coming-soon">Track Order</Link>
                 </li>{' '}
                 <li>
-                  <Link to="">Return Order</Link>
+                  <Link to="/coming-soon">Return Order</Link>
                 </li>{' '}
                 <li>
-                  <Link to="">Cancel Order</Link>
+                  <Link to="/coming-soon">Cancel Order</Link>
                 </li>
               </ul>
             </Col>
@@ -41,16 +41,16 @@ function Footer (): React.JSX.Element {
               <span className="title">COMPANY</span>
               <ul>
                 <li>
-                  <Link to="">About us</Link>
+                  <Link to="/coming-soon">About us</Link>
                 </li>
                 <li>
-                  <Link to="">We are Hiring</Link>
+                  <Link to="/coming-soon">We are Hiring</Link>
                 </li>{' '}
                 <li>
-                  <Link to="">Terms & Conditions</Link>
+                  <Link to="/coming-soon">Terms & Conditions</Link>
                 </li>{' '}
                 <li>
-                  <Link to="">Privacy Policy</Link>
+                  <Link to="/coming-soon">Privacy Policy</Link>
                 </li>
               </ul>
             </Col>
@@ -59,25 +59,25 @@ function Footer (): React.JSX.Element {
               <span className="title">CONNECT WITH US</span>
               <ul>
                 <li>
-                  <Link to="">
+                  <Link to="/coming-soon">
                     <FacebookIcon />
                     <span>4.7M People Like this</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="">
+                  <Link to="/coming-soon">
                     <InstagramIcon />
                     <span>10.7M People Like this</span>
                   </Link>{' '}
                 </li>{' '}
                 <li>
-                  <Link to="">
+                  <Link to="/coming-soon">
                     <TwitterIcon />
                     <span>5.7M People Like this</span>
                   </Link>{' '}
                 </li>{' '}
                 <li>
-                  <Link to="">
+                  <Link to="/coming-soon">
                     <PinterestIcon />
                     <span>2.7M People Like this</span>
                   </Link>{' '}
@@ -106,13 +106,13 @@ function Footer (): React.JSX.Element {
             <Col sm={4} md={3}>
               <ul>
                 <li>
-                  <Link to="">
+                  <Link to="/coming-soon">
                     <KeyboardReturnIcon />
                     <span>15 Days return policy*</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="">
+                  <Link to="/coming-soon">
                     <PaymentsIcon />
                     <span> Cash on delivery*</span>
                   </Link>

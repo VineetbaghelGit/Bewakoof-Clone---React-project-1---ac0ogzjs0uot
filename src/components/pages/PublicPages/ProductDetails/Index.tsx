@@ -16,6 +16,8 @@ export interface ProductInfoType {
   _id: string
   price: string
   description: string
+  size: []
+  color: string
 }
 function Index (): React.JSX.Element {
   const { id } = useParams()
@@ -26,7 +28,9 @@ function Index (): React.JSX.Element {
     name: '',
     _id: '',
     price: '',
-    description: ''
+    description: '',
+    size: [],
+    color: ''
   })
   useEffect(() => {
     if (id !== null) {

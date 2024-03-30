@@ -29,10 +29,12 @@ import { COOKIE_STORAGE_KEY } from '../../../../config/Constant'
 import WishlistUtils from '../../../../apis/WishlistUtils'
 import CartUtils from '../../../../apis/CartUtils'
 
-function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
+function ProductInfo (productDetails: Readonly<ProductInfoType>): React.JSX.Element {
   const isRouteProtected = isUserAuthenticated()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [availableSizes, setAvailableSizes] = useState([])
+  const [selectedSize, setSelectedSize] = useState('')
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
   const [cartItemList, setCartItemList] = useState<cartList[]>([])
   const images = [
@@ -47,26 +49,12 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
       thumbnail: img
     })
   })
-  const colorShade = [
-    { color: 'rgb(14, 14, 14)', colorName: 'jet black' },
-    { color: 'rgb(20, 28, 48)', colorName: 'navy blazer' },
-    { color: 'rgb(157, 32, 47)', colorName: 'bold red' },
-    { color: 'rgb(21, 103, 217)', colorName: 'blue' },
-    { color: 'rgb(251, 209, 52)', colorName: 'yellow' },
-    { color: 'rgb(37, 42, 54)', colorName: 'dark sapphire' }
-  ]
-  const sizeSelect = [
-    { size: 'S' },
-    { size: 'M' },
-    { size: 'L' },
-    { size: 'XL' },
-    { size: '2XL' }
-  ]
   useEffect(() => {
     if (isRouteProtected) {
       fetchGetWishlist()
       fetchCartItemList()
     }
+    setAvailableSizes(productDetails?.productDetails?.size)
   }, [productDetails])
   function fetchGetWishlist (): void {
     WishlistUtils.getMyWishlist()
@@ -123,28 +111,35 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
   }
   const addProductToBag = (id: string): void => {
     if (isRouteProtected) {
-      CartUtils.addItemInCart(id)
-        .then((res: any) => {
-          if (res.status === 200) {
-            fetchCartItemList()
-            dispatch(setItemCountCart(res.data.results))
-            const existingUserDataString: string =
-              Cookies.get(COOKIE_STORAGE_KEY) ?? ''
-            const existingUserData = JSON.parse(existingUserDataString)
-            const updatedUserData = {
-              ...existingUserData,
-              cart: res.data.results
+      if (selectedSize !== '') {
+        const body = {
+          size: selectedSize
+        }
+        CartUtils.addItemInCart(id, body)
+          .then((res: any) => {
+            if (res.status === 200) {
+              fetchCartItemList()
+              dispatch(setItemCountCart(res.data.results))
+              const existingUserDataString: string =
+            Cookies.get(COOKIE_STORAGE_KEY) ?? ''
+              const existingUserData = JSON.parse(existingUserDataString)
+              const updatedUserData = {
+                ...existingUserData,
+                cart: res.data.results
+              }
+              const updatedUserDataString = JSON.stringify(updatedUserData)
+              Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
             }
-            const updatedUserDataString = JSON.stringify(updatedUserData)
-            Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
-          }
-        })
-        .catch((err: any) => {
-          if (err === undefined) {
-            ToasterMessage('error', 'Network error')
-          }
-          ToasterMessage('error', err?.data?.message)
-        })
+          })
+          .catch((err: any) => {
+            if (err === undefined) {
+              ToasterMessage('error', 'Network error')
+            }
+            ToasterMessage('error', err?.data?.message)
+          })
+      } else {
+        ToasterMessage('error', 'Please select size')
+      }
     } else {
       navigate('/wishlist')
     }
@@ -164,10 +159,12 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
         ToasterMessage('error', err?.data?.message)
       })
   }
+  const handleSelectSize = (e: React.MouseEvent<HTMLDivElement>, item: string): void => {
+    setSelectedSize(item)
+  }
   return (
     <div className="product-details-container">
       {productDetails !== null && (
-        <>
           <Row>
             <Col md={6} sm={12}>
               <div className="product-gallery">
@@ -230,42 +227,28 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                   </div>
                 </div>
                 <div className="size-container">
-                  <div className="color-block">
-                    <div className="color-name">
-                      <label>COLOUR OPTIONS:</label> &nbsp; White
-                    </div>
-                    <div className="multi-color-box">
-                      <div className="multi-color-div d-flex align-items-center justify-content-start flex-wrap">
-                        {colorShade.map((box, i) => {
-                          return (
-                            <div className="multi-color-block" key={i}>
-                              <span>
-                                <div
-                                  style={{ backgroundColor: `${box.color}` }}
-                                ></div>
-                              </span>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </div>
                   <div className="size-wrapper">
                     <div className="size-outer-wrapper">
                       <h2 className="select-size-title">Select Size</h2>
                     </div>
                     <div className="select-size">
-                      {sizeSelect.map((item, i) => {
+                      {availableSizes.map((item: string, i) => {
                         return (
                           <div
-                            className="each-size"
+                            className={selectedSize === item ? 'each-size selected' : 'each-size'}
                             key={i}
-                            id={`test-size-${item.size}`}
+                            id={`test-size-${item}`}
+                            onClick={(e) => { handleSelectSize(e, item) }}
                           >
-                            <span>{item.size}</span>
+                            <span>{item}</span>
                           </div>
                         )
                       })}
+                    </div>
+                  </div>
+                  <div className="color-block">
+                    <div className="color-name">
+                      <label>COLOUR AVAILABLE:</label> &nbsp; {productDetails?.productDetails?.color}
                     </div>
                   </div>
                 </div>
@@ -322,7 +305,6 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                         productDetails?.productDetails?._id
                     )
                       ? (
-                      <>
                         <div className="add-bag btn-border d-flex flex-row align-items-center justify-content-center">
                           <Link to="/cart">
                             <Image
@@ -334,10 +316,8 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                             <span>GO TO BAG</span>
                           </Link>
                         </div>
-                      </>
                         )
                       : (
-                      <>
                         <div
                           className="add-bag btn-border d-flex flex-row align-items-center justify-content-center"
                           onClick={() => {
@@ -354,7 +334,6 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
                           />
                           <span>ADD TO BAG</span>
                         </div>
-                      </>
                         )}
                   </div>
                 </div>
@@ -506,7 +485,6 @@ function ProductInfo (productDetails: ProductInfoType): React.JSX.Element {
               </div>
             </Col>
           </Row>
-        </>
       )}
     </div>
   )

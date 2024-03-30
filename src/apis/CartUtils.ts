@@ -1,8 +1,8 @@
 import api from './index'
 const CartUtils = {
-  addItemInCart: async function (params: string) {
+  addItemInCart: async function (params: string, params2: any) {
     try {
-      const response = await api.patch(`ecommerce/cart/${params}`)
+      const response = await api.patch(`ecommerce/cart/${params}`, params2)
       return response
     } catch (error: any) {
       throw error.response

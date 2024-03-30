@@ -96,8 +96,7 @@ function BagItem (): React.JSX.Element {
   };
   const handleClearCart = async (): Promise<void> => {
     try {
-      const response = await CartUtils.deleteCartItems();
-      console.log("🚀 ~ handleClearCart ~ response:", response);
+      await CartUtils.deleteCartItems();
       fetchCartItemList();
     } catch (err) {
       console.log(err);
@@ -248,7 +247,7 @@ function BagItem (): React.JSX.Element {
                     </div>
 
                     <div className="add-address">
-                      <Link to="/checkout" state={{ data: cartItemList }}>
+                      <Link to="/checkout" state={{ data: cartItemList, totalAmount: totalAmount }}>
                         <Button>Proceed to Checkout</Button>
                       </Link>
                     </div>

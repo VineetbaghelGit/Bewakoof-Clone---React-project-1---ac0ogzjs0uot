@@ -10,3 +10,5 @@ export const LINK_TO_SIGNUP = '/signup'
 export const LINK_TO_LOGIN = '/login'
 export const ASK_SIGNUP_TEXT = 'Dont have an account?'
 export const ASK_LOGIN_TEXT = 'Already have an account?'
+export const RAZORPAY_KEY_ID = process.env.REACT_APP_RAZORPAY_KEY_ID
+export const RAZORPAY_SECRET_ID = process.env.REACT_APP_RAZORPAY_SECRET_ID

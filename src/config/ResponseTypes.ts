@@ -32,6 +32,8 @@ export interface ProductInfoType {
     _id: string
     price: string
     description: string
+    size: []
+    color: string
   }
 }
 export interface cartState {

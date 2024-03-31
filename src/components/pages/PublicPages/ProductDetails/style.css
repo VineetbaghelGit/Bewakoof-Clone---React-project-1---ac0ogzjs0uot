@@ -109,11 +109,9 @@
 }
 
 .color-block .color-name {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 550;
   text-transform: uppercase;
-}
-.color-block .multi-color-box {
   margin-top: 10px;
 }
 .multi-color-block {
@@ -159,6 +157,11 @@
   border-radius: 5px;
   line-height: 45px;
 }
+.size-wrapper .select-size .each-size.selected{
+  background-color: lightgray;
+  border-color: lightgray;
+}
+
 .add-button-wrapper {
   margin-bottom: 20px;
   width: 100%;

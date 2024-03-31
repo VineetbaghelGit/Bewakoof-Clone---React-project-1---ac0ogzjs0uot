@@ -67,22 +67,24 @@ function UserWishlist (): React.JSX.Element {
       })
   }
   const addProductToBag = (id: string): void => {
-    CartUtils.addItemInCart(id)
-      .then((res: any) => {
-        if (res.status === 200) {
-          removewishlistedItem(id)
-          dispatch(setItemCountCart(res.data.results))
-          const existingUserDataString: string =
+    const body = {
+      size: 'M'
+    }
+    CartUtils.addItemInCart(id, body).then((res: any) => {
+      if (res.status === 200) {
+        removewishlistedItem(id)
+        dispatch(setItemCountCart(res.data.results))
+        const existingUserDataString: string =
             Cookies.get(COOKIE_STORAGE_KEY) ?? ''
-          const existingUserData = JSON.parse(existingUserDataString)
-          const updatedUserData = {
-            ...existingUserData,
-            cart: res.data.results
-          }
-          const updatedUserDataString = JSON.stringify(updatedUserData)
-          Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
+        const existingUserData = JSON.parse(existingUserDataString)
+        const updatedUserData = {
+          ...existingUserData,
+          cart: res.data.results
         }
-      })
+        const updatedUserDataString = JSON.stringify(updatedUserData)
+        Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
+      }
+    })
       .catch((err: any) => {
         if (err === undefined) {
           ToasterMessage('error', 'Network error')

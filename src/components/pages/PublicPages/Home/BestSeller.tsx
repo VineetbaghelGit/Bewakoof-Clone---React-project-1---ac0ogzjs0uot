@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Image, Row } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
-import { wishlistIcon, wishlistSelected } from '../../../../config/Images'
 import { isUserAuthenticated } from '../../../../helper/customUseSelector'
 import {
   type GetProductResType,
@@ -10,80 +7,68 @@ import {
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import WishlistUtils from '../../../../apis/WishlistUtils'
 import ProductUtils from '../../../../apis/ProductUtils'
+import ProductCard from './ProductCard'
 
 function BestSeller (): React.JSX.Element {
-  const navigate = useNavigate()
   const isRouteProtected = isUserAuthenticated()
-  const [product, setProduct] = useState<GetProductResType[]>([])
+  const [trendingProducts, setTrendingProducts] = useState<GetProductResType[]>([])
+  const [bestSellingProduct, setBestSellingProduct] = useState<
+  GetProductResType[]
+  >([])
+  const [topRatedProduct, setTopRatedProduct] = useState<GetProductResType[]>(
+    []
+  )
+  const [newArrivalProduct, setNewArrivalProduct] = useState<
+  GetProductResType[]
+  >([])
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
 
-  const redirectToProduct = (
-    e: React.MouseEvent<HTMLDivElement>,
-    item: GetProductResType
-  ): void => {
-    e.stopPropagation()
-    navigate(`/product/${item._id}`, { state: item })
-  }
-  const notWishlistedItem = (
-    e: React.MouseEvent<HTMLImageElement>,
-    id: string
-  ): void => {
-    e.stopPropagation()
-    if (isRouteProtected) {
-      const body = {
-        productId: id
-      }
-      WishlistUtils.addToWishlist(body)
-        .then((res: any) => {
-          if (res.status === 200) {
-            fetchGetWishlist()
-            ToasterMessage('success', res?.data?.message)
-          }
-        })
-        .catch((err: any) => {
-          ToasterMessage('error', err?.data?.message)
-        })
-    } else {
-      navigate('/wishlist')
-    }
-  }
-  const wishlistedItem = (
-    e: React.MouseEvent<HTMLImageElement>,
-    id: string
-  ): void => {
-    e.stopPropagation()
-    if (isRouteProtected) {
-      WishlistUtils.removeFromWishlist(id)
-        .then((res: any) => {
-          if (res.status === 200) {
-            fetchGetWishlist()
-            ToasterMessage('success', res?.data?.message)
-          }
-        })
-        .catch((err: any) => {
-          ToasterMessage('error', err?.data?.message)
-        })
-    } else {
-      navigate('/wishlist')
-    }
-  }
   useEffect(() => {
-    ProductUtils.getProductList()
-      .then((res: any) => {
-        if (res.status === 200) {
-          setProduct(res?.data.data)
-        }
-      })
-      .catch((err: any) => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const resTrending = await ProductUtils.getProductList(
+          `?filter=${encodeURIComponent(
+            JSON.stringify({ sellerTag: 'trending' })
+          )}`
+        )
+        const resBestSeller = await ProductUtils.getProductList(
+          `?filter=${encodeURIComponent(
+            JSON.stringify({ sellerTag: 'best seller' })
+          )}`
+        )
+        const resNewArrival = await ProductUtils.getProductList(
+          `?filter=${encodeURIComponent(
+            JSON.stringify({ sellerTag: 'new arrival' })
+          )}`
+        )
+        const resTopRated = await ProductUtils.getProductList(
+          `?filter=${encodeURIComponent(
+            JSON.stringify({ sellerTag: 'top rated' })
+          )}`
+        )
+        // if (res.status === 200) {
+        //   setTrendingProducts(res.data.data)
+        // }
+        setTrendingProducts(resTrending.data.data)
+        setBestSellingProduct(resBestSeller.data.data)
+        setNewArrivalProduct(resNewArrival.data.data)
+        setTopRatedProduct(resTopRated.data.data)
+      } catch (err: any) {
         if (err === undefined) {
           ToasterMessage('error', 'Network error')
+        } else {
+          ToasterMessage('error', err.response.data.message)
         }
-        ToasterMessage('error', err?.data?.message)
-      })
+      }
+    }
+
+    void fetchData()
+
     if (isRouteProtected) {
       fetchGetWishlist()
     }
   }, [isRouteProtected])
+
   function fetchGetWishlist (): void {
     WishlistUtils.getMyWishlist()
       .then((res: any) => {
@@ -99,88 +84,40 @@ function BestSeller (): React.JSX.Element {
       })
   }
   return (
-    <React.Fragment>
-      <div className="best-sellers-wrapper">
+    <div className="best-sellers-wrapper">
+      <div className="trending-section">
         <div className="section-heading">
-          <h4>BESTSELLERS</h4>
+          <h4>TRENDING</h4>
         </div>
         <div className="product-widget">
-          <Row>
-            {product.length > 0 &&
-              product.map((item, i) => {
-                return (
-                  <Col key={i} md={3} xs={6} sm={6} className="card-col">
-                    <div className="product-card-box">
-                      <div
-                        onClick={(e) => {
-                          redirectToProduct(e, item)
-                        }}
-                      >
-                        <div className="product-card-img">
-                          <Image
-                            src={item.displayImage}
-                            fluid
-                            title={item.name}
-                            loading="lazy"
-                          />
-                          <div className="product-seller-tag">
-                            <span>{item.sellerTag}</span>
-                          </div>
-                        </div>
-                        <div className="product-card-detail">
-                          <div className="d-flex justify-content-between p-1">
-                            <div className="product-naming">
-                              <h3 className="brand-name">{item.brand}</h3>
-                              <h2 className="name">{item.name}</h2>
-                            </div>
-                            <div className="wishlist-product">
-                              {wishlist.some(
-                                (wishlistItem) =>
-                                  wishlistItem.products?._id === item?._id
-                              )
-                                ? (
-                                <Image
-                                  src={wishlistSelected}
-                                  fluid
-                                  loading="lazy"
-                                  onClick={(e) => {
-                                    wishlistedItem(e, item?._id)
-                                  }}
-                                />
-                                  )
-                                : (
-                                <Image
-                                  src={wishlistIcon}
-                                  fluid
-                                  loading="lazy"
-                                  onClick={(e) => {
-                                    notWishlistedItem(e, item?._id)
-                                  }}
-                                />
-                                  )}
-                            </div>
-                          </div>
-                          <div className="d-flex product-price-box px-1">
-                            <div className="discounted-price-text">
-                              <span>₹</span>
-                              {item.price}
-                            </div>
-                            <div className="actual-price-text">
-                              <span>₹</span>
-                              3456
-                            </div>
-                            <div className="discount-percent">65% OFF</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                )
-              })}
-          </Row>
+         <ProductCard productsList={trendingProducts} wishlist={wishlist} setWishlist={setWishlist}/>
         </div>
       </div>
-    </React.Fragment>
+      <div className="bestseller-section">
+        <div className="section-heading">
+          <h4>BESTSELLER</h4>
+        </div>
+        <div className="product-widget">
+        <ProductCard productsList={bestSellingProduct} wishlist={wishlist} setWishlist={setWishlist}/>
+        </div>
+      </div>
+      <div className="bestseller-section">
+        <div className="section-heading">
+          <h4>NEW ARRIVALS</h4>
+        </div>
+        <div className="product-widget">
+        <ProductCard productsList={newArrivalProduct} wishlist={wishlist} setWishlist={setWishlist}/>
+        </div>
+      </div>
+      <div className="bestseller-section">
+        <div className="section-heading">
+          <h4>TOP RATED</h4>
+        </div>
+        <div className="product-widget">
+        <ProductCard productsList={topRatedProduct} wishlist={wishlist} setWishlist={setWishlist}/>
+        </div>
+      </div>
+    </div>
   )
 }
 

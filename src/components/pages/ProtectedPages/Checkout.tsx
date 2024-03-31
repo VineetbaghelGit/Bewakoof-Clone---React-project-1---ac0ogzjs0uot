@@ -1,21 +1,34 @@
-import React, { useState } from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Button, Col, Container, Image, Row } from 'react-bootstrap'
 import Form from 'react-bootstrap/Form'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import { ToasterMessage } from '../../../helper/ToasterHelper'
-import { type UserAddressInfo } from '../../../config/ResponseTypes'
+import { type UserDetails, type UserAddressInfo } from '../../../config/ResponseTypes'
 import { useDispatch } from 'react-redux'
 import { setItemCountCart } from '../../../store/slices/cartSlice'
 import Cookies from 'js-cookie'
-import { COOKIE_STORAGE_KEY } from '../../../config/Constant'
+import { COOKIE_STORAGE_KEY, RAZORPAY_KEY_ID, RAZORPAY_SECRET_ID } from '../../../config/Constant'
 import OrderUtils from '../../../apis/OrderUtils'
 import CartUtils from '../../../apis/CartUtils'
+import { cartItemsCount, loggedInUserInfo } from '../../../helper/customUseSelector'
+import useRazorpay from 'react-razorpay'
+import { emptyCartDoodle } from '../../../config/Images'
 
 function Checkout (): React.JSX.Element {
   const { state } = useLocation()
+  const userInfo: UserDetails = loggedInUserInfo()
+
+  const [Razorpay] = useRazorpay()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const cartItemCount = cartItemsCount()
+
+  useEffect(() => {
+    if (cartItemCount === 0) {
+      // navigate('/')
+    }
+  }, [cartItemCount])
   const [userAddressDetails, setUserAddressDetails] = useState<UserAddressInfo>(
     {
       street: '',
@@ -26,6 +39,35 @@ function Checkout (): React.JSX.Element {
       addressType: 'HOME'
     }
   )
+  const handlePayment = (): void => {
+    const options: any = {
+      key: RAZORPAY_KEY_ID,
+      key_secret: RAZORPAY_SECRET_ID,
+      amount: state?.totalAmount * 100,
+      currency: 'INR',
+      name: 'Bewakoof',
+      description: 'Test Transaction',
+      image: 'https://bewakoof-clone-react-project-1-ac0ogzjs0uot.vercel.app/static/media/bwk-primary-logo-eyes.58c3a149f93facfd3e5bd36dbdb0ff60.svg',
+      handler: function (response: any) {
+        if (response.razorpay_payment_id != null) {
+          ToasterMessage('success', 'Order placed successfully')
+          navigate('/ordersuccess')
+        }
+      },
+      prefill: {
+        name: userInfo?.name,
+        email: userInfo?.email
+      },
+      notes: {
+        address: 'Razorpay Corporate Office'
+      },
+      theme: {
+        color: '#3399cc'
+      }
+    }
+    const rzpay = new Razorpay(options)
+    rzpay.open()
+  }
   const handleSaveChange = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault()
     if (
@@ -38,7 +80,7 @@ function Checkout (): React.JSX.Element {
     ) {
       ToasterMessage('error', 'All fields are mandatory')
     } else {
-      const promises = state.data.map(async (item: any) => {
+      const promises = state?.data?.map(async (item: any) => {
         const body = {
           productId: item.product._id,
           quantity: 1,
@@ -64,25 +106,23 @@ function Checkout (): React.JSX.Element {
 
       Promise.all(promises)
         .then((successResults) => {
-          ToasterMessage('success', 'Order placed successfully')
-          navigate('/ordersuccess')
+          handlePayment()
         })
         .catch((error) => {
           console.error('One or more promises rejected:', error)
         })
     }
   }
-
   const removeProductFromBag = (id: string): void => {
     CartUtils.removeItemFromCart(id)
       .then((res: any) => {
         if (res.status === 200) {
-          dispatch(setItemCountCart(res.data.results))
+          dispatch(setItemCountCart(res?.data?.results))
           const existingUserDataString: string = Cookies.get(COOKIE_STORAGE_KEY) ?? ''
           const existingUserData = JSON.parse(existingUserDataString)
           const updatedUserData = {
             ...existingUserData,
-            cart: res.data.results
+            cart: res?.data?.results
           }
           const updatedUserDataString = JSON.stringify(updatedUserData)
           Cookies.set(COOKIE_STORAGE_KEY, updatedUserDataString)
@@ -109,7 +149,8 @@ function Checkout (): React.JSX.Element {
   }
   return (
     <div className="profile-wrapper checkout">
-      <Container>
+      {cartItemCount !== undefined && cartItemCount !== 0
+        ? <Container>
         <div className="backto-account">
           <Link to="/cart">
             <ChevronLeftIcon />
@@ -201,10 +242,24 @@ function Checkout (): React.JSX.Element {
             </Col>
           </Row>
         </Form>
-        <Button type="button" onClick={handleSaveChange} className="save-btn">
-          Buy Now
+        <Button type="button" disabled={cartItemCount === 0} onClick={handleSaveChange} className="save-btn">
+          Place Order
         </Button>
       </Container>
+        : <div className="wishlist-wrapper">
+       <div className="wishlist-empty">
+         <Image src={emptyCartDoodle} fluid width="50%" />
+         <div className="empty-list-title">Nothing in the bag</div>
+         <div className="empty-list-subtitle">
+           Add your product here and make them yours soon!
+         </div>
+         <Link to="/">
+           <div className="wishlist-btn">Shop now</div>
+         </Link>
+       </div>
+     </div>
+      }
+
     </div>
   )
 }

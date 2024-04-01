@@ -1,8 +1,8 @@
 import api from './index'
 const ProductUtils = {
-  getProductList: async function (params: string) {
+  getProductList: async function (params: string, signal: any) {
     try {
-      const response = await api.get(`ecommerce/clothes/products${params}`)
+      const response = await api.get(`ecommerce/clothes/products${params}`, { signal })
       return response
     } catch (error: any) {
       throw error.response
@@ -19,7 +19,7 @@ const ProductUtils = {
   searchingProduct: async function (params: string) {
     try {
       const response = await api.get(
-            `ecommerce/clothes/products?search=${params}`
+            `ecommerce/clothes/products${params}`
       )
       return response
     } catch (error: any) {

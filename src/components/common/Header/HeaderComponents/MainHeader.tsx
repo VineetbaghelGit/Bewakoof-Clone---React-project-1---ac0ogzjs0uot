@@ -39,6 +39,7 @@ function MainHeader (): React.JSX.Element {
   const dispatch = useDispatch()
   const [searchedData, setSearchedData] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
+  const [allCategories, setAllCategories] = useState([])
   useEffect(() => {
     if (searchedValue.trim().length > 0) {
       const fetchData = setTimeout(async () => {
@@ -80,6 +81,17 @@ function MainHeader (): React.JSX.Element {
     setSearchedValue('')
     setSearchedData([])
   }
+  useEffect(() => {
+    void fetchAllCategories()
+  }, [])
+  async function fetchAllCategories (): Promise<void> {
+    try {
+      const response: any = await ProductUtils.getClothesCategories()
+      setAllCategories(response?.data?.data)
+    } catch (err) {
+      console.log('🚀 ~ fetchAllCategories ~ err:', err)
+    }
+  }
   return (
     <div className="main-head">
       <div className="main-header">
@@ -92,15 +104,43 @@ function MainHeader (): React.JSX.Element {
             </Col>
             <Col xs={5} className="main-header-dropdown col-differ">
               <ul className="menu-wrapper">
-                <li className="menuSelect">
-                  <Link to="/coming-soon">Men</Link>
+                <li className="menuSelect category">
+                  <Link to="#" className="men-category">
+                    Men
+                  </Link>
+                  <div className="men-menu-category">
+                    <ul className="men-category">
+                      {allCategories?.length > 0 &&
+                        allCategories?.map((data, i) => {
+                          return (
+                            <li key={i}>
+                              <Link to="/">{data}</Link>
+                            </li>
+                          )
+                        })}
+                    </ul>
+                  </div>
                 </li>
-                <li className="menuSelect">
-                  <Link to="/coming-soon">Women</Link>
+                <li className="menuSelect category">
+                  <Link to="#" className="men-category">
+                    Women
+                  </Link>
+                  <div className="men-menu-category">
+                    <ul className="men-category">
+                      {allCategories?.length > 0 &&
+                        allCategories?.map((data, i) => {
+                          return (
+                            <li key={i}>
+                              <Link to="/">{data}</Link>
+                            </li>
+                          )
+                        })}
+                    </ul>
+                  </div>
                 </li>
-                <li className="menuSelect">
+                {/* <li className="menuSelect">
                   <Link to="/coming-soon">Mobile Covers</Link>
-                </li>
+                </li> */}
               </ul>
             </Col>
             <Col xs={5} className="d-flex col-differ position-relative">
@@ -116,7 +156,13 @@ function MainHeader (): React.JSX.Element {
                 <SearchIcon className="search-icon" />
               </div>
               {searchedValue.trim().length > 0 && (
-                <div className={searchedData?.length > 0 ? 'searchContainer' : 'searchContainer no-data'}>
+                <div
+                  className={
+                    searchedData?.length > 0
+                      ? 'searchContainer'
+                      : 'searchContainer no-data'
+                  }
+                >
                   <div className="search-result-list overflow-auto">
                     {searchedData?.length > 0
                       ? (

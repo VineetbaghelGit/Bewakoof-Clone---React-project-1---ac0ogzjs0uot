@@ -24,41 +24,44 @@ function BestSeller (): React.JSX.Element {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([])
 
   useEffect(() => {
+    const controller = new AbortController()
+    const signal = controller.signal
     const fetchData = async (): Promise<void> => {
       try {
         const resTrending = await ProductUtils.getProductList(
           `?filter=${encodeURIComponent(
             JSON.stringify({ sellerTag: 'trending' })
-          )}`
+          )}`,
+          signal
         )
         const resBestSeller = await ProductUtils.getProductList(
           `?filter=${encodeURIComponent(
             JSON.stringify({ sellerTag: 'best seller' })
-          )}`
+          )}`,
+          signal
         )
         const resNewArrival = await ProductUtils.getProductList(
           `?filter=${encodeURIComponent(
             JSON.stringify({ sellerTag: 'new arrival' })
-          )}`
+          )}`,
+          signal
         )
         const resTopRated = await ProductUtils.getProductList(
           `?filter=${encodeURIComponent(
             JSON.stringify({ sellerTag: 'top rated' })
-          )}`
+          )}`,
+          signal
         )
-        // if (res.status === 200) {
-        //   setTrendingProducts(res.data.data)
-        // }
         setTrendingProducts(resTrending.data.data)
         setBestSellingProduct(resBestSeller.data.data)
         setNewArrivalProduct(resNewArrival.data.data)
         setTopRatedProduct(resTopRated.data.data)
       } catch (err: any) {
-        if (err === undefined) {
-          ToasterMessage('error', 'Network error')
-        } else {
-          ToasterMessage('error', err.response.data.message)
-        }
+        // if (err === undefined) {
+        //   ToasterMessage('error', 'Network error')
+        // } else {
+        //   ToasterMessage('error', err.response.data.message)
+        // }
       }
     }
 
@@ -66,6 +69,9 @@ function BestSeller (): React.JSX.Element {
 
     if (isRouteProtected) {
       fetchGetWishlist()
+    }
+    return () => {
+      controller.abort()
     }
   }, [isRouteProtected])
 

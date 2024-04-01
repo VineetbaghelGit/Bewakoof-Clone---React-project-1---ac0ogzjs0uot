@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+/* eslint-disable @typescript-eslint/no-confusing-void-expression */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Image from 'react-bootstrap/Image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -28,26 +30,55 @@ import { type UserDetails } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import ProductUtils from '../../../../apis/ProductUtils'
 function MainHeader (): React.JSX.Element {
+  const navigate = useNavigate()
   const isRouteProtected = isUserAuthenticated()
   const userInfo: UserDetails = loggedInUserInfo()
   const cartItemCount = cartItemsCount()
   const location = userPathLocation()
   const [searchedValue, setSearchedValue] = useState<string>('')
   const dispatch = useDispatch()
-
-  const onSearchItem = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const newValue = e.target.value
-    setSearchedValue(newValue)
-    ProductUtils.searchingProduct(newValue)
-      .then((res) => {})
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  const [searchedData, setSearchedData] = useState([])
+  const [errorMsg, setErrorMsg] = useState('')
+  useEffect(() => {
+    if (searchedValue.trim().length > 0) {
+      const fetchData = setTimeout(async () => {
+        try {
+          const response: any = await ProductUtils.searchingProduct(
+            `?search=${encodeURIComponent(
+              JSON.stringify({
+                brand: searchedValue,
+                subCategory: searchedValue,
+                category: searchedValue,
+                name: searchedValue,
+                gender: searchedValue
+              })
+            )}`
+          )
+          setSearchedData(response?.data?.data)
+          if (response?.data?.length === 0) {
+            setErrorMsg('No result found')
+          }
+        } catch (err: any) {
+          setSearchedData([])
+          setErrorMsg(err?.data?.message)
+        }
+      }, 500)
+      return () => {
+        clearTimeout(fetchData)
+      }
+    } else {
+      // setErrorMsg('Type something for search')
+    }
+  }, [searchedValue])
   const handleLogout = (): void => {
     Cookies.remove(COOKIE_STORAGE_KEY)
     dispatch(removeUserAuth())
     ToasterMessage('success', 'Logout Successfully')
+  }
+  const handleRedirect = (id: string): void => {
+    navigate(`/product/${id}`)
+    setSearchedValue('')
+    setSearchedData([])
   }
   return (
     <div className="main-head">
@@ -72,16 +103,46 @@ function MainHeader (): React.JSX.Element {
                 </li>
               </ul>
             </Col>
-            <Col xs={5} className="d-flex col-differ">
+            <Col xs={5} className="d-flex col-differ position-relative">
               <div className="search-container col-differ">
                 <input
                   className="search-box-input"
                   placeholder="Search by product, category or collection"
-                  onChange={onSearchItem}
+                  onChange={(e) => {
+                    setSearchedValue(e.target.value)
+                  }}
                   value={searchedValue}
                 />
                 <SearchIcon className="search-icon" />
               </div>
+              {searchedValue.trim().length > 0 && (
+                <div className={searchedData?.length > 0 ? 'searchContainer' : 'searchContainer no-data'}>
+                  <div className="search-result-list overflow-auto">
+                    {searchedData?.length > 0
+                      ? (
+                          searchedData?.map((data: any) => {
+                            return (
+                          <div
+                            className="d-flex justify-content-start align-items-center"
+                            key={data?._id}
+                          >
+                            <Image src={data.displayImage} />
+                            <span onClick={() => handleRedirect(data?._id)}>
+                              {data.name}
+                            </span>
+                          </div>
+                            )
+                          })
+                        )
+                      : (
+                      <div className="not-found">
+                        <span>{errorMsg}</span>
+                      </div>
+                        )}
+                  </div>
+                </div>
+              )}
+
               <div className="actions-menu col-differ">
                 <span className="action-innermenu">
                   {location !== LINK_TO_LOGIN &&

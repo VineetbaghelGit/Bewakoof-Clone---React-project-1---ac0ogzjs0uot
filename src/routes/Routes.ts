@@ -12,6 +12,7 @@ import Cart from '../components/pages/ProtectedPages/CartPage/Index'
 import Home from '../components/pages/PublicPages/Home/Index'
 import ProductDetail from '../components/pages/PublicPages/ProductDetails/Index'
 import ComingSoon from '../components/pages/ProtectedPages/ComingSoon'
+import CollectionPage from '../components/pages/PublicPages/CollectionPage/Index'
 
 const authRoutes = [
   { path: '/login', component: Login },
@@ -22,6 +23,7 @@ const authRoutes = [
 const publicRoutes = [
   { path: '/', component: Home },
   { path: '/product/:id', component: ProductDetail },
+  { path: '/collection', component: CollectionPage },
   { path: '/coming-soon', component: ComingSoon }
 ]
 const protectedRoutes = [

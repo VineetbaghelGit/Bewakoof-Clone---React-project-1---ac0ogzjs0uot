@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useEffect, useState } from 'react'
@@ -26,7 +27,7 @@ import {
   LINK_TO_LOGIN,
   LINK_TO_SIGNUP
 } from '../../../../config/Constant'
-import { type UserDetails } from '../../../../config/ResponseTypes'
+import { type GetProductResType, type UserDetails } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import ProductUtils from '../../../../apis/ProductUtils'
 function MainHeader (): React.JSX.Element {
@@ -39,7 +40,7 @@ function MainHeader (): React.JSX.Element {
   const dispatch = useDispatch()
   const [searchedData, setSearchedData] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
-  const [allCategories, setAllCategories] = useState([])
+  const [allCategories, setAllCategories] = useState<string[]>([])
   useEffect(() => {
     if (searchedValue.trim().length > 0) {
       const fetchData = setTimeout(async () => {
@@ -76,8 +77,9 @@ function MainHeader (): React.JSX.Element {
     dispatch(removeUserAuth())
     ToasterMessage('success', 'Logout Successfully')
   }
-  const handleRedirect = (id: string): void => {
+  const handleRedirect = (id: string, item: GetProductResType): void => {
     navigate(`/product/${id}`)
+    navigate(`/product/${id}`, { state: item })
     setSearchedValue('')
     setSearchedData([])
   }
@@ -92,6 +94,26 @@ function MainHeader (): React.JSX.Element {
       console.log('🚀 ~ fetchAllCategories ~ err:', err)
     }
   }
+  const menCategories = [
+    'hoodie',
+    'kurta',
+    'pyjamas',
+    'shirt',
+    'shorts',
+    'sweater',
+    'tracksuit',
+    'trouser',
+    'tshirt'
+  ]
+  const womenCategories = [
+    'jeans',
+    'jogger',
+    'jumpsuit',
+    'kurti'
+  ]
+  const filteredMenCategories = menCategories?.filter(category => allCategories?.includes(category))
+  const filteredWomenCategories = womenCategories?.filter(category => allCategories?.includes(category))
+
   return (
     <div className="main-head">
       <div className="main-header">
@@ -110,11 +132,11 @@ function MainHeader (): React.JSX.Element {
                   </Link>
                   <div className="men-menu-category">
                     <ul className="men-category">
-                      {allCategories?.length > 0 &&
-                        allCategories?.map((data, i) => {
+                      {filteredMenCategories?.length > 0 &&
+                        filteredMenCategories?.map((data, i) => {
                           return (
                             <li key={i}>
-                              <Link to="/">{data}</Link>
+                              <Link to={`/collection?gender=male&category=${data}`}>{data}</Link>
                             </li>
                           )
                         })}
@@ -127,11 +149,11 @@ function MainHeader (): React.JSX.Element {
                   </Link>
                   <div className="men-menu-category">
                     <ul className="men-category">
-                      {allCategories?.length > 0 &&
-                        allCategories?.map((data, i) => {
+                      {filteredWomenCategories?.length > 0 &&
+                        filteredWomenCategories?.map((data, i) => {
                           return (
                             <li key={i}>
-                              <Link to="/">{data}</Link>
+                             <Link to={`/collection?gender=female&category=${data}`}>{data}</Link>
                             </li>
                           )
                         })}
@@ -173,7 +195,7 @@ function MainHeader (): React.JSX.Element {
                             key={data?._id}
                           >
                             <Image src={data.displayImage} />
-                            <span onClick={() => handleRedirect(data?._id)}>
+                            <span onClick={() => handleRedirect(data?._id, data)}>
                               {data.name}
                             </span>
                           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-confusing-void-expression */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useEffect, useState } from 'react'
@@ -26,7 +27,7 @@ import {
   LINK_TO_LOGIN,
   LINK_TO_SIGNUP
 } from '../../../../config/Constant'
-import { type UserDetails } from '../../../../config/ResponseTypes'
+import { type GetProductResType, type UserDetails } from '../../../../config/ResponseTypes'
 import { ToasterMessage } from '../../../../helper/ToasterHelper'
 import ProductUtils from '../../../../apis/ProductUtils'
 function MainHeader (): React.JSX.Element {
@@ -39,6 +40,7 @@ function MainHeader (): React.JSX.Element {
   const dispatch = useDispatch()
   const [searchedData, setSearchedData] = useState([])
   const [errorMsg, setErrorMsg] = useState('')
+  const [allCategories, setAllCategories] = useState<string[]>([])
   useEffect(() => {
     if (searchedValue.trim().length > 0) {
       const fetchData = setTimeout(async () => {
@@ -75,11 +77,43 @@ function MainHeader (): React.JSX.Element {
     dispatch(removeUserAuth())
     ToasterMessage('success', 'Logout Successfully')
   }
-  const handleRedirect = (id: string): void => {
+  const handleRedirect = (id: string, item: GetProductResType): void => {
     navigate(`/product/${id}`)
+    navigate(`/product/${id}`, { state: item })
     setSearchedValue('')
     setSearchedData([])
   }
+  useEffect(() => {
+    void fetchAllCategories()
+  }, [])
+  async function fetchAllCategories (): Promise<void> {
+    try {
+      const response: any = await ProductUtils.getClothesCategories()
+      setAllCategories(response?.data?.data)
+    } catch (err) {
+      console.log('🚀 ~ fetchAllCategories ~ err:', err)
+    }
+  }
+  const menCategories = [
+    'hoodie',
+    'kurta',
+    'pyjamas',
+    'shirt',
+    'shorts',
+    'sweater',
+    'tracksuit',
+    'trouser',
+    'tshirt'
+  ]
+  const womenCategories = [
+    'jeans',
+    'jogger',
+    'jumpsuit',
+    'kurti'
+  ]
+  const filteredMenCategories = menCategories?.filter(category => allCategories?.includes(category))
+  const filteredWomenCategories = womenCategories?.filter(category => allCategories?.includes(category))
+
   return (
     <div className="main-head">
       <div className="main-header">
@@ -92,15 +126,43 @@ function MainHeader (): React.JSX.Element {
             </Col>
             <Col xs={5} className="main-header-dropdown col-differ">
               <ul className="menu-wrapper">
-                <li className="menuSelect">
-                  <Link to="/coming-soon">Men</Link>
+                <li className="menuSelect category">
+                  <Link to="#" className="men-category">
+                    Men
+                  </Link>
+                  <div className="men-menu-category">
+                    <ul className="men-category">
+                      {filteredMenCategories?.length > 0 &&
+                        filteredMenCategories?.map((data, i) => {
+                          return (
+                            <li key={i}>
+                              <Link to={`/collection?gender=male&category=${data}`}>{data}</Link>
+                            </li>
+                          )
+                        })}
+                    </ul>
+                  </div>
                 </li>
-                <li className="menuSelect">
-                  <Link to="/coming-soon">Women</Link>
+                <li className="menuSelect category">
+                  <Link to="#" className="men-category">
+                    Women
+                  </Link>
+                  <div className="men-menu-category">
+                    <ul className="men-category">
+                      {filteredWomenCategories?.length > 0 &&
+                        filteredWomenCategories?.map((data, i) => {
+                          return (
+                            <li key={i}>
+                             <Link to={`/collection?gender=female&category=${data}`}>{data}</Link>
+                            </li>
+                          )
+                        })}
+                    </ul>
+                  </div>
                 </li>
-                <li className="menuSelect">
+                {/* <li className="menuSelect">
                   <Link to="/coming-soon">Mobile Covers</Link>
-                </li>
+                </li> */}
               </ul>
             </Col>
             <Col xs={5} className="d-flex col-differ position-relative">
@@ -116,7 +178,13 @@ function MainHeader (): React.JSX.Element {
                 <SearchIcon className="search-icon" />
               </div>
               {searchedValue.trim().length > 0 && (
-                <div className={searchedData?.length > 0 ? 'searchContainer' : 'searchContainer no-data'}>
+                <div
+                  className={
+                    searchedData?.length > 0
+                      ? 'searchContainer'
+                      : 'searchContainer no-data'
+                  }
+                >
                   <div className="search-result-list overflow-auto">
                     {searchedData?.length > 0
                       ? (
@@ -127,7 +195,7 @@ function MainHeader (): React.JSX.Element {
                             key={data?._id}
                           >
                             <Image src={data.displayImage} />
-                            <span onClick={() => handleRedirect(data?._id)}>
+                            <span onClick={() => handleRedirect(data?._id, data)}>
                               {data.name}
                             </span>
                           </div>

@@ -3,7 +3,7 @@ import AliceCarousel from 'react-alice-carousel'
 import 'react-alice-carousel/lib/alice-carousel.css'
 import {
   buy999,
-  lokibanner,
+  BdayBanner,
   offsalebanner,
   offsalecommon,
   tshirtbanner
@@ -32,7 +32,7 @@ const banners = [
   },
   {
     key: 4,
-    imageSrc: lokibanner
+    imageSrc: BdayBanner
   },
   {
     key: 5,

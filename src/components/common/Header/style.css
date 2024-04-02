@@ -157,11 +157,28 @@
 .user-account-menuholder:hover {
   display: block !important;
 }
-
-.user-account-menu {
+.men-category:hover  + .men-menu-category,
+.men-menu-category:hover {
+  display: block !important;
+}
+.men-menu-category{
+  display: none;
+  position: absolute;
+  background: #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.12);
+  z-index: -1;
+  width: 300px;
+  top: 50px;
+  left: 0px;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px;
+  transition: all 0.3s ease-in 0s;
+}
+.user-account-menu, .men-category  {
   line-height: 52px;
 }
-.user-account-menu a {
+.user-account-menu a, .men-category a {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -176,9 +193,25 @@
   pointer-events: none;
   width: 100%;
 }
-.user-account-menu a:hover {
+.user-account-menu a:hover, .men-category a:hover {
   background: rgba(0, 0, 0, 0.05);
   color: rgba(0, 0, 0, 0.5);
+}
+.menuSelect.category{
+  position: relative;
+}
+.men-category{
+  display: flex;
+  /* width: 100px; */
+  flex-wrap: wrap;
+}
+.men-category li a{
+  text-transform: capitalize !important;
+  letter-spacing: normal;
+  margin: 0px 6px;
+}
+.men-category li a:hover{
+  color: #af8a04 !important;
 }
 .bottom-header-wrapper {
   position: fixed;
